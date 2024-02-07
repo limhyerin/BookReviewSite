@@ -48,7 +48,7 @@ const SignInPage = () => {
               type="password"
               name="password"
               placeholder="비밀번호를 입력해 주세요"
-              minLength={10}
+              minLength={6}
               maxLength={16}
               value={userInfo.password}
               onChange={onChangeUserInfo}
