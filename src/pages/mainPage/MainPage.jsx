@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
-import { genreList } from '../../common/constants';
-import { useState } from 'react';
 import { getAuth } from "firebase/auth";
 // import { doc, getDoc } from "firebase/firestore";
+import "../../App.css";
 
 const StyledHeader = styled.header`
   display:flex;
@@ -50,17 +49,63 @@ const StyleTitle = styled.span`
   color: #8abd7a;
 `;
 
-const StyledBtn = styled.div`
-  /* background-color: lightgreen; */
-  width: 500px;
-  text-align: center;
-  display: row;
-  margin: 50px auto auto auto;
+
+// 슬라이더 애니메이션
+const StyledSlider = styled.div`
+  display: flex;
+  overflow: hidden;
+`;
+
+const StyledSlide = styled.img`
+  min-width: 100%;
+  height: auto;
+  transition: transform 0.3s ease-in-out;
+`;
+
+const Slider = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  return (
+    <StyledSlider>
+      {images.map((image, index) => (
+        <StyledSlide
+          key={index}
+          src={image}
+          alt={`Slide ${index + 1}`}
+          style={{
+            transform: `translateX(${-currentIndex * 100}%)`,
+          }}
+        />
+      ))}
+    </StyledSlider>
+  );
+};
+
+const StyledBooks = styled.div`
+  width: 120px;
 `;
 
 const MainPage = () => {
   const navigate = useNavigate();
   const [ isLoggedIn, setIsLoggedIn ] = useState(true);
+
+  // 이미지 URL 배열
+  const images = [
+    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
+    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
+    'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788956608556.jpg',
+    // 추가적인 이미지 URL
+  ];
 
   // 현재 로그인한 사용자 가져오기
   const auth = getAuth();
@@ -83,12 +128,16 @@ const MainPage = () => {
   //   console.log("No such document!");
   // }
 
-  const greet = isLoggedIn ? <h1><StyleTitle>Bookie</StyleTitle>에 오신 것을 환영합니다</h1> 
-  : <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>;
+  const greet = isLoggedIn ? (
+    <h1>
+      <StyleTitle>Bookie</StyleTitle>에 오신 것을 환영합니다
+    </h1> 
+    ) : (
+    <h1>
+      <StyleTitle>{nickname}</StyleTitle>님, 환영합니다
+    </h1>
+    );
 
-  const handleButtonClick = (genre) => {
-    navigate(`/reviewPage/${genre}`);
-  };
   return (
     <div>
       <StyledHeader>
@@ -96,9 +145,9 @@ const MainPage = () => {
           <StyledLogo alt="logo" src={`${process.env.PUBLIC_URL}/public_assets/logo.png`}/>
         </StyledLogoLocation>
         <StyledSign>
-          <StyledButtonWrap onClick={() => {
+          <button onClick={() => {
             navigate(`/signin`);
-          }}>Sign In</StyledButtonWrap>
+          }}>Sign In</button>
           <button onClick={() => {
             navigate(`/signup`);
           }}>Sign Up</button>
@@ -109,15 +158,32 @@ const MainPage = () => {
           { greet }
         </StyledHello>
         <StyledSelect>
-          <h2>선호하시는 장르를 선택해주세요</h2>
+          <button>시작하기</button>
         </StyledSelect>
-        <StyledBtn>
-          {genreList.map((genre, index) => (
-            <button key={index} onClick={() => handleButtonClick(genre)}>
-              {genre}
-            </button>
-          ))}
-        </StyledBtn>
+        {/* 새로운 사진 갤러리 */}
+        <StyledBooks>
+        <div class="box">
+        <div class="slider-wrapper">
+          <div class="slider1">
+            <div class="slide1"></div>
+            <div class="slide2"></div>
+            <div class="slide3"></div>
+            <div class="slide1"></div>
+            <div class="slide2"></div>
+            <div class="slide3"></div>
+          </div>
+          <div class="slider2">
+            <div class="slide1"></div>
+            <div class="slide2"></div>
+            <div class="slide3"></div>
+            <div class="slide1"></div>
+            <div class="slide2"></div>
+            <div class="slide3"></div>
+          </div>
+        </div>
+        </div>
+
+        </StyledBooks>
       </main>
       <footer>
       </footer>

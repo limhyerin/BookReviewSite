@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* layout */
+.box {
+  position: relative;
+  width: 700px;
+  height: 500px;
+  border: 3px solid #000;
+  overflow: hidden;
+}
+
+.slider-wrapper {
+  position: absolute;
+  display: flex;
+  width: 2400px; /* 변경: 슬라이더 전체 너비를 총 이미지 너비의 합인 2400px로 설정 */
+  animation: slideright 20s linear infinite; /* 변경: 슬라이드 애니메이션을 20초 동안 선형으로 무한 반복 */
+}
+
+.slider1,
+.slider2 {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1200px; /* 변경: 슬라이드 그룹의 너비를 1200px로 설정 */
+}
+
+.slide1,
+.slide2,
+.slide3 {
+  width: 200px;
+  height: 500px; /* 변경: 슬라이드의 높이를 박스의 높이와 동일하게 설정 */
+}
+
+.slide1 {
+  background-color: #62e5cc;
+}
+.slide2 {
+  background-color: #ffdd8a;
+}
+.slide3 {
+  background-color: #d2a9dc;
+}
+
+/* animation */
+@keyframes slideright {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-1200px); /* 변경: X축으로 -1200px만큼 이동하여 왼쪽으로 슬라이드 */
+  }
+}
