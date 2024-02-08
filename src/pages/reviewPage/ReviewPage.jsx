@@ -4,7 +4,7 @@ import useFirestore from '../../hooks/useFirestore';
 import CustomModal from '../../components/CustomModal';
 import ReviewForm from './ReviewForm';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const ReviewPage = () => {
   const reviews = useSelector((state) => state.reviewsReducer).reviews;

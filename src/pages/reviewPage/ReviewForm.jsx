@@ -3,6 +3,7 @@ import useFirestore from '../../hooks/useFirestore';
 import { useDispatch } from 'react-redux';
 import { addReview } from '../../redux/modules/reviewsReducer';
 import { genreList } from '../../common/constants';
+import { auth } from '../../firebase/firebase';
 
 const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   const [title, setTitle] = useState('');
@@ -17,7 +18,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   const onChangeContent = (e) => {
     setContent(e.target.value);
   };
-
   const addReviewHandler = async () => {
     const newReviewData = {
       title: title,
@@ -26,7 +26,8 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
       bookAuthor: selectedBook.author,
       bookTitle: selectedBook.title,
       createdAt: new Date(),
-      genre: selectedGenre
+      genre: selectedGenre,
+      author: auth.currentUser ? auth.currentUser.uid : ''
     };
     const docId = await addData(newReviewData);
     newReviewData.id = docId;
@@ -37,8 +38,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   // Select 요소 변경 핸들러
   const onSelectChange = (e) => {
     const selectedValue = e.target.value;
-    // 선택된 값 처리
-    console.log('Selected value:', selectedValue);
     setSelectedGanre(selectedValue);
   };
 

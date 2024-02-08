@@ -10,17 +10,12 @@ const useFirestore = (collectionName) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Firestore 인스턴스 생성
-
         const q = query(collection(db, collectionName), orderBy('createdAt', 'desc'));
-
-        const snapshot = await getDocs(q); // 컬렉션의 모든 문서 가져오기
-
+        const snapshot = await getDocs(q);
         const fetchedData = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data() // 문서 데이터를 객체로 변환
         }));
-        //!SECTIONsetData(fetchedData); // 상태 업데이트
         dispatch(setReview(fetchedData));
         setLoading(false);
         console.log('fetchedData', fetchedData);
@@ -35,7 +30,7 @@ const useFirestore = (collectionName) => {
     return () => {
       // 필요하다면 클린업 코드를 작성할 수 있음
     };
-  }, [collectionName, setData, dispatch]); // collectionName이 변경될 때마다 useEffect 재실행
+  }, [collectionName, setData, dispatch]);
 
   const addData = async (newData) => {
     try {
@@ -48,7 +43,7 @@ const useFirestore = (collectionName) => {
     }
   };
 
-  return { data, loading, addData }; // 컬렉션 데이터를 반환
+  return { loading, addData };
 };
 
 export default useFirestore;
