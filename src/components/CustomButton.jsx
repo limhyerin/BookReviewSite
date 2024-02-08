@@ -35,7 +35,7 @@ const StyledButtonWrap = styled.div`
 const CustomButton = ({ onClick, color, radius, text }) => {
   return (
     <StyledButtonWrap onClick={onClick} color={color} radius={radius}>
-      <button class="success">{text}</button>
+      <button>{text}</button>
     </StyledButtonWrap>
   );
 };

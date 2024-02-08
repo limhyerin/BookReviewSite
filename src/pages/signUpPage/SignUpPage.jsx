@@ -2,18 +2,43 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
+import CustomButton from '../../components/CustomButton';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpWrapper = styled.div`
   max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem;
   border: 1px solid black;
+  border-radius: 10px;
 `;
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
-const InputBox = styled.div``;
-const SignUpButton = styled.button``;
-const SocialSignUpBox = styled.div``;
+const InputBox = styled.div`
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid black;
+  input {
+    font-size: ${(props) => props.theme.fontSize.lg};
+    border: none;
+    outline: none;
+  }
+`;
+const StyledButtonBox = styled.div`
+  button {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+`;
+const SocialSignUpBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 const SocialIcon = styled.button`
   width: 100px;
   height: 100px;
@@ -26,6 +51,7 @@ const SignUpPage = () => {
     password: '',
     nickname: ''
   });
+  const navigate = useNavigate();
   const onChangeUserInfo = (event) => {
     const { name, value } = event.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
@@ -35,6 +61,7 @@ const SignUpPage = () => {
     const { userId, password } = userInfo;
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, userId, password);
+      navigate('review');
       console.log(userCredential);
     } catch (error) {
       console.error(error);
@@ -73,7 +100,9 @@ const SignUpPage = () => {
               onChange={onChangeUserInfo}
             />
           </InputBox>
-          <SignUpButton type="submit">회원가입하기</SignUpButton>
+          <StyledButtonBox>
+            <CustomButton text={'가입하기'} />
+          </StyledButtonBox>
         </SignUpForm>
         <SocialSignUpBox>
           <SocialIcon>Google</SocialIcon>
