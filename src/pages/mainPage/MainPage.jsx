@@ -62,35 +62,6 @@ const StyledSlide = styled.img`
   transition: transform 0.3s ease-in-out;
 `;
 
-const Slider = ({ images }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [images]);
-
-  return (
-    <StyledSlider>
-      {images.map((image, index) => (
-        <StyledSlide
-          key={index}
-          src={image}
-          alt={`Slide ${index + 1}`}
-          style={{
-            transform: `translateX(${-currentIndex * 100}%)`,
-          }}
-        />
-      ))}
-    </StyledSlider>
-  );
-};
-
 const StyledBooks = styled.div`
   width: 120px;
 `;
