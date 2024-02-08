@@ -30,10 +30,15 @@ const SignUpPage = () => {
     const { name, value } = event.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
-  const onSignUp = (event) => {
+  const onSignUp = async (event) => {
     event.preventDefault();
     const { userId, password } = userInfo;
-    createUserWithEmailAndPassword(auth, userId, password);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, userId, password);
+      console.log(userCredential);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
@@ -53,7 +58,7 @@ const SignUpPage = () => {
               type="password"
               name="password"
               placeholder="비밀번호를 입력해 주세요"
-              minLength={3}
+              minLength={6}
               maxLength={16}
               value={userInfo.password}
               onChange={onChangeUserInfo}
@@ -68,7 +73,7 @@ const SignUpPage = () => {
               onChange={onChangeUserInfo}
             />
           </InputBox>
-          <SignUpButton type="submit">로그인하기</SignUpButton>
+          <SignUpButton type="submit">회원가입하기</SignUpButton>
         </SignUpForm>
         <SocialSignUpBox>
           <SocialIcon>Google</SocialIcon>

@@ -1,5 +1,7 @@
+import { GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { auth } from '../../firebase/firebase';
 
 const SignInWrapper = styled.div`
   max-width: 600px;
@@ -27,8 +29,31 @@ const SignInPage = () => {
     const { name, value } = event.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
-  const onSignIn = (event) => {
+  const onSignIn = async (event) => {
     event.preventDefault();
+    const { userId, password } = userInfo;
+    try {
+      await signInWithEmailAndPassword(auth, userId, password);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const onClickGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const onClickGithubSignIn = async () => {
+    try {
+      const provider = new GithubAuthProvider();
+      const result = await signInWithRedirect(auth, provider);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
@@ -57,9 +82,9 @@ const SignInPage = () => {
           <SignInButton type="submit">로그인하기</SignInButton>
         </SignInForm>
         <SocialSignInBox>
-          <SocialIcon>Google</SocialIcon>
+          <SocialIcon onClick={onClickGoogleSignIn}>Google</SocialIcon>
           <SocialIcon>kakao</SocialIcon>
-          <SocialIcon>GitHub</SocialIcon>
+          <SocialIcon onClick={onClickGithubSignIn}>GitHub</SocialIcon>
         </SocialSignInBox>
       </SignInWrapper>
     </>
