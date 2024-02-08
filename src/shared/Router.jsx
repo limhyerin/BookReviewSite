@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/mainPage/MainPage';
 import MyPage from '../pages/myPage/MyPage';
@@ -6,8 +6,16 @@ import ReviewDetailPage from '../pages/reviewDetailPage/ReviewDetailPage';
 import ReviewPage from '../pages/reviewPage/ReviewPage';
 import SignInPage from '../pages/signInPage/SignInPage';
 import SignUpPage from '../pages/signUpPage/SignUpPage';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase/firebase';
 
 const Router = () => {
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('user', user);
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
