@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import useFirestore from '../../hooks/useFirestore';
+import { useDispatch } from 'react-redux';
+import { addReview } from '../../redux/modules/reviewsReducer';
+import { genreList } from '../../common/constants';
 
-const ReviewForm = ({ selectedBook, setReviews, reviews, setIsModalOpen }) => {
+const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { addData } = useFirestore('book-reviews');
+  const dispatch = useDispatch();
+  const [selectedGenre, setSelectedGanre] = useState('소설');
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -13,21 +18,30 @@ const ReviewForm = ({ selectedBook, setReviews, reviews, setIsModalOpen }) => {
     setContent(e.target.value);
   };
 
-  const addReview = async () => {
+  const addReviewHandler = async () => {
     const newReviewData = {
       title: title,
       content: content,
       image: selectedBook.image,
       bookAuthor: selectedBook.author,
       bookTitle: selectedBook.title,
-      createdAt: new Date()
+      createdAt: new Date(),
+      genre: selectedGenre
     };
     const docId = await addData(newReviewData);
     newReviewData.id = docId;
-    setReviews([newReviewData, ...reviews]);
+    dispatch(addReview(newReviewData));
     setIsModalOpen(false);
-    // console.log('docId', docId);
   };
+
+  // Select 요소 변경 핸들러
+  const onSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    // 선택된 값 처리
+    console.log('Selected value:', selectedValue);
+    setSelectedGanre(selectedValue);
+  };
+
   return (
     <div>
       <div style={{ display: 'flex' }}>
@@ -36,12 +50,14 @@ const ReviewForm = ({ selectedBook, setReviews, reviews, setIsModalOpen }) => {
           <p>{selectedBook.title}</p>
           <p>{selectedBook.author}</p>
         </div>
-        <select name="카테고리">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+        <select name="category" onChange={onSelectChange}>
+          {genreList.map((genre) => {
+            return (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            );
+          })}
         </select>
       </div>
       <form>
@@ -57,7 +73,7 @@ const ReviewForm = ({ selectedBook, setReviews, reviews, setIsModalOpen }) => {
           type="button"
           value="확인"
           onClick={() => {
-            addReview();
+            addReviewHandler();
           }}
         />
       </form>

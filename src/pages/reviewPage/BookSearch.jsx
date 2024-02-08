@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-function BookSearch({ selectedBook, setSelectedBook, books, setBooks }) {
+function BookSearch({ setSelectedBook, books, setBooks }) {
   const [query, setQuery] = useState('');
 
   const searchBooks = async () => {
@@ -23,10 +23,6 @@ function BookSearch({ selectedBook, setSelectedBook, books, setBooks }) {
       console.error('Error fetching data:', error);
     }
   };
-
-  useEffect(() => {
-    console.log(selectedBook);
-  }, [selectedBook]);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { db } from '../firebase/firebase';
 import { collection, getDocs, query, addDoc, orderBy } from 'firebase/firestore';
-const useFirestore = (collectionName, setReviews) => {
+import { setReview } from '../redux/modules/reviewsReducer';
+import { useDispatch } from 'react-redux';
+const useFirestore = (collectionName) => {
   const [data, setData] = useState([]); // Firestore에서 가져온 데이터를 저장할 상태
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,7 +21,7 @@ const useFirestore = (collectionName, setReviews) => {
           ...doc.data() // 문서 데이터를 객체로 변환
         }));
         //!SECTIONsetData(fetchedData); // 상태 업데이트
-        setReviews(fetchedData);
+        dispatch(setReview(fetchedData));
         setLoading(false);
         console.log('fetchedData', fetchedData);
       } catch (error) {
@@ -32,7 +35,7 @@ const useFirestore = (collectionName, setReviews) => {
     return () => {
       // 필요하다면 클린업 코드를 작성할 수 있음
     };
-  }, [collectionName, setData, setReviews]); // collectionName이 변경될 때마다 useEffect 재실행
+  }, [collectionName, setData, dispatch]); // collectionName이 변경될 때마다 useEffect 재실행
 
   const addData = async (newData) => {
     try {
