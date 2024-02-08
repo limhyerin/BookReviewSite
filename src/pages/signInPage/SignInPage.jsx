@@ -2,18 +2,43 @@ import { GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, sig
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { auth } from '../../firebase/firebase';
+import CustomButton from '../../components/CustomButton';
+import CustomModal from '../../components/CustomModal';
 
 const SignInWrapper = styled.div`
   max-width: 600px;
+  margin: 0 auto;
+  padding: 4rem;
   border: 1px solid black;
+  border-radius: 10px;
 `;
 const SignInForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
-const InputBox = styled.div``;
-const SignInButton = styled.button``;
-const SocialSignInBox = styled.div``;
+const InputBox = styled.div`
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid black;
+  input {
+    font-size: ${(props) => props.theme.fontSize.lg};
+    border: none;
+    outline: none;
+  }
+`;
+const StyledButtonBox = styled.div`
+  button {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+`;
+const SocialSignInBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
 const SocialIcon = styled.button`
   width: 100px;
   height: 100px;
@@ -25,6 +50,8 @@ const SignInPage = () => {
     userId: '',
     password: ''
   });
+  const [isOpen, setIsOpen] = useState(false);
+
   const onChangeUserInfo = (event) => {
     const { name, value } = event.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
@@ -35,6 +62,7 @@ const SignInPage = () => {
     try {
       await signInWithEmailAndPassword(auth, userId, password);
     } catch (error) {
+      setIsOpen(true);
       console.error(error);
     }
   };
@@ -57,6 +85,9 @@ const SignInPage = () => {
   };
   return (
     <>
+      <CustomModal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
+        로그인 정보가 틀렸습니다.
+      </CustomModal>
       <SignInWrapper>
         <SignInForm onSubmit={onSignIn}>
           <InputBox>
@@ -79,7 +110,9 @@ const SignInPage = () => {
               onChange={onChangeUserInfo}
             />
           </InputBox>
-          <SignInButton type="submit">로그인하기</SignInButton>
+          <StyledButtonBox>
+            <CustomButton text={'로그인'} />
+          </StyledButtonBox>
         </SignInForm>
         <SocialSignInBox>
           <SocialIcon onClick={onClickGoogleSignIn}>Google</SocialIcon>
