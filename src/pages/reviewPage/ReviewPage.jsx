@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import BookSearch from './BookSearch';
 
 const ReviewPage = () => {
   return (
-    <div>ReviewPage</div>
-  )
-}
+    <div>
+      <BookSearch />
+      ReviewPage
+    </div>
+  );
+};
 
-export default ReviewPage
+export default ReviewPage;
