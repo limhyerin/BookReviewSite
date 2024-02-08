@@ -4,7 +4,6 @@ import { collection, getDocs, query, addDoc, orderBy } from 'firebase/firestore'
 import { setReview } from '../redux/modules/reviewsReducer';
 import { useDispatch } from 'react-redux';
 const useFirestore = (collectionName) => {
-  const [data, setData] = useState([]); // Firestore에서 가져온 데이터를 저장할 상태
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,7 +29,7 @@ const useFirestore = (collectionName) => {
     return () => {
       // 필요하다면 클린업 코드를 작성할 수 있음
     };
-  }, [collectionName, setData, dispatch]);
+  }, [collectionName, dispatch]);
 
   const addData = async (newData) => {
     try {
