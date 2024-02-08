@@ -1,6 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
+import { genreList } from '../../common/constants';
+import { useState } from 'react';
+import { getAuth } from "firebase/auth";
+// import { doc, getDoc } from "firebase/firestore";
 
 const StyledHeader = styled.header`
   display:flex;
@@ -47,7 +51,7 @@ const StyleTitle = styled.span`
 `;
 
 const StyledBtn = styled.div`
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
   width: 500px;
   text-align: center;
   display: row;
@@ -56,6 +60,35 @@ const StyledBtn = styled.div`
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [ isLoggedIn, setIsLoggedIn ] = useState(true);
+
+  // 현재 로그인한 사용자 가져오기
+  const auth = getAuth();
+  const user = auth.currentUser;
+  let nickname = "";
+  let uid = "";
+
+  // if (user !== null) {
+  //   nickname = user.nickname;
+  //   uid = user.uid;
+  //   setIsLoggedIn(true);
+  // }
+
+  // const db = getFirestore();
+  // const docRef = doc(db, "users", user.uid);
+  // const docSnap = await getDoc(docRef);
+  // if (docSnap.exists()) {
+  //   console.log("Document Data: ", docSnap.data().nickname);
+  // } else {
+  //   console.log("No such document!");
+  // }
+
+  const greet = isLoggedIn ? <h1><StyleTitle>Bookie</StyleTitle>에 오신 것을 환영합니다</h1> 
+  : <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>;
+
+  const handleButtonClick = (genre) => {
+    navigate(`/reviewPage/${genre}`);
+  };
   return (
     <div>
       <StyledHeader>
@@ -63,9 +96,9 @@ const MainPage = () => {
           <StyledLogo alt="logo" src={`${process.env.PUBLIC_URL}/public_assets/logo.png`}/>
         </StyledLogoLocation>
         <StyledSign>
-          <button onClick={() => {
+          <StyledButtonWrap onClick={() => {
             navigate(`/signin`);
-          }}>Sign In</button>
+          }}>Sign In</StyledButtonWrap>
           <button onClick={() => {
             navigate(`/signup`);
           }}>Sign Up</button>
@@ -73,30 +106,20 @@ const MainPage = () => {
       </StyledHeader>
       <main>
         <StyledHello>
-          <h1><StyleTitle>Bookie</StyleTitle>에 오신 것을 환영합니다</h1>
+          { greet }
         </StyledHello>
         <StyledSelect>
           <h2>선호하시는 장르를 선택해주세요</h2>
         </StyledSelect>
         <StyledBtn>
-          <div>
-            <button>소설</button>
-            <button>시/에세이</button>
-            <button>과학</button>
-            <button>동화</button>
-            <button>인문</button>
-          </div>
-          <div>
-            <button>가정/육아</button>
-            <button>요리</button>
-            <button>자기계발</button>
-            <button>정치/사회</button>
-            <button>역사/문화</button>
-          </div>
+          {genreList.map((genre, index) => (
+            <button key={index} onClick={() => handleButtonClick(genre)}>
+              {genre}
+            </button>
+          ))}
         </StyledBtn>
       </main>
       <footer>
-
       </footer>
     </div>
   )

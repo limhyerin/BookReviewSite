@@ -1,11 +1,14 @@
 import GlobalStyle from './GlobalStyle';
-import Router from './shared/Router'
+import ThemeProvider from './components/ThemeProvider';
+import Router from './shared/Router';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <Router />
+      <ThemeProvider>
+        <GlobalStyle />
+        <Router />
+      </ThemeProvider>
     </>
   );
 }
