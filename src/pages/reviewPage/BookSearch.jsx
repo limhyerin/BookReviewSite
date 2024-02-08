@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function BookSearch() {
+function BookSearch({ selectedBook, setSelectedBook, books, setBooks }) {
   const [query, setQuery] = useState('');
-  const [books, setBooks] = useState([]);
 
   const searchBooks = async () => {
     try {
@@ -18,12 +17,16 @@ function BookSearch() {
           // 네이버 책 검색 API에 필요한 인증 헤더를 추가합니다.
         }
       });
-
+      console.log('books', response.data.items);
       setBooks(response.data.items);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+
+  useEffect(() => {
+    console.log(selectedBook);
+  }, [selectedBook]);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
@@ -35,15 +38,21 @@ function BookSearch() {
   };
 
   return (
-    <div>
+    <div style={{ width: 400, margin: '0 auto' }}>
       <form onSubmit={handleSubmit}>
         <input type="text" value={query} onChange={handleInputChange} />
         <button type="submit">Search</button>
       </form>
-      <ul>
+      <ul style={{ display: 'flex', width: '100%', flexWrap: 'wrap', gap: '10px' }}>
         {books.map((book, index) => (
-          <li key={index}>
-            <img src={book.image} alt={book.title} />
+          <li
+            key={index}
+            onClick={() => {
+              setSelectedBook(book);
+            }}
+            style={{ width: '90px', cursor: 'pointer' }}
+          >
+            <img style={{ width: '100%', height: '150px' }} src={book.image} alt={book.title} />
             <p>{book.title}</p>
             <p>{book.author}</p>
           </li>
