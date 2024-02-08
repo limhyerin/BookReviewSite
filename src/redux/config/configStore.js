@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { combineReducers } from 'redux';
-
-const rootReducer = combineReducers({});
+import reviewsReducer from '../modules/reviewsReducer';
+const rootReducer = combineReducers({ reviewsReducer });
 const store = createStore(rootReducer);
 
 export default store;
