@@ -7,15 +7,26 @@ import ReviewPage from '../pages/reviewPage/ReviewPage';
 import SignInPage from '../pages/signInPage/SignInPage';
 import SignUpPage from '../pages/signUpPage/SignUpPage';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+import { auth, db } from '../firebase/firebase';
 import Layout from '../pages/layout/Layout';
+import { doc, getDoc } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '../redux/modules/authReducer';
 
 const Router = () => {
   const [authState, setAuthState] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       setAuthState(user);
-      console.log('user', user);
+      if (user) {
+        const d = await getDoc(doc(db, 'users', user.uid));
+        console.log(d.data());
+        dispatch(setAuth(d.data()));
+        sessionStorage.setItem('accessToken', JSON.stringify(user.accessToken));
+      } else {
+        sessionStorage.removeItem('accessToken');
+      }
     });
   }, []);
 

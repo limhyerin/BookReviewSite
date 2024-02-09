@@ -1,21 +1,22 @@
-import { GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+import { GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { auth } from '../../firebase/firebase';
+import { auth, db } from '../../firebase/firebase';
 import CustomButton from '../../components/CustomButton';
 import CustomModal from '../../components/CustomModal';
+import { useNavigate } from 'react-router-dom';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const SignInWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 100%; */
   height: 100%;
 `;
 const SignInForm = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
   padding: 4rem;
   border: 1px solid black;
@@ -41,14 +42,14 @@ const StyledButtonBox = styled.div`
 `;
 const SocialSignInBox = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
 `;
 const SocialIcon = styled.button`
-  width: 100px;
-  height: 100px;
-  border: none;
-  border-radius: 50%;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
 `;
 const SignInPage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -56,34 +57,67 @@ const SignInPage = () => {
     password: ''
   });
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
   const onChangeUserInfo = (event) => {
     const { name, value } = event.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
   };
+
+  // auth.getUsers().then((i) => console.log(i));
+
   const onSignIn = async (event) => {
     event.preventDefault();
     const { userId, password } = userInfo;
     try {
       await signInWithEmailAndPassword(auth, userId, password);
+      navigate('/');
     } catch (error) {
       setIsOpen(true);
       console.error(error);
     }
   };
-  const onClickGoogleSignIn = async () => {
+  const onClickGoogleSignIn = async (event) => {
+    event.preventDefault();
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const d = await getDoc(doc(db, 'users', result.user.uid));
+      if (d.data()) {
+        navigate('/');
+      } else {
+        const signUpData = {
+          userId: result.user.providerData[0].email,
+          password: '',
+          nickname: result.user.providerData[0].displayName,
+          profile: '',
+          uid: result.user.uid
+        };
+        await setDoc(doc(db, 'users', result.user.uid), signUpData);
+        navigate('/');
+      }
     } catch (error) {
       console.error(error);
     }
   };
-  const onClickGithubSignIn = async () => {
+  const onClickGithubSignIn = async (event) => {
+    event.preventDefault();
     try {
       const provider = new GithubAuthProvider();
-      const result = await signInWithRedirect(auth, provider);
-      console.log(result);
+      const result = await signInWithPopup(auth, provider);
+      const d = await getDoc(doc(db, 'users', result.user.uid));
+      if (d.data()) {
+        navigate('/');
+      } else {
+        const signUpData = {
+          userId: result.user.providerData[0].email,
+          password: '',
+          nickname: result.user.providerData[0].displayName,
+          profile: '',
+          uid: result.user.uid
+        };
+        await setDoc(doc(db, 'users', result.user.uid), signUpData);
+        navigate('/');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -119,9 +153,13 @@ const SignInPage = () => {
             <CustomButton text={'로그인'} />
           </StyledButtonBox>
           <SocialSignInBox>
-            <SocialIcon onClick={onClickGoogleSignIn}>Google</SocialIcon>
-            <SocialIcon>kakao</SocialIcon>
-            <SocialIcon onClick={onClickGithubSignIn}>GitHub</SocialIcon>
+            <SocialIcon type="button" onClick={onClickGoogleSignIn}>
+              Google
+            </SocialIcon>
+            <SocialIcon type="button" onClick={onClickGithubSignIn}>
+              GitHub
+            </SocialIcon>
+            <SocialIcon type="button">kakao</SocialIcon>
           </SocialSignInBox>
         </SignInForm>
       </SignInWrapper>
