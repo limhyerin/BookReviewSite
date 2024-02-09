@@ -4,15 +4,19 @@ import CustomButton from '../../components/CustomButton';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const StyledHeader = styled.header`
+  position: sticky;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
+  height: 70px;
   padding: 1.2rem;
+  background-color: white;
 `;
 
 const StyledFigure = styled(Link)`
   img {
-    width: 100px;
+    width: 150px;
   }
 `;
 
