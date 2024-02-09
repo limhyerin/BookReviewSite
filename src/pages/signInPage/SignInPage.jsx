@@ -6,15 +6,20 @@ import CustomButton from '../../components/CustomButton';
 import CustomModal from '../../components/CustomModal';
 
 const SignInWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+  height: 100%;
+`;
+const SignInForm = styled.form`
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
   margin: 0 auto;
   padding: 4rem;
   border: 1px solid black;
   border-radius: 10px;
-`;
-const SignInForm = styled.form`
-  display: flex;
-  flex-direction: column;
 `;
 const InputBox = styled.div`
   width: 100%;
@@ -113,12 +118,12 @@ const SignInPage = () => {
           <StyledButtonBox>
             <CustomButton text={'로그인'} />
           </StyledButtonBox>
+          <SocialSignInBox>
+            <SocialIcon onClick={onClickGoogleSignIn}>Google</SocialIcon>
+            <SocialIcon>kakao</SocialIcon>
+            <SocialIcon onClick={onClickGithubSignIn}>GitHub</SocialIcon>
+          </SocialSignInBox>
         </SignInForm>
-        <SocialSignInBox>
-          <SocialIcon onClick={onClickGoogleSignIn}>Google</SocialIcon>
-          <SocialIcon>kakao</SocialIcon>
-          <SocialIcon onClick={onClickGithubSignIn}>GitHub</SocialIcon>
-        </SocialSignInBox>
       </SignInWrapper>
     </>
   );
