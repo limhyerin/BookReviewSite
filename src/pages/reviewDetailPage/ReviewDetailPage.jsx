@@ -1,5 +1,32 @@
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-const ReviewDetailUi = styled.div`
+
+const ReviewDetailPage = ({ newReviewData }) => {
+  const { id } = useParams();
+  const newReviewDetail = newReviewData.find((item) => item.id === id);
+  return (
+    <div>
+      <StyledReviewDetailUi>
+        <StyledTitleAndUbtnAndDbtn>
+          <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
+          <StyledUBtn>수정</StyledUBtn>
+          <StyledDBtn>삭제</StyledDBtn>
+        </StyledTitleAndUbtnAndDbtn>
+        <StyledLogoAndNicknameAndDate>
+          로고 {newReviewDetail.authorName} {newReviewDetail.createdAt}
+        </StyledLogoAndNicknameAndDate>
+        <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
+        <StyledReviewTags>#</StyledReviewTags>
+        <StyledBookInfo>책정보</StyledBookInfo>
+      </StyledReviewDetailUi>
+      <StyledHomeBtn>홈버튼</StyledHomeBtn>
+    </div>
+  );
+};
+
+export default ReviewDetailPage;
+
+const StyledReviewDetailUi = styled.div`
   background-color: black;
   width: 500px;
   height: 500px;
@@ -8,58 +35,37 @@ const ReviewDetailUi = styled.div`
   flex-direction: column;
   margin: 100px auto 0px auto;
 `;
-const TitleAndUbtnAndDbtn = styled.div`
+const StyledTitleAndUbtnAndDbtn = styled.div`
   width: 500px;
   height: 50px;
   background-color: blue;
 `;
-const LogoAndNicknameAndDate = styled.div`
+const StyledLogoAndNicknameAndDate = styled.div`
   width: 500px;
   height: 50px;
   background-color: purple;
 `;
-const ReviewText = styled.div`
+const StyledReviewText = styled.div`
   width: 500px;
   height: 200px;
   background-color: brown;
 `;
-const ReviewTags = styled.div`
+const StyledReviewTags = styled.div`
   width: 500px;
   height: 50px;
   background-color: yellow;
 `;
-const BookInfo = styled.div`
+const StyledBookInfo = styled.div`
   width: 500px;
   height: 150px;
   background-color: pink;
 `;
-const HomeBtn = styled.button`
+const StyledHomeBtn = styled.button`
   width: 100px;
   margin: 20px 0px 0px 650px;
 `;
-const ReviewTitle = styled.p`
+const StyledReviewTitle = styled.p`
   font-size: 12px;
 `;
-const UBtn = styled.p``;
-const DBtn = styled.p``;
-
-const ReviewDetailPage = () => {
-  return (
-    <div>
-      <ReviewDetailUi>
-        <TitleAndUbtnAndDbtn>
-          <ReviewTitle>제목</ReviewTitle>
-          <UBtn>수정</UBtn>
-          <DBtn>삭제</DBtn>
-        </TitleAndUbtnAndDbtn>
-        <LogoAndNicknameAndDate>로고 이름 날짜</LogoAndNicknameAndDate>
-        <ReviewText>텍스트</ReviewText>
-        <ReviewTags>#</ReviewTags>
-        <BookInfo>책정보</BookInfo>
-      </ReviewDetailUi>
-      <HomeBtn>홈버튼</HomeBtn>
-    </div>
-  );
-};
-
-export default ReviewDetailPage;
+const StyledUBtn = styled.p``;
+const StyledDBtn = styled.p``;
