@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
+import { auth, db } from '../../firebase/firebase';
 import CustomButton from '../../components/CustomButton';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc } from 'firebase/firestore';
 
 const SignUpWrapper = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 4rem;
-  border: 1px solid black;
-  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
+  width: 600px;
+  margin: 0 auto;
+  padding: 4rem;
+  border: 1px solid black;
+  border-radius: 10px;
 `;
 const InputBox = styled.div`
   width: 100%;
@@ -34,23 +39,14 @@ const StyledButtonBox = styled.div`
     margin-bottom: 2rem;
   }
 `;
-const SocialSignUpBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-const SocialIcon = styled.button`
-  width: 100px;
-  height: 100px;
-  border: none;
-  border-radius: 50%;
-`;
 const SignUpPage = () => {
   const [userInfo, setUserInfo] = useState({
     userId: '',
     password: '',
-    nickname: ''
+    nickname: '',
+    profile: ''
   });
+
   const navigate = useNavigate();
   const onChangeUserInfo = (event) => {
     const { name, value } = event.target;
@@ -60,9 +56,12 @@ const SignUpPage = () => {
     event.preventDefault();
     const { userId, password } = userInfo;
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, userId, password);
-      navigate('review');
-      console.log(userCredential);
+      const { user } = await createUserWithEmailAndPassword(auth, userId, password);
+      console.log(user.uid);
+      const signUpData = doc(db, 'users', user.uid);
+      await setDoc(signUpData, { ...userInfo, uid: user.uid });
+
+      navigate('/review');
     } catch (error) {
       console.error(error);
     }
@@ -104,11 +103,6 @@ const SignUpPage = () => {
             <CustomButton text={'가입하기'} />
           </StyledButtonBox>
         </SignUpForm>
-        <SocialSignUpBox>
-          <SocialIcon>Google</SocialIcon>
-          <SocialIcon>kakao</SocialIcon>
-          <SocialIcon>GitHub</SocialIcon>
-        </SocialSignUpBox>
       </SignUpWrapper>
     </>
   );

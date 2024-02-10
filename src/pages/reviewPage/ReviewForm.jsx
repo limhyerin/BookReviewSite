@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { addReview } from '../../redux/modules/reviewsReducer';
 import { genreList } from '../../common/constants';
 import { auth } from '../../firebase/firebase';
+import { StyledReviewFormContainer } from './ReviewPage.styled';
+import CustomButton from '../../components/CustomButton';
 
-const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
+const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { addData } = useFirestore('book-reviews');
@@ -18,7 +20,12 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   const onChangeContent = (e) => {
     setContent(e.target.value);
   };
-  const addReviewHandler = async () => {
+  const addReviewHandler = async (e) => {
+    e.preventDefault();
+
+    if (title === '' || content === '') {
+      return;
+    }
     const newReviewData = {
       title: title,
       content: content,
@@ -33,6 +40,7 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
     newReviewData.id = docId;
     dispatch(addReview(newReviewData));
     setIsModalOpen(false);
+    setSelectedBook('');
   };
 
   // Select 요소 변경 핸들러
@@ -42,14 +50,14 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex' }}>
-        <div>
-          <img style={{ width: '100%', height: '150px' }} src={selectedBook.image} alt={selectedBook.title} />
-          <p>{selectedBook.title}</p>
-          <p>{selectedBook.author}</p>
+    <StyledReviewFormContainer>
+      <div className="selectWrap">
+        <div className="imgWrap">
+          <img src={selectedBook.image} alt={selectedBook.title} />
+          <p>제목:{selectedBook.title}</p>
+          <p>저자:{selectedBook.author}</p>
         </div>
-        <select name="category" onChange={onSelectChange}>
+        <select className="category" name="category" onChange={onSelectChange}>
           {genreList.map((genre) => {
             return (
               <option key={genre} value={genre}>
@@ -59,7 +67,11 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
           })}
         </select>
       </div>
-      <form>
+      <form
+        onChange={(e) => {
+          e.preventDefault();
+        }}
+      >
         <input type="text" value={title} onChange={onChangeTitle} name="title" placeholder="제목을 입력해 주세요" />
         <textarea
           type="text"
@@ -68,15 +80,15 @@ const ReviewForm = ({ selectedBook, setIsModalOpen }) => {
           name="content"
           placeholder="내용을 입력해 주세요"
         />
-        <input
-          type="button"
-          value="확인"
-          onClick={() => {
-            addReviewHandler();
+        <CustomButton
+          text="완료"
+          color="main"
+          onClick={(e) => {
+            addReviewHandler(e);
           }}
         />
       </form>
-    </div>
+    </StyledReviewFormContainer>
   );
 };
 

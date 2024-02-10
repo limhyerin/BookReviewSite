@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { StyledBookSearchContainer, StyledBookSearchList } from './ReviewPage.styled';
+import { IoSearchSharp } from 'react-icons/io5';
 
 function BookSearch({ setSelectedBook, books, setBooks }) {
   const [query, setQuery] = useState('');
@@ -13,7 +15,7 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
         },
         params: {
           query: query,
-          display: 10 // 가져올 검색 결과의 수
+          display: 8 // 가져올 검색 결과의 수
           // 네이버 책 검색 API에 필요한 인증 헤더를 추가합니다.
         }
       });
@@ -33,27 +35,35 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
   };
 
   return (
-    <div style={{ width: 400, margin: '0 auto' }}>
+    <StyledBookSearchContainer>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={query} onChange={handleInputChange} />
-        <button type="submit">Search</button>
+        <input className="searchInput" type="text" value={query} onChange={handleInputChange} />
+        <button type="submit">
+          <IoSearchSharp size="20px" />
+        </button>
       </form>
-      <ul style={{ display: 'flex', width: '100%', flexWrap: 'wrap', gap: '10px' }}>
-        {books.map((book, index) => (
-          <li
-            key={index}
-            onClick={() => {
-              setSelectedBook(book);
-            }}
-            style={{ width: '90px', cursor: 'pointer' }}
-          >
-            <img style={{ width: '100%', height: '150px' }} src={book.image} alt={book.title} />
-            <p>{book.title}</p>
-            <p>{book.author}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <StyledBookSearchList>
+        {books.length > 0 ? (
+          <ul>
+            {books.map((book, index) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setSelectedBook(book);
+                  setBooks([]);
+                }}
+              >
+                <img src={book.image} alt={book.title} />
+                <p>제목:{book.title}</p>
+                <p>저자:{book.author}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>검색 결과가 없습니다.</p>
+        )}
+      </StyledBookSearchList>
+    </StyledBookSearchContainer>
   );
 }
 
