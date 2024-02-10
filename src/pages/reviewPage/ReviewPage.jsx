@@ -36,8 +36,8 @@ const ReviewPage = () => {
   }, [loading]);
   return (
     <div>
-      ReviewPage
-      <hr />
+      {/* ReviewPage
+      <hr /> */}
       <CustomModal isOpen={isModalOpen} closeModal={closeModal}>
         {!selectedBook && (
           <BookSearch books={books} setBooks={setBooks} selectedBook={selectedBook} setSelectedBook={setSelectedBook} />

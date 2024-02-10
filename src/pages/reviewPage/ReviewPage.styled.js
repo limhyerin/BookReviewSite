@@ -9,7 +9,7 @@ export const StyledSidebar = styled.div`
   position: sticky;
   //position: -webkit-sticky;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   background-color: #fff;
   color: ${(props) => props.theme.colors.mainBlack};
   border: 1px solid ${(props) => props.theme.colors.mainGray};

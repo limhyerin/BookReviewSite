@@ -1,0 +1,61 @@
+import styled from 'styled-components';
+import bookieLogo from '../../assets/bookieLogo.jpg';
+import CustomButton from '../../components/CustomButton';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+const StyledHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1.2rem;
+`;
+
+const StyledFigure = styled(Link)`
+  img {
+    width: 100px;
+  }
+`;
+
+const StyledButtonBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 11rem;
+`;
+
+const StyledProfile = styled.div`
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 50%;
+`;
+
+const Header = ({ authState }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const navigateToSignIn = () => {
+    navigate('/signin');
+  };
+  const navigateToSignUp = () => {
+    navigate('/signup');
+  };
+  return (
+    <StyledHeader>
+      <StyledFigure to={'/'}>
+        <img src={bookieLogo} alt="logo" />
+      </StyledFigure>
+      {authState ? (
+        <StyledProfile />
+      ) : (
+        pathname.includes('sign') || (
+          <StyledButtonBox>
+            <CustomButton onClick={navigateToSignIn} text={'Sign In'} />
+            <CustomButton onClick={navigateToSignUp} text={'Sign Up'} />
+          </StyledButtonBox>
+        )
+      )}
+    </StyledHeader>
+  );
+};
+
+export default Header;
