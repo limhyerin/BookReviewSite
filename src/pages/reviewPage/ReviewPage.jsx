@@ -6,7 +6,13 @@ import ReviewForm from './ReviewForm';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { genreList } from '../../common/constants';
-import { StyledSidebar } from './ReviewPage.styled';
+import {
+  StyledReviewPageContainer,
+  StyledReviews,
+  StyledReviewsContainer,
+  StyledSidebar,
+  StyledSidebarUl
+} from './ReviewPage.styled';
 import CustomButton from '../../components/CustomButton';
 
 const ReviewPage = () => {
@@ -16,6 +22,7 @@ const ReviewPage = () => {
 
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -29,38 +36,50 @@ const ReviewPage = () => {
   }, [loading]);
   return (
     <div>
-      ReviewPage
-      <hr />
+      {/* ReviewPage
+      <hr /> */}
       <CustomModal isOpen={isModalOpen} closeModal={closeModal}>
         {!selectedBook && (
           <BookSearch books={books} setBooks={setBooks} selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
         )}
         {selectedBook && <ReviewForm setIsModalOpen={setIsModalOpen} selectedBook={selectedBook} reviews={reviews} />}
       </CustomModal>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <StyledReviewPageContainer>
         <StyledSidebar style={{ flex: 1 }}>
-          <ul>
+          <StyledSidebarUl>
             {genreList.map((genre) => (
               <li>{genre}</li>
             ))}
-          </ul>
+          </StyledSidebarUl>
         </StyledSidebar>
-        <div style={{ flex: 5, display: 'flex', justifyContent: 'space-between', flexDirection: 'column' }}>
-          <div style={{ alignSelf: 'flex-end' }}>
+        <StyledReviewsContainer>
+          <div className="pageTitleWrap">
+            <p className="pageTitle">소설</p>
             <CustomButton text="작성하기" color="main" onClick={openModal}></CustomButton>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <StyledReviews>
             {reviews.map((review) => (
-              <Link key={review.id} to={`/review-detail/${review.id}`}>
-                <div style={{ border: '1px solid #000', padding: '10px', marginRight: '10px' }}>
-                  <img style={{ width: '100px' }} src={review.image} alt={review.title} />
-                  <p>{review.title}:</p>
-                </div>
-              </Link>
+              <li>
+                <Link key={review.id} to={`/review-detail/${review.id}`}>
+                  <div className="card">
+                    <p className="userWrap">
+                      <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
+                      <span>쌀짱</span>
+                    </p>
+                    <div className="imgWrapper">
+                      <img src={review.image} alt={review.title} />
+                    </div>
+                    <p className="bookTitle">
+                      {review.bookAuthor} - {review.bookTitle}
+                    </p>
+                    <p className="title">{review.title}:</p>
+                  </div>
+                </Link>
+              </li>
             ))}
-          </div>
-        </div>
-      </div>
+          </StyledReviews>
+        </StyledReviewsContainer>
+      </StyledReviewPageContainer>
     </div>
   );
 };
