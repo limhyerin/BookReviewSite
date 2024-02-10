@@ -9,7 +9,6 @@ export const StyledSidebar = styled.div`
   // flex: 1;
   position: sticky;
   //position: -webkit-sticky;
-
   top: 100px;
   height: 500px;
   background-color: #fff;

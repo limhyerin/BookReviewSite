@@ -22,6 +22,7 @@ const ReviewPage = () => {
 
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState();
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
