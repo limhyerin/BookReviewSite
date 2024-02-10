@@ -43,7 +43,7 @@ const StyledSlideright = keyframes`
 const StyledSliderWrapper = styled.div`
   position: absolute;
   display: flex;
-  width: 2400px; /* 변경: 슬라이더 전체 너비를 총 이미지 너비의 합인 2400px로 설정 */
+  width: 9600px; /* 변경: 슬라이더 전체 너비를 총 이미지 너비의 합인 2400px로 설정 */
   animation: ${StyledSlideright} 20s linear infinite; /* 변경: 슬라이드 애니메이션을 20초 동안 선형으로 무한 반복 */
 `;
 
@@ -109,11 +109,25 @@ const StyledSlider = styled.div`
   width: 1200px; /* 변경: 슬라이드 그룹의 너비를 1200px로 설정 */
 `;
 
+// const StyledSlide = styled.div`
+//   width: 200px;
+//   height: 500px; /* 변경: 슬라이드의 높이를 박스의 높이와 동일하게 설정 */
+//   background-position: center;
+//   background-size: cover;
+// `;
+
 const StyledSlide = styled.div`
-  width: 200px;
-  height: 500px; /* 변경: 슬라이드의 높이를 박스의 높이와 동일하게 설정 */
+  width: 190px;
+  height: 280px;
+  margin-left: 50px;
   background-position: center;
   background-size: cover;
+`;
+
+const StyledSlideImg = styled(StyledSlide)`
+  width: 190px;
+  height: 280px;
+  margin-left: 50px;
 `;
 
 const StyledSlide1 = styled(StyledSlide)`
@@ -143,6 +157,7 @@ const MainPage = () => {
   // 현재 로그인한 사용자 프로필 가져오기
   const auth = getAuth();
   const user = auth.currentUser;
+  
   let checkLoggedIn = false;
   if (user !== null) {
     const displayName = user.displayName;
@@ -161,6 +176,15 @@ const MainPage = () => {
       <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
     );
 
+  // Define an array of image URLs
+  const imageUrls = [
+    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
+    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
+    'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788956608556.jpg',
+    'https://img.ridicdn.net/cover/2155023408/xxlarge',
+    'https://image.aladin.co.kr/product/33029/76/cover500/e362532114_1.jpg'
+  ];
+
   return (
     <>
         <StyledHello>
@@ -176,20 +200,14 @@ const MainPage = () => {
           <StyledBox>
             <StyledSliderWrapper>
               <StyledSlider>
-                <StyledSlide1 />
-                <StyledSlide2 />
-                <StyledSlide3 />
-                <StyledSlide1 />
-                <StyledSlide2 />
-                <StyledSlide3 />
+              {imageUrls.map((url, index) => (
+                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
+              ))}
               </StyledSlider>
               <StyledSlider>
-                <StyledSlide1 />
-                <StyledSlide2 />
-                <StyledSlide3 />
-                <StyledSlide1 />
-                <StyledSlide2 />
-                <StyledSlide3 />
+              {imageUrls.map((url, index) => (
+                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
+              ))}
               </StyledSlider>
             </StyledSliderWrapper>
           </StyledBox>
