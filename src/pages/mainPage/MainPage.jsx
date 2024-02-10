@@ -14,7 +14,7 @@ const StyledHello = styled.div`
   font-size: 50px;
   font-weight: 600;
   color: #807e79;
-  margin: 50px auto auto auto;
+  margin: 50px auto 30px auto;
 `;
 
 // bookie 색상
@@ -24,11 +24,17 @@ const StyleTitle = styled.span`
 
 // review page로 이동하는 버튼
 const StyledBtn = styled.div`
+  position:sticky;
+  bottom: 40px;
   text-align: center;
   width: 800px;
   height: 50px;
-  font-size: 30px;
   margin: 30px auto auto auto;
+
+  button {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+  }
 `;
 
 // animation
@@ -100,7 +106,7 @@ const StyledBox = styled.div`
   position: relative;
   width: 1200px;
   height: 280px;
-  margin: 10px auto;
+  margin: 20px auto;
   overflow: hidden;
 `;
 
@@ -172,16 +178,24 @@ const MainPage = () => {
       <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
     );
 
+  // 로그인 여부에 따라 이동 페이지 변경
+  const pagemove = nickname ? (
+    // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
+    <CustomButton text="시작하기" color="main" onClick={() => {
+      navigate(`/review`);
+    }}></CustomButton>
+  ) : (
+    // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
+    <CustomButton text="시작하기" color="main" onClick={() => {
+      navigate(`/signin`);
+    }}></CustomButton>
+  );
+
   return (
     <>
         <StyledHello>
           { greet }
         </StyledHello>
-        <StyledBtn>
-          <CustomButton text="시작하기" color="main" onClick={() => {
-            navigate(`/review`);
-          }}></CustomButton>
-        </StyledBtn>
         <StyledContainer>
           <StyledBox>
             <StyledSliderWrapper>
@@ -212,6 +226,9 @@ const MainPage = () => {
             </StyledSliderWrapperLeft>
           </StyledBox>
         </StyledContainer>
+        <StyledBtn>
+          { pagemove }
+        </StyledBtn>
     </>
   )
 }
