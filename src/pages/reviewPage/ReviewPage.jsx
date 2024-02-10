@@ -11,6 +11,7 @@ import {
   StyledReviews,
   StyledReviewsContainer,
   StyledSidebar,
+  StyledSidebarLi,
   StyledSidebarUl
 } from './ReviewPage.styled';
 import CustomButton from '../../components/CustomButton';
@@ -22,12 +23,15 @@ const ReviewPage = () => {
 
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
-  const [selectedGenre, setSelectedGenre] = useState();
+  const [selectedGenre, setSelectedGenre] = useState('전체');
+
+  const newGenreLists = ['전체', ...genreList];
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setBooks([]);
     setIsModalOpen(false);
+    setSelectedBook(null);
   };
 
   useEffect(() => {
@@ -58,8 +62,16 @@ const ReviewPage = () => {
       <StyledReviewPageContainer>
         <StyledSidebar style={{ flex: 1 }}>
           <StyledSidebarUl>
-            {genreList.map((genre, index) => (
-              <li key={index}>{genre}</li>
+            {newGenreLists.map((genre, index) => (
+              <StyledSidebarLi
+                key={index}
+                onClick={() => {
+                  setSelectedGenre(genre);
+                }}
+                $isSelected={genre === selectedGenre}
+              >
+                {genre}
+              </StyledSidebarLi>
             ))}
           </StyledSidebarUl>
         </StyledSidebar>
@@ -69,25 +81,50 @@ const ReviewPage = () => {
             <CustomButton text="작성하기" color="main" onClick={openModal}></CustomButton>
           </div>
           <StyledReviews>
-            {reviews.map((review) => (
-              <li>
-                <Link key={review.id} to={`/review-detail/${review.id}`}>
-                  <div className="card">
-                    <p className="userWrap">
-                      <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
-                      <span>쌀짱</span>
-                    </p>
-                    <div className="imgWrapper">
-                      <img src={review.image} alt={review.title} />
-                    </div>
-                    <p className="bookTitle">
-                      {review.bookAuthor} - {review.bookTitle}
-                    </p>
-                    <p className="title">{review.title}:</p>
-                  </div>
-                </Link>
-              </li>
-            ))}
+            <ul>
+              {selectedGenre === '전체' &&
+                reviews.map((review) => (
+                  <li key={review.id}>
+                    <Link key={review.id} to={`/review-detail/${review.id}`}>
+                      <div className="card">
+                        <p className="userWrap">
+                          <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
+                          <span>{review.authorName}</span>
+                        </p>
+                        <div className="imgWrapper">
+                          <img src={review.image} alt={review.title} />
+                        </div>
+                        <p className="bookTitle">
+                          {review.bookAuthor} - {review.bookTitle}
+                        </p>
+                        <p className="title">{review.title}</p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+
+              {reviews
+                .filter((review) => review.genre === selectedGenre)
+                .map((review) => (
+                  <li key={review.id}>
+                    <Link key={review.id} to={`/review-detail/${review.id}`}>
+                      <div className="card">
+                        <p className="userWrap">
+                          <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
+                          <span>{review.authorName}</span>
+                        </p>
+                        <div className="imgWrapper">
+                          <img src={review.image} alt={review.title} />
+                        </div>
+                        <p className="bookTitle">
+                          {review.bookAuthor} - {review.bookTitle}
+                        </p>
+                        <p className="title">{review.title}</p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
           </StyledReviews>
         </StyledReviewsContainer>
       </StyledReviewPageContainer>

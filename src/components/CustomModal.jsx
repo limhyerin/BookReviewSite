@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdOutlineCancel } from 'react-icons/md';
+import { IoClose } from 'react-icons/io5';
 
 const StyledModalContainer = styled.div`
   position: fixed;
@@ -33,7 +33,7 @@ const CustomModal = ({ isOpen, closeModal, children }) => {
     <div style={{ display: isOpen ? 'block' : 'none' }}>
       <StyledModalContainer>
         <StyledModalWrap>
-          <MdOutlineCancel color="#333" size="30px" onClick={closeModal} />
+          <IoClose color="#333" size="30px" onClick={closeModal} />
           <div>{children}</div>
         </StyledModalWrap>
       </StyledModalContainer>

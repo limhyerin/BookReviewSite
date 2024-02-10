@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import useFirestore from '../../hooks/useFirestore';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addReview } from '../../redux/modules/reviewsReducer';
 import { genreList } from '../../common/constants';
-import { auth } from '../../firebase/firebase';
 import { StyledReviewFormContainer } from './ReviewPage.styled';
 import CustomButton from '../../components/CustomButton';
+import { DropdownProvider } from '../../components/DropdownContext';
+import Dropdown from '../../components/Dropdown';
 
 const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { addData } = useFirestore('book-reviews');
   const dispatch = useDispatch();
-  const [selectedGenre, setSelectedGanre] = useState('소설');
+  const [selectedGenre, setSelectedGenre] = useState('소설');
+  const { userInfo } = useSelector((state) => state.authReducer);
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -34,7 +36,8 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
       bookTitle: selectedBook.title,
       createdAt: new Date(),
       genre: selectedGenre,
-      author: auth.currentUser ? auth.currentUser.uid : ''
+      author: userInfo ? userInfo.uid : '',
+      authorName: userInfo ? userInfo.nickname : ''
     };
     const docId = await addData(newReviewData);
     newReviewData.id = docId;
@@ -44,10 +47,10 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   };
 
   // Select 요소 변경 핸들러
-  const onSelectChange = (e) => {
-    const selectedValue = e.target.value;
-    setSelectedGanre(selectedValue);
-  };
+  // const onSelectChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   setSelectedGanre(selectedValue);
+  // };
 
   return (
     <StyledReviewFormContainer>
@@ -57,7 +60,13 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
           <p>제목:{selectedBook.title}</p>
           <p>저자:{selectedBook.author}</p>
         </div>
-        <select className="category" name="category" onChange={onSelectChange}>
+        <DropdownProvider>
+          <div>
+            {/* <h3>Dropdown Item</h3> */}
+            <Dropdown setSelectedItem={setSelectedGenre} items={genreList} />
+          </div>
+        </DropdownProvider>
+        {/* <select className="category" name="category" onChange={onSelectChange}>
           {genreList.map((genre) => {
             return (
               <option key={genre} value={genre}>
@@ -65,7 +74,7 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
               </option>
             );
           })}
-        </select>
+        </select> */}
       </div>
       <form
         onChange={(e) => {
