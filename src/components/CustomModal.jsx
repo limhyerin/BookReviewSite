@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MdOutlineCancel } from 'react-icons/md';
 
 const StyledModalContainer = styled.div`
   position: fixed;
@@ -8,6 +9,7 @@ const StyledModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.35);
+  z-index: 1000;
 `;
 const StyledModalWrap = styled.div`
   position: absolute;
@@ -20,6 +22,10 @@ const StyledModalWrap = styled.div`
   overflow-y: auto;
   background-color: white;
   padding: 20px;
+  border-radius: 20px;
+  border: 1px solid ${(props) => props.theme.colors.mainGray};
+  text-align: right;
+  cursor: pointer;
 `;
 
 const CustomModal = ({ isOpen, closeModal, children }) => {
@@ -27,8 +33,8 @@ const CustomModal = ({ isOpen, closeModal, children }) => {
     <div style={{ display: isOpen ? 'block' : 'none' }}>
       <StyledModalContainer>
         <StyledModalWrap>
+          <MdOutlineCancel color="#333" size="30px" onClick={closeModal} />
           <div>{children}</div>
-          <button onClick={closeModal}>Close</button>
         </StyledModalWrap>
       </StyledModalContainer>
     </div>

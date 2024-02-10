@@ -25,7 +25,10 @@ const ReviewPage = () => {
   const [selectedGenre, setSelectedGenre] = useState();
 
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => {
+    setBooks([]);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (loading) {
@@ -34,6 +37,7 @@ const ReviewPage = () => {
       console.log('done');
     }
   }, [loading]);
+
   return (
     <div>
       {/* ReviewPage
@@ -42,13 +46,20 @@ const ReviewPage = () => {
         {!selectedBook && (
           <BookSearch books={books} setBooks={setBooks} selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
         )}
-        {selectedBook && <ReviewForm setIsModalOpen={setIsModalOpen} selectedBook={selectedBook} reviews={reviews} />}
+        {selectedBook && (
+          <ReviewForm
+            setSelectedBook={setSelectedBook}
+            setIsModalOpen={setIsModalOpen}
+            selectedBook={selectedBook}
+            reviews={reviews}
+          />
+        )}
       </CustomModal>
       <StyledReviewPageContainer>
         <StyledSidebar style={{ flex: 1 }}>
           <StyledSidebarUl>
-            {genreList.map((genre) => (
-              <li>{genre}</li>
+            {genreList.map((genre, index) => (
+              <li key={index}>{genre}</li>
             ))}
           </StyledSidebarUl>
         </StyledSidebar>
