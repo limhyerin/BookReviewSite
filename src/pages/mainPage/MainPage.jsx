@@ -12,6 +12,8 @@ const StyledHello = styled.div`
   width: 800px;
   height: 50px;
   font-size: 50px;
+  font-weight: 600;
+  color: #807e79;
   margin: 50px auto auto auto;
 `;
 
