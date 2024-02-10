@@ -4,20 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
 import { getAuth } from "firebase/auth";
 import { db } from '../../firebase/firebase';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
-// greeting
-// 인사문구
+// greeting : 인사문구 css
 const StyledHello = styled.div`
   text-align: center;
   width: 800px;
   height: 50px;
   font-size: 50px;
   margin: 50px auto auto auto;
-
 `;
 
-// bookie 인사말 색상
+// bookie 색상
 const StyleTitle = styled.span`
   color: #8abd7a;
 `;
@@ -38,33 +36,34 @@ const StyledSlideright = keyframes`
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-1200px); /* 변경: X축으로 -1200px만큼 이동하여 왼쪽으로 슬라이드 */
-  }
-`;
-// 왼쪽에서 오른쪽 방향 애니메이션
-const StyledSlideLeft = keyframes`
-  0% {
     transform: translateX(-1200px);
-  }
-  100% {
-    transform: translateX(0); /* 변경: X축으로 -1200px만큼 이동하여 왼쪽으로 슬라이드 */
   }
 `;
 
 const StyledSliderWrapper = styled.div`
   position: absolute;
   display: flex;
-  width: 2400px; /* 변경: 슬라이더 전체 너비를 총 이미지 너비의 합인 2400px로 설정 */
-  animation: ${StyledSlideright} 11s linear infinite; /* 변경: 슬라이드 애니메이션을 20초 동안 선형으로 무한 반복 */
+  width: 2400px;
+  animation: ${StyledSlideright} 11s linear infinite;
 `;
 
+// 왼쪽에서 오른쪽 방향 애니메이션
+const StyledSlideLeft = keyframes`
+  0% {
+    transform: translateX(-1200px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
 const StyledSliderWrapperLeft = styled.div`
   position: absolute;
   display: flex;
-  width: 2400px; /* 변경: 슬라이더 전체 너비를 총 이미지 너비의 합인 2400px로 설정 */
-  animation: ${StyledSlideLeft} 11s linear infinite; /* 변경: 슬라이드 애니메이션을 20초 동안 선형으로 무한 반복 */
+  width: 2400px;
+  animation: ${StyledSlideLeft} 11s linear infinite;
 `;
 
+// 전체 좌우 흐림 효과 적용
 const StyledContainer = styled.div`
   position: relative;
   width: 1200px;
@@ -106,7 +105,7 @@ const StyledBox = styled.div`
 const StyledSlider = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 1200px; /* 변경: 슬라이드 그룹의 너비를 1200px로 설정 */
+  width: 1200px;
 `;
 
 const StyledSlide = styled.div`
@@ -123,7 +122,7 @@ const StyledSlideImg = styled(StyledSlide)`
   margin-left: 50px;
 `;
 
-  // Define an array of image URLs
+  // top : 이미지 url 목록
   const imageUrlsTop = [
     'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
     'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
@@ -132,7 +131,7 @@ const StyledSlideImg = styled(StyledSlide)`
     'https://image.yes24.com/Goods/123318244/XL'
   ];
 
-  // Define an array of image URLs
+  // bottom : 이미지 url 목록
   const imageUrlsBottom = [
     'https://image.yes24.com/goods/123451481/XL',
     'https://image.yes24.com/Goods/118040295/XL',
@@ -144,10 +143,10 @@ const StyledSlideImg = styled(StyledSlide)`
 const MainPage = () => {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
+
   useEffect(() => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
-
     const fetchNickname = async () => {
       if (currentUser) {
         try {
@@ -161,10 +160,10 @@ const MainPage = () => {
         }
       }
     };
-
     fetchNickname();
   }, []);
 
+  // 로그인 여부에 따라 문구 변경
   const greet = nickname ? (
       <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>
     ) : (
@@ -176,7 +175,6 @@ const MainPage = () => {
         <StyledHello>
           { greet }
         </StyledHello>
-
         <StyledBtn>
           <CustomButton text="시작하기" color="main" onClick={() => {
             navigate(`/review`);
