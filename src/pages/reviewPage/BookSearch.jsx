@@ -19,6 +19,7 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
           // 네이버 책 검색 API에 필요한 인증 헤더를 추가합니다.
         }
       });
+      console.log('books', response.data.items);
       setBooks(response.data.items);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -37,8 +38,14 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
   return (
     <StyledBookSearchContainer>
       <form onSubmit={handleSubmit}>
-        <input className="searchInput" type="text" value={query} onChange={handleInputChange} />
-        <button type="submit">
+        <input
+          placeholder="찾을 도서를 입력해 주세요."
+          className="searchInput"
+          type="text"
+          value={query}
+          onChange={handleInputChange}
+        />
+        <button type="submit" className="search_icon">
           <IoSearchSharp size="20px" />
         </button>
       </form>
