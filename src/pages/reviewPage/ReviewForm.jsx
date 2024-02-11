@@ -3,17 +3,17 @@ import useFirestore from '../../hooks/useFirestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReview } from '../../redux/modules/reviewsReducer';
 import { genreList } from '../../common/constants';
-import { StyledReviewFormContainer } from './ReviewPage.styled';
 import CustomButton from '../../components/CustomButton';
 import { DropdownProvider } from '../../components/DropdownContext';
 import Dropdown from '../../components/Dropdown';
+import styled from 'styled-components';
 
 const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { addData } = useFirestore('book-reviews');
   const dispatch = useDispatch();
-  const [selectedGenre, setSelectedGenre] = useState('소설');
+  const [selectedGenre, setSelectedGenre] = useState('기타');
   const { userInfo } = useSelector((state) => state.authReducer);
 
   const onChangeTitle = (e) => {
@@ -46,12 +46,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
     setSelectedBook('');
   };
 
-  // Select 요소 변경 핸들러
-  // const onSelectChange = (e) => {
-  //   const selectedValue = e.target.value;
-  //   setSelectedGanre(selectedValue);
-  // };
-
   return (
     <StyledReviewFormContainer>
       <div className="selectWrap">
@@ -66,15 +60,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
             <Dropdown setSelectedItem={setSelectedGenre} items={genreList} />
           </div>
         </DropdownProvider>
-        {/* <select className="category" name="category" onChange={onSelectChange}>
-          {genreList.map((genre) => {
-            return (
-              <option key={genre} value={genre}>
-                {genre}
-              </option>
-            );
-          })}
-        </select> */}
       </div>
       <form
         onChange={(e) => {
@@ -102,3 +87,48 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
 };
 
 export default ReviewForm;
+
+const StyledReviewFormContainer = styled.div`
+  width: 400px;
+  .selectWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .imgWrap {
+    margin-right: 20px;
+    text-align: center;
+    img {
+      height: 150px;
+    }
+    p {
+      font-size: ${(props) => props.theme.fontSize.xs};
+    }
+    p:nth-child(1) {
+      margin-bottom: 5px;
+    }
+  }
+  .category {
+    flex: 2;
+    display: inline-block;
+  }
+  form {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    input {
+      margin-bottom: 20px;
+      height: 30px;
+    }
+    textarea {
+      margin-bottom: 20px;
+      height: 100px;
+    }
+  }
+`;

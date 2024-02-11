@@ -7,9 +7,9 @@ const StyledButtonWrap = styled.div`
     -moz-appearance: none;
     appearance: none;
     margin: 0;
-    padding: 0.5rem 1rem;
+    padding: ${(props) => (props.size === 'large' ? '1.3rem 5.5rem' : '0.5rem 1rem')};
     font-family: 'Noto Sans KR', sans-serif;
-    font-size: ${(props) => props.theme.fontSize.base};
+    font-size: ${(props) => (props.size === 'large' ? props.theme.fontSize.xl2 : props.theme.fontSize.base)};
     font-weight: 400;
     text-align: center;
     text-decoration: none;
@@ -22,7 +22,7 @@ const StyledButtonWrap = styled.div`
     color: ${(props) => (props.color === 'main' ? 'black' : 'white')};
     cursor: pointer;
     background-color: ${(props) => (props.color === 'main' ? props.theme.colors.main : props.theme.colors.mainBlack)};
-    border-radius: ${(props) => (props.radius === 'circle' ? '20px' : '5px')};
+    border-radius: ${(props) => (props.radius === 'circle' ? '9999px' : '5px')};
   }
 
   button:active,
@@ -32,9 +32,9 @@ const StyledButtonWrap = styled.div`
     outline: 0;
   }
 `;
-const CustomButton = ({ onClick, color, radius, text }) => {
+const CustomButton = ({ onClick, color, radius, text, size }) => {
   return (
-    <StyledButtonWrap onClick={onClick} color={color} radius={radius}>
+    <StyledButtonWrap onClick={onClick} color={color} radius={radius} size={size}>
       <button>{text}</button>
     </StyledButtonWrap>
   );
