@@ -1,63 +1,67 @@
-import styled from 'styled-components';
-const ReviewDetailUi = styled.div`
-  background-color: black;
-  width: 500px;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 100px auto 0px auto;
-`;
-const TitleAndUbtnAndDbtn = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: blue;
-`;
-const LogoAndNicknameAndDate = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: purple;
-`;
-const ReviewText = styled.div`
-  width: 500px;
-  height: 200px;
-  background-color: brown;
-`;
-const ReviewTags = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: yellow;
-`;
-const BookInfo = styled.div`
-  width: 500px;
-  height: 150px;
-  background-color: pink;
-`;
-const HomeBtn = styled.button`
-  width: 100px;
-  margin: 20px 0px 0px 650px;
-`;
-const ReviewTitle = styled.p`
-  font-size: 12px;
-`;
-const UBtn = styled.p``;
-const DBtn = styled.p``;
+import {
+  StyledReviewDetailUi,
+  StyledTitleAndUbtnAndDbtn,
+  StyledReviewTitle,
+  StyledUBtn,
+  StyledDBtn,
+  StyledLogoAndNicknameAndDate,
+  StyledReviewText,
+  StyledReviewTags,
+  StyledBookInfo,
+  StyledBtnWrapper,
+  StyledReviewBox
+} from './ReviewDetailPageStyled.js';
+import CustomButton from '../../components/CustomButton';
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const ReviewDetailPage = () => {
+const ReviewDetailPage = ({ newReviewData }) => {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const newReviewDetail = 1; //newReviewData 데이터 연결 지금연결하면 오류발생
+  const [update, setUpdate] = useState(false);
+  const [inputValue, setInputValue] = useState(newReviewDetail.content);
+
+  const uBtnHandler = () => (update ? TextAreaUBtnHandler() : setUpdate(!update));
+
+  const TextAreaUBtnHandler = () => {
+    if (window.confirm('이대로 수정하시겠습니까?')) {
+      if (newReviewDetail.content === inputValue) {
+        alert('변경된 내용이 없습니다.');
+      }
+      setUpdate(!update);
+      alert('수정되었습니다.');
+      navigate('/review');
+    }
+  };
+  const uDtnHandler = () => navigate('/review');
+
   return (
     <div>
-      <ReviewDetailUi>
-        <TitleAndUbtnAndDbtn>
-          <ReviewTitle>제목</ReviewTitle>
-          <UBtn>수정</UBtn>
-          <DBtn>삭제</DBtn>
-        </TitleAndUbtnAndDbtn>
-        <LogoAndNicknameAndDate>로고 이름 날짜</LogoAndNicknameAndDate>
-        <ReviewText>텍스트</ReviewText>
-        <ReviewTags>#</ReviewTags>
-        <BookInfo>책정보</BookInfo>
-      </ReviewDetailUi>
-      <HomeBtn>홈버튼</HomeBtn>
+      <StyledReviewDetailUi>
+        <StyledReviewBox>
+          <StyledTitleAndUbtnAndDbtn>
+            <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
+            <StyledBtnWrapper>
+              <StyledUBtn text="수정" color="main" onClick={uBtnHandler}></StyledUBtn>
+              <StyledDBtn text="삭제" color="main" onClick={uDtnHandler}></StyledDBtn>
+            </StyledBtnWrapper>
+          </StyledTitleAndUbtnAndDbtn>
+          <StyledLogoAndNicknameAndDate>
+            로고 {newReviewDetail.authorName} {newReviewDetail.createdAt}
+          </StyledLogoAndNicknameAndDate>
+          <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
+          <StyledReviewTags>#</StyledReviewTags>
+          <StyledBookInfo>책정보</StyledBookInfo>
+        </StyledReviewBox>
+        <CustomButton
+          text="뒤로가기"
+          color="main"
+          onClick={() => {
+            navigate(`/review`);
+          }}
+        ></CustomButton>
+      </StyledReviewDetailUi>
     </div>
   );
 };
