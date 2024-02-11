@@ -30,11 +30,6 @@ const StyledBtn = styled.div`
   width: 800px;
   height: 50px;
   margin: 30px auto auto auto;
-
-  button {
-    font-size: 1rem;
-    padding: 1rem 2rem;
-  }
 `;
 
 // animation
@@ -181,12 +176,12 @@ const MainPage = () => {
   // 로그인 여부에 따라 이동 페이지 변경
   const pagemove = nickname ? (
     // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
-    <CustomButton text="시작하기" color="main" onClick={() => {
+    <CustomButton text="시작하기" size="large" radius="circle"  color="main" onClick={() => {
       navigate(`/review`);
     }}></CustomButton>
   ) : (
     // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
-    <CustomButton text="시작하기" color="main" onClick={() => {
+    <CustomButton text="시작하기" size="large" radius="circle" color="main" onClick={() => {
       navigate(`/signin`);
     }}></CustomButton>
   );
