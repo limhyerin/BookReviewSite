@@ -1,9 +1,23 @@
+import {
+  StyledReviewDetailUi,
+  StyledTitleAndUbtnAndDbtn,
+  StyledReviewTitle,
+  StyledUBtn,
+  StyledDBtn,
+  StyledLogoAndNicknameAndDate,
+  StyledReviewText,
+  StyledReviewTags,
+  StyledBookInfo,
+  StyledHomeBtn
+} from './ReviewDetailPageStyled.js';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 const ReviewDetailPage = ({ newReviewData }) => {
+  //newReviewData 데이터 연결
   const { id } = useParams();
   const newReviewDetail = newReviewData.find((item) => item.id === id);
+  const [update, setUpdate] = useState(false);
   return (
     <div>
       <StyledReviewDetailUi>
@@ -25,47 +39,3 @@ const ReviewDetailPage = ({ newReviewData }) => {
 };
 
 export default ReviewDetailPage;
-
-const StyledReviewDetailUi = styled.div`
-  background-color: black;
-  width: 500px;
-  height: 500px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 100px auto 0px auto;
-`;
-const StyledTitleAndUbtnAndDbtn = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: blue;
-`;
-const StyledLogoAndNicknameAndDate = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: purple;
-`;
-const StyledReviewText = styled.div`
-  width: 500px;
-  height: 200px;
-  background-color: brown;
-`;
-const StyledReviewTags = styled.div`
-  width: 500px;
-  height: 50px;
-  background-color: yellow;
-`;
-const StyledBookInfo = styled.div`
-  width: 500px;
-  height: 150px;
-  background-color: pink;
-`;
-const StyledHomeBtn = styled.button`
-  width: 100px;
-  margin: 20px 0px 0px 650px;
-`;
-const StyledReviewTitle = styled.p`
-  font-size: 12px;
-`;
-const StyledUBtn = styled.p``;
-const StyledDBtn = styled.p``;
