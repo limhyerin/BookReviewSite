@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from '../../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -146,35 +146,34 @@ const StyledSlideImg = styled(StyledSlide)`
 const MainPage = () => {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
-    const currentUser = auth.currentUser;
-    const fetchNickname = async () => {
-      if (currentUser) {
-        try {
-          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-          const userData = userDoc.data();
-          if (userData && userData.nickname) {
-            setNickname(userData.nickname);
-          }
-        } catch (error) {
-          console.error('Error fetching nickname:', error);
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setLoggedIn(true);
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        const userData = userDoc.data();
+        if (userData && userData.nickname) {
+          setNickname(userData.nickname);
         }
+      } else {
+        setLoggedIn(false);
+        setNickname('');
       }
-    };
-    fetchNickname();
+    });
   }, []);
 
   // 로그인 여부에 따라 문구 변경
-  const greet = nickname ? (
+  const greet = loggedIn ? (
       <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>
     ) : (
       <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
     );
 
   // 로그인 여부에 따라 이동 페이지 변경
-  const pagemove = nickname ? (
+  const pagemove = loggedIn ? (
     // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
     <CustomButton text="시작하기" size="large" radius="circle"  color="main" onClick={() => {
       navigate(`/review`);
