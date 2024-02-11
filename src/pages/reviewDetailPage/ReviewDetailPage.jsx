@@ -8,32 +8,60 @@ import {
   StyledReviewText,
   StyledReviewTags,
   StyledBookInfo,
-  StyledHomeBtn
+  StyledBtnWrapper,
+  StyledReviewBox
 } from './ReviewDetailPageStyled.js';
+import CustomButton from '../../components/CustomButton';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ReviewDetailPage = ({ newReviewData }) => {
-  //newReviewData 데이터 연결
+  const navigate = useNavigate();
   const { id } = useParams();
-  const newReviewDetail = newReviewData.find((item) => item.id === id);
+  const newReviewDetail = 1; //newReviewData 데이터 연결 지금연결하면 오류발생
   const [update, setUpdate] = useState(false);
+  const [inputValue, setInputValue] = useState(newReviewDetail.content);
+
+  const uBtnHandler = () => (update ? TextAreaUBtnHandler() : setUpdate(!update));
+
+  const TextAreaUBtnHandler = () => {
+    if (window.confirm('이대로 수정하시겠습니까?')) {
+      if (newReviewDetail.content === inputValue) {
+        alert('변경된 내용이 없습니다.');
+      }
+      setUpdate(!update);
+      alert('수정되었습니다.');
+      navigate('/review');
+    }
+  };
+  const uDtnHandler = () => navigate('/review');
+
   return (
     <div>
       <StyledReviewDetailUi>
-        <StyledTitleAndUbtnAndDbtn>
-          <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
-          <StyledUBtn>수정</StyledUBtn>
-          <StyledDBtn>삭제</StyledDBtn>
-        </StyledTitleAndUbtnAndDbtn>
-        <StyledLogoAndNicknameAndDate>
-          로고 {newReviewDetail.authorName} {newReviewDetail.createdAt}
-        </StyledLogoAndNicknameAndDate>
-        <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
-        <StyledReviewTags>#</StyledReviewTags>
-        <StyledBookInfo>책정보</StyledBookInfo>
+        <StyledReviewBox>
+          <StyledTitleAndUbtnAndDbtn>
+            <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
+            <StyledBtnWrapper>
+              <StyledUBtn text="수정" color="main" onClick={uBtnHandler}></StyledUBtn>
+              <StyledDBtn text="삭제" color="main" onClick={uDtnHandler}></StyledDBtn>
+            </StyledBtnWrapper>
+          </StyledTitleAndUbtnAndDbtn>
+          <StyledLogoAndNicknameAndDate>
+            로고 {newReviewDetail.authorName} {newReviewDetail.createdAt}
+          </StyledLogoAndNicknameAndDate>
+          <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
+          <StyledReviewTags>#</StyledReviewTags>
+          <StyledBookInfo>책정보</StyledBookInfo>
+        </StyledReviewBox>
+        <CustomButton
+          text="뒤로가기"
+          color="main"
+          onClick={() => {
+            navigate(`/review`);
+          }}
+        ></CustomButton>
       </StyledReviewDetailUi>
-      <StyledHomeBtn>홈버튼</StyledHomeBtn>
     </div>
   );
 };

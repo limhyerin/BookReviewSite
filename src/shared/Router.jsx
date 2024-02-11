@@ -36,7 +36,7 @@ const Router = () => {
         <Route element={<Layout authState={authState} />}>
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/review-detail/:id" element={<ReviewDetailPage /*newReviewData={}*/ />} />
+          <Route path="/review-detail" element={<ReviewDetailPage /*newReviewData={}*/ />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
