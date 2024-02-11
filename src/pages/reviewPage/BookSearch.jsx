@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { StyledBookSearchContainer, StyledBookSearchList } from './ReviewPage.styled';
 import { IoSearchSharp } from 'react-icons/io5';
+import styled from 'styled-components';
 
 function BookSearch({ setSelectedBook, books, setBooks }) {
   const [query, setQuery] = useState('');
@@ -75,3 +75,64 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
 }
 
 export default BookSearch;
+
+const StyledBookSearchContainer = styled.div`
+  width: 400px;
+  height: 420px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
+  button {
+    background-color: transparent;
+    border: none;
+  }
+  .search_icon {
+    cursor: pointer;
+  }
+  > form {
+    // margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .searchInput {
+    margin-right: 10px;
+    width: 60%;
+    border: none;
+    border-bottom: 1px solid ${(props) => props.theme.colors.mainBlack};
+  }
+`;
+
+const StyledBookSearchList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  > ul {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    > li {
+      list-style: none;
+      width: 90px;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      > img {
+        width: 100%;
+        height: 130px;
+        margin-bottom: 10px;
+      }
+      > p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: left;
+        font-size: ${(props) => props.theme.fontSize.xs};
+        margin-bottom: 5px;
+      }
+    }
+  }
+`;

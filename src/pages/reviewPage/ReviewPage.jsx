@@ -3,18 +3,12 @@ import BookSearch from './BookSearch';
 import useFirestore from '../../hooks/useFirestore';
 import CustomModal from '../../components/CustomModal';
 import ReviewForm from './ReviewForm';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { genreList } from '../../common/constants';
-import {
-  StyledReviewPageContainer,
-  StyledReviews,
-  StyledReviewsContainer,
-  StyledSidebar,
-  StyledSidebarLi,
-  StyledSidebarUl
-} from './ReviewPage.styled';
-import CustomButton from '../../components/CustomButton';
+import CustomSidebar from './CustomSidebar';
+import ReviewsContainer from './ReviewsContainer';
+import CustomLoading from '../../components/CustomLoading';
+import styled from 'styled-components';
 
 const ReviewPage = () => {
   const reviews = useSelector((state) => state.reviewsReducer).reviews;
@@ -44,8 +38,6 @@ const ReviewPage = () => {
 
   return (
     <div>
-      {/* ReviewPage
-      <hr /> */}
       <CustomModal isOpen={isModalOpen} closeModal={closeModal}>
         {!selectedBook && (
           <BookSearch books={books} setBooks={setBooks} selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
@@ -60,76 +52,28 @@ const ReviewPage = () => {
         )}
       </CustomModal>
       <StyledReviewPageContainer>
-        <StyledSidebar style={{ flex: 1 }}>
-          <StyledSidebarUl>
-            {newGenreLists.map((genre, index) => (
-              <StyledSidebarLi
-                key={index}
-                onClick={() => {
-                  setSelectedGenre(genre);
-                }}
-                $isSelected={genre === selectedGenre}
-              >
-                {genre}
-              </StyledSidebarLi>
-            ))}
-          </StyledSidebarUl>
-        </StyledSidebar>
-        <StyledReviewsContainer>
-          <div className="pageTitleWrap">
-            <p className="pageTitle">소설</p>
-            <CustomButton text="작성하기" color="main" onClick={openModal}></CustomButton>
+        <CustomSidebar items={newGenreLists} setItem={setSelectedGenre} selectedItem={selectedGenre} />
+        {reviews.length > 0 ? (
+          <ReviewsContainer openModal={openModal} selectedGenre={selectedGenre} reviews={reviews} />
+        ) : (
+          <div className="loadingIcon">
+            <CustomLoading />
           </div>
-          <StyledReviews>
-            <ul>
-              {selectedGenre === '전체' &&
-                reviews.map((review) => (
-                  <li key={review.id}>
-                    <Link key={review.id} to={`/review-detail/${review.id}`}>
-                      <div className="card">
-                        <p className="userWrap">
-                          <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
-                          <span>{review.authorName}</span>
-                        </p>
-                        <div className="imgWrapper">
-                          <img src={review.image} alt={review.title} />
-                        </div>
-                        <p className="bookTitle">
-                          {review.bookAuthor} - {review.bookTitle}
-                        </p>
-                        <p className="title">{review.title}</p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-
-              {reviews
-                .filter((review) => review.genre === selectedGenre)
-                .map((review) => (
-                  <li key={review.id}>
-                    <Link key={review.id} to={`/review-detail/${review.id}`}>
-                      <div className="card">
-                        <p className="userWrap">
-                          <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
-                          <span>{review.authorName}</span>
-                        </p>
-                        <div className="imgWrapper">
-                          <img src={review.image} alt={review.title} />
-                        </div>
-                        <p className="bookTitle">
-                          {review.bookAuthor} - {review.bookTitle}
-                        </p>
-                        <p className="title">{review.title}</p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </StyledReviews>
-        </StyledReviewsContainer>
+        )}
       </StyledReviewPageContainer>
     </div>
   );
 };
 
 export default ReviewPage;
+
+const StyledReviewPageContainer = styled.div`
+  display: flex;
+  padding: 30px;
+  .loadingIcon {
+    flex: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;

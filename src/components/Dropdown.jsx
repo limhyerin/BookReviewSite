@@ -17,6 +17,23 @@ const StyledButton = styled.button`
   p {
     width: 100%;
   }
+  .arrow_icon {
+    position: absolute;
+    right: 5px;
+  }
+`;
+
+const StyledDropdownMenu = styled.ul`
+  width: 100px;
+  position: absolute;
+  background-color: #222;
+  text-align: center;
+  border: 1px solid #222;
+  color: #fff;
+  li {
+    padding: 5px;
+    border-bottom: 1px solid #222;
+  }
 `;
 const DropdownButton = () => {
   const { selectedItem, toggleDropdown } = useDropdown();
@@ -24,7 +41,7 @@ const DropdownButton = () => {
   return (
     <StyledButton onClick={toggleDropdown}>
       <p>{selectedItem ? selectedItem : '카테고리'}</p>
-      <IoIosArrowDown style={{ position: 'absolute', right: '10px' }} />
+      <IoIosArrowDown className="arrow_icon" />
     </StyledButton>
   );
 };
@@ -36,19 +53,10 @@ const DropdownMenu = ({ items, setSelectedItem }) => {
   }
 
   return (
-    <ul
-      style={{
-        width: '100px',
-        position: 'absolute',
-        backgroundColor: '#222',
-        textAlign: 'center',
-        border: '1px solid #000',
-        color: '#fff'
-      }}
-    >
+    <StyledDropdownMenu style={{}}>
       {items.map((item) => (
         <li
-          style={{ padding: '5px', borderBottom: '1px solid #000' }}
+          style={{}}
           onClick={() => {
             selectItem(item);
             toggleDropdown(false);
@@ -59,7 +67,7 @@ const DropdownMenu = ({ items, setSelectedItem }) => {
           {item === selectedItem ? item : item}
         </li>
       ))}
-    </ul>
+    </StyledDropdownMenu>
   );
 };
 
