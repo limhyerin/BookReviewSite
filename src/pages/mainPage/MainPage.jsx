@@ -22,10 +22,10 @@ const StyleTitle = styled.span`
   color: #8abd7a;
 `;
 
-// review page로 이동하는 버튼
+// 페이지 이동 버튼
 const StyledBtn = styled.div`
   position:sticky;
-  bottom: 40px;
+  bottom: 50px;
   text-align: center;
   width: 800px;
   height: 50px;
