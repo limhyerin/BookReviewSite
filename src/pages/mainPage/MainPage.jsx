@@ -10,16 +10,30 @@ const StyledHello = styled.div`
   width: 800px;
   height: 50px;
   font-size: 50px;
+  color: #222222;
   margin: 50px auto 30px auto;
 `;
 
-// bookie 색상
+// bookie, 닉네임 굵기 지정
 const StyleTitle = styled.span`
   font-weight: large;
+  color: #222222;
 `;
 
+// 나머지 환영 문구 굵기 지정
 const StyleGreet = styled.span`
   font-weight: normal;
+  color: #222222;
+`;
+
+// 세부설명
+const StyledExplan = styled.div`
+  text-align: center;
+  width: 800px;
+  height: 20px;
+  font-size: 20px;
+  color: #616161;
+  margin: 5px auto 5px auto;
 `;
 
 // 페이지 이동 버튼
@@ -151,7 +165,7 @@ const StyledSlideImg = styled(StyledSlide)`
     const greet = isLogged ? (
         <h1><StyleTitle>{userInfo.nickname}</StyleTitle><StyleGreet>님, 환영합니다</StyleGreet></h1>
       ) : (
-        <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
+        <h1><StyleTitle>BOOKIE</StyleTitle><StyleGreet> 에 오신 것을 환영합니다</StyleGreet></h1> 
       );
   
     // 로그인 여부에 따라 이동 페이지 변경
@@ -172,6 +186,9 @@ const StyledSlideImg = styled(StyledSlide)`
         <StyledHello>
           { greet }
         </StyledHello>
+        <StyledExplan>
+          부기와 함께하는 독서 기록
+        </StyledExplan>
         <StyledContainer>
           <StyledBox>
             <StyledSliderWrapper>
