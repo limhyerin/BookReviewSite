@@ -15,7 +15,7 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 70px;
   padding: 1.2rem;
-  background-color: #ccc;
+  background-color: #333;
 `;
 
 const StyledFigure = styled(Link)`
@@ -39,6 +39,7 @@ const StyledProfile = styled(Link)`
     border-radius: 50%;
     box-shadow: 1px 1px 1px black;
     object-fit: contain;
+    background-color: #fff;
   }
 `;
 const LogoutButton = styled.div`
@@ -80,8 +81,8 @@ const Header = () => {
       ) : (
         pathname.includes('sign') || (
           <StyledButtonBox>
-            <CustomButton onClick={navigateToSignIn} text={'Sign In'} />
-            <CustomButton onClick={navigateToSignUp} text={'Sign Up'} />
+            <CustomButton onClick={navigateToSignIn} color="main" text={'Sign In'} />
+            <CustomButton onClick={navigateToSignUp} color="main" text={'Sign Up'} />
           </StyledButtonBox>
         )
       )}
