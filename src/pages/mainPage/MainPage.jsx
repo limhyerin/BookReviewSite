@@ -151,7 +151,7 @@ const StyledSlideImg = styled(StyledSlide)`
     const greet = isLogged ? (
         <h1><StyleTitle>{userInfo.nickname}</StyleTitle><StyleGreet>님, 환영합니다</StyleGreet></h1>
       ) : (
-        <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
+        <h1><StyleTitle>BOOKIE</StyleTitle><StyleGreet> 에 오신 것을 환영합니다</StyleGreet></h1> 
       );
   
     // 로그인 여부에 따라 이동 페이지 변경
