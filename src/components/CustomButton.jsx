@@ -7,7 +7,7 @@ const StyledButtonWrap = styled.div`
     -moz-appearance: none;
     appearance: none;
     margin: 0;
-    padding: ${(props) => (props.size === 'large' ? '1.3rem 5.5rem' : '0.5rem 1rem')};
+    padding: ${(props) => (props.size === 'large' ? '1.0rem 5.5rem' : '0.5rem 1rem')};
     font-family: 'Noto Sans KR', sans-serif;
     font-size: ${(props) => (props.size === 'large' ? props.theme.fontSize.xl2 : props.theme.fontSize.base)};
     font-weight: 400;
