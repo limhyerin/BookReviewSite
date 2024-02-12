@@ -17,13 +17,11 @@ const StyledHello = styled.div`
 // bookie, 닉네임 굵기 지정
 const StyleTitle = styled.span`
   font-weight: large;
-  color: #222222;
 `;
 
 // 나머지 환영 문구 굵기 지정
 const StyleGreet = styled.span`
   font-weight: normal;
-  color: #222222;
 `;
 
 // 세부설명
