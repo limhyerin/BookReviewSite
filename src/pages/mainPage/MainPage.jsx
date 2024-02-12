@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // greeting : 인사문구 css
 const StyledHello = styled.div`
@@ -11,13 +10,16 @@ const StyledHello = styled.div`
   width: 800px;
   height: 50px;
   font-size: 50px;
-  color: #807e79;
   margin: 50px auto 30px auto;
 `;
 
 // bookie 색상
 const StyleTitle = styled.span`
-  color: #8abd7a;
+  font-weight: large;
+`;
+
+const StyleGreet = styled.span`
+  font-weight: normal;
 `;
 
 // 페이지 이동 버튼
@@ -143,24 +145,11 @@ const StyledSlideImg = styled(StyledSlide)`
 
   const MainPage = () => {
     const navigate = useNavigate();
-    const [nickname, setNickname] = useState('');
-    const isLogged = JSON.parse(sessionStorage.getItem('accessToken'));
-    const info = useSelector(({ authReducer }) => authReducer.userInfo);
-  
-    useEffect(() => {
-      const auth = getAuth();
-      onAuthStateChanged(auth, async (user) => {
-        if (user && info) {
-          setNickname(info.nickname); 
-        } else {
-          setNickname('');
-        }
-      });
-    }, [info]);
+    const {userInfo,isLogged}=useSelector(({authReducer})=>authReducer);
       
     // 로그인 여부에 따라 문구 변경
     const greet = isLogged ? (
-        <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>
+        <h1><StyleTitle>{userInfo.nickname}</StyleTitle><StyleGreet>님, 환영합니다</StyleGreet></h1>
       ) : (
         <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
       );
