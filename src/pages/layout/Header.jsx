@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import bookieLogo from '../../assets/bookieLogo.jpg';
+import bookieLogo from '../../assets/bookieLogo.png';
 import CustomButton from '../../components/CustomButton';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
-import bookieProfile from '../../assets/bookieProfile.jpg';
+import bookieProfile from '../../assets/bookieProfile.png';
 import { useSelector } from 'react-redux';
 const StyledHeader = styled.header`
   position: fixed;
@@ -15,13 +15,13 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 70px;
   padding: 1.2rem;
-  border: 1px solid black;
-  background-color: white;
+  background-color: #333;
 `;
 
 const StyledFigure = styled(Link)`
   img {
     width: 150px;
+    background-color: inherit;
   }
 `;
 
@@ -39,6 +39,7 @@ const StyledProfile = styled(Link)`
     border-radius: 50%;
     box-shadow: 1px 1px 1px black;
     object-fit: contain;
+    background-color: #fff;
   }
 `;
 const LogoutButton = styled.div`
@@ -48,9 +49,11 @@ const LogoutButton = styled.div`
     box-shadow: none;
   }
 `;
-const Header = ({ authState }) => {
+const Header = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { isLogged, userInfo } = useSelector(({ authReducer }) => authReducer);
+
   const navigateToSignIn = () => {
     navigate('/signin');
   };
@@ -61,10 +64,6 @@ const Header = ({ authState }) => {
   const onClickLogout = async () => {
     await signOut(auth);
   };
-
-  const info = useSelector(({ authReducer }) => authReducer.userInfo);
-
-  const isLogged = JSON.parse(sessionStorage.getItem('accessToken'));
   return (
     <StyledHeader>
       <StyledFigure to={'/'}>
@@ -73,7 +72,7 @@ const Header = ({ authState }) => {
       {isLogged ? (
         <div style={{ display: 'flex' }}>
           <StyledProfile to={'/mypage'}>
-            <img src={info.profile || bookieProfile} alt="profile" />
+            <img src={userInfo.profile || bookieProfile} alt="profile" />
           </StyledProfile>
           <LogoutButton>
             <CustomButton onClick={onClickLogout} text={'logout'} />
@@ -82,8 +81,8 @@ const Header = ({ authState }) => {
       ) : (
         pathname.includes('sign') || (
           <StyledButtonBox>
-            <CustomButton onClick={navigateToSignIn} text={'Sign In'} />
-            <CustomButton onClick={navigateToSignUp} text={'Sign Up'} />
+            <CustomButton onClick={navigateToSignIn} color="main" text={'Sign In'} />
+            <CustomButton onClick={navigateToSignUp} color="main" text={'Sign Up'} />
           </StyledButtonBox>
         )
       )}
