@@ -56,9 +56,7 @@ const ReviewPage = () => {
         {reviews.length > 0 ? (
           <ReviewsContainer openModal={openModal} selectedGenre={selectedGenre} reviews={reviews} />
         ) : (
-          <div className="loadingIcon">
-            <CustomLoading />
-          </div>
+          <div className="loadingIcon">{loading && <CustomLoading />}</div>
         )}
       </StyledReviewPageContainer>
     </div>
