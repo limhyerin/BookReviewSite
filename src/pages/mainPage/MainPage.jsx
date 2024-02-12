@@ -47,7 +47,7 @@ const StyledSliderWrapper = styled.div`
   position: absolute;
   display: flex;
   width: 2400px;
-  animation: ${StyledSlideright} 11s linear infinite;
+  animation: ${StyledSlideright} 12s linear infinite;
 `;
 
 // 왼쪽에서 오른쪽 방향 애니메이션
@@ -63,7 +63,7 @@ const StyledSliderWrapperLeft = styled.div`
   position: absolute;
   display: flex;
   width: 2400px;
-  animation: ${StyledSlideLeft} 11s linear infinite;
+  animation: ${StyledSlideLeft} 12s linear infinite;
 `;
 
 // 전체 좌우 흐림 효과 적용
