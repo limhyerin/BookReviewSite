@@ -36,7 +36,7 @@ export const StyledReviewText = styled.div`
 export const StyledBookInfo = styled.div`
   width: 800px;
   height: 150px;
-  border-bottom: 1px solid black;
+  display: flex;
   margin-bottom: 30px;
 `;
 export const StyledHomeBtn = styled(CustomButton)`
