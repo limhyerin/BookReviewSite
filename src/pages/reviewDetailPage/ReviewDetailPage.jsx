@@ -9,18 +9,24 @@ import {
   StyledReviewTags,
   StyledBookInfo,
   StyledBtnWrapper,
-  StyledReviewBox
+  StyledReviewBox,
+  StyledLogo,
+  StyledHomeBtn,
+  StyledBookCover
 } from './ReviewDetailPageStyled.js';
-import CustomButton from '../../components/CustomButton';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import bookieProfile from '../../assets/bookieProfile.jpg';
+import book from '../../assets/book.jpg';
 
-const ReviewDetailPage = ({ newReviewData }) => {
+const ReviewDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const newReviewDetail = 1; //newReviewData 데이터 연결 지금연결하면 오류발생
+  const reviews = useSelector((state) => state.reviewsReducer.reviews); //useSelector로 리뷰데이터 가져오기
+  const newReviewDetail = reviews.find((review) => review.id === id) || {}; // 가져온 데이터를 useParams아이디랑 매치시키기
   const [update, setUpdate] = useState(false);
-  const [inputValue, setInputValue] = useState(newReviewDetail.content);
+  const [inputValue, setInputValue] = useState(newReviewDetail.content || '');
 
   const uBtnHandler = () => (update ? TextAreaUBtnHandler() : setUpdate(!update));
 
@@ -48,19 +54,27 @@ const ReviewDetailPage = ({ newReviewData }) => {
             </StyledBtnWrapper>
           </StyledTitleAndUbtnAndDbtn>
           <StyledLogoAndNicknameAndDate>
-            로고 {newReviewDetail.authorName} {newReviewDetail.createdAt}
+            <StyledLogo>
+              <img src={bookieProfile} alt="Profile" />
+            </StyledLogo>
+            {newReviewDetail.authorName} {newReviewDetail.createdAt}
           </StyledLogoAndNicknameAndDate>
           <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
           <StyledReviewTags>#</StyledReviewTags>
-          <StyledBookInfo>책정보</StyledBookInfo>
+          <StyledBookInfo>
+            <StyledBookCover>
+              <img src={newReviewDetail.image || book} alt="Book Cover" />
+            </StyledBookCover>
+            {newReviewDetail.bookTitle} {newReviewDetail.authorName}
+          </StyledBookInfo>
         </StyledReviewBox>
-        <CustomButton
+        <StyledHomeBtn
           text="뒤로가기"
           color="main"
           onClick={() => {
             navigate(`/review`);
           }}
-        ></CustomButton>
+        ></StyledHomeBtn>
       </StyledReviewDetailUi>
     </div>
   );
