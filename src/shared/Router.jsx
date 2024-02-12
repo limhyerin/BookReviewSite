@@ -11,20 +11,20 @@ import { auth, db } from '../firebase/firebase';
 import Layout from '../pages/layout/Layout';
 import { doc, getDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '../redux/modules/authReducer';
+import { setIsLogged, setUserInfo } from '../redux/modules/authReducer';
 
 const Router = () => {
-  const [authState, setAuthState] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      setAuthState(user);
+      console.log('user', user);
       if (user) {
         const d = await getDoc(doc(db, 'users', user.uid));
-        console.log(d.data());
-        dispatch(setAuth(d.data()));
+        if (d.data()) dispatch(setIsLogged(true));
+        dispatch(setUserInfo(d.data()));
         sessionStorage.setItem('accessToken', JSON.stringify(user.accessToken));
       } else {
+        dispatch(setIsLogged(false));
         sessionStorage.removeItem('accessToken');
       }
     });
@@ -33,7 +33,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout authState={authState} />}>
+        <Route element={<Layout />}>
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/review-detail" element={<ReviewDetailPage /*newReviewData={}*/ />} />
