@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import bookieLogo from '../../assets/bookieLogo.jpg';
+import bookieLogo from '../../assets/bookieLogo.png';
 import CustomButton from '../../components/CustomButton';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
-import bookieProfile from '../../assets/bookieProfile.jpg';
+import bookieProfile from '../../assets/bookieProfile.png';
 import { useSelector } from 'react-redux';
 const StyledHeader = styled.header`
   position: fixed;
