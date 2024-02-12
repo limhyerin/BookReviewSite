@@ -22,10 +22,10 @@ const Router = () => {
         const d = await getDoc(doc(db, 'users', user.uid));
         if (d.data()) dispatch(setIsLogged(true));
         dispatch(setUserInfo(d.data()));
-        sessionStorage.setItem('accessToken', JSON.stringify(user.accessToken));
+        localStorage.setItem('isLoggedIn', true);
       } else {
         dispatch(setIsLogged(false));
-        sessionStorage.removeItem('accessToken');
+        localStorage.removeItem('isLoggedIn');
       }
     });
   }, []);

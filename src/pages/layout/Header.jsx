@@ -53,7 +53,7 @@ const Header = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isLogged, userInfo } = useSelector(({ authReducer }) => authReducer);
-
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const navigateToSignIn = () => {
     navigate('/signin');
   };
@@ -69,7 +69,7 @@ const Header = () => {
       <StyledFigure to={'/'}>
         <img src={bookieLogo} alt="logo" />
       </StyledFigure>
-      {isLogged ? (
+      {isLoggedIn && (
         <div style={{ display: 'flex' }}>
           <StyledProfile to={'/mypage'}>
             <img src={userInfo.profile || bookieProfile} alt="profile" />
@@ -78,13 +78,12 @@ const Header = () => {
             <CustomButton onClick={onClickLogout} text={'logout'} />
           </LogoutButton>
         </div>
-      ) : (
-        pathname.includes('sign') || (
-          <StyledButtonBox>
-            <CustomButton onClick={navigateToSignIn} color="main" text={'Sign In'} />
-            <CustomButton onClick={navigateToSignUp} color="main" text={'Sign Up'} />
-          </StyledButtonBox>
-        )
+      )}
+      {!pathname.includes('sign') && !isLoggedIn && (
+        <StyledButtonBox>
+          <CustomButton onClick={navigateToSignIn} color="main" text={'Sign In'} />
+          <CustomButton onClick={navigateToSignUp} color="main" text={'Sign Up'} />
+        </StyledButtonBox>
       )}
     </StyledHeader>
   );
