@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
-import { getAuth } from "firebase/auth";
-import { db } from '../../firebase/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // greeting : 인사문구 css
 const StyledHello = styled.div`
@@ -14,7 +13,7 @@ const StyledHello = styled.div`
   font-size: 50px;
   font-weight: 600;
   color: #807e79;
-  margin: 50px auto auto auto;
+  margin: 50px auto 30px auto;
 `;
 
 // bookie 색상
@@ -22,12 +21,13 @@ const StyleTitle = styled.span`
   color: #8abd7a;
 `;
 
-// review page로 이동하는 버튼
+// 페이지 이동 버튼
 const StyledBtn = styled.div`
+  position:sticky;
+  bottom: 50px;
   text-align: center;
   width: 800px;
   height: 50px;
-  font-size: 30px;
   margin: 30px auto auto auto;
 `;
 
@@ -100,7 +100,7 @@ const StyledBox = styled.div`
   position: relative;
   width: 1200px;
   height: 280px;
-  margin: 10px auto;
+  margin: 20px auto;
   overflow: hidden;
 `;
 
@@ -142,34 +142,41 @@ const StyledSlideImg = styled(StyledSlide)`
     'https://image.yes24.com/goods/124027690/XL'
   ];
 
-const MainPage = () => {
-  const navigate = useNavigate();
-  const [nickname, setNickname] = useState('');
-
-  useEffect(() => {
-    const auth = getAuth();
-    const currentUser = auth.currentUser;
-    const fetchNickname = async () => {
-      if (currentUser) {
-        try {
-          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-          const userData = userDoc.data();
-          if (userData && userData.nickname) {
-            setNickname(userData.nickname);
-          }
-        } catch (error) {
-          console.error('Error fetching nickname:', error);
+  const MainPage = () => {
+    const navigate = useNavigate();
+    const [nickname, setNickname] = useState('');
+    const isLogged = JSON.parse(sessionStorage.getItem('accessToken'));
+    const info = useSelector(({ authReducer }) => authReducer.userInfo);
+  
+    useEffect(() => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, async (user) => {
+        if (user && info) {
+          setNickname(info.nickname); 
+        } else {
+          setNickname('');
         }
-      }
-    };
-    fetchNickname();
-  }, []);
-
-  // 로그인 여부에 따라 문구 변경
-  const greet = nickname ? (
-      <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>
+      });
+    }, [info]);
+      
+    // 로그인 여부에 따라 문구 변경
+    const greet = isLogged ? (
+        <h1><StyleTitle>{nickname}</StyleTitle>님, 환영합니다</h1>
+      ) : (
+        <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
+      );
+  
+    // 로그인 여부에 따라 이동 페이지 변경
+    const pagemove = isLogged ? (
+      // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
+      <CustomButton text="시작하기" size="large" radius="circle"  color="main" onClick={() => {
+        navigate(`/review`);
+      }}></CustomButton>
     ) : (
-      <h1><StyleTitle>BOOKIE</StyleTitle> 에 오신 것을 환영합니다</h1> 
+      // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
+      <CustomButton text="시작하기" size="large" radius="circle" color="main" onClick={() => {
+        navigate(`/signin`);
+      }}></CustomButton>
     );
 
   return (
@@ -177,11 +184,6 @@ const MainPage = () => {
         <StyledHello>
           { greet }
         </StyledHello>
-        <StyledBtn>
-          <CustomButton text="시작하기" color="main" onClick={() => {
-            navigate(`/review`);
-          }}></CustomButton>
-        </StyledBtn>
         <StyledContainer>
           <StyledBox>
             <StyledSliderWrapper>
@@ -212,6 +214,9 @@ const MainPage = () => {
             </StyledSliderWrapperLeft>
           </StyledBox>
         </StyledContainer>
+        <StyledBtn>
+          { pagemove }
+        </StyledBtn>
     </>
   )
 }

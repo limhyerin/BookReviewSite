@@ -33,11 +33,6 @@ export const StyledReviewText = styled.div`
   height: 200px;
   border-bottom: 1px solid black;
 `;
-export const StyledReviewTags = styled.div`
-  width: 800px;
-  height: 50px;
-  border-bottom: 1px solid black;
-`;
 export const StyledBookInfo = styled.div`
   width: 800px;
   height: 150px;
@@ -76,8 +71,8 @@ export const StyledLogo = styled.div`
   }
 `;
 export const StyledBookCover = styled.div`
-  width: 50px;
-  height: 100px;
+  width: 100px;
+  height: 150px;
   margin-left: 10px;
   margin-top: 4px;
   img {

@@ -6,7 +6,6 @@ import {
   StyledDBtn,
   StyledLogoAndNicknameAndDate,
   StyledReviewText,
-  StyledReviewTags,
   StyledBookInfo,
   StyledBtnWrapper,
   StyledReviewBox,
@@ -60,7 +59,6 @@ const ReviewDetailPage = () => {
             {newReviewDetail.authorName} {newReviewDetail.createdAt}
           </StyledLogoAndNicknameAndDate>
           <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
-          <StyledReviewTags>#</StyledReviewTags>
           <StyledBookInfo>
             <StyledBookCover>
               <img src={newReviewDetail.image || book} alt="Book Cover" />
