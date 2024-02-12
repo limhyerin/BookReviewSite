@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import bookieLogo from '../../assets/bookieLogo.jpg';
+import bookieLogo from '../../assets/bookieLogo.png';
 import CustomButton from '../../components/CustomButton';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebase';
-import bookieProfile from '../../assets/bookieProfile.jpg';
+import bookieProfile from '../../assets/bookieProfile.png';
 import { useSelector } from 'react-redux';
 const StyledHeader = styled.header`
   position: fixed;
@@ -15,13 +15,13 @@ const StyledHeader = styled.header`
   width: 100%;
   height: 70px;
   padding: 1.2rem;
-  border: 1px solid black;
-  background-color: white;
+  background-color: #ccc;
 `;
 
 const StyledFigure = styled(Link)`
   img {
     width: 150px;
+    background-color: inherit;
   }
 `;
 
@@ -48,9 +48,11 @@ const LogoutButton = styled.div`
     box-shadow: none;
   }
 `;
-const Header = ({ authState }) => {
+const Header = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { isLogged, userInfo } = useSelector(({ authReducer }) => authReducer);
+
   const navigateToSignIn = () => {
     navigate('/signin');
   };
@@ -61,10 +63,6 @@ const Header = ({ authState }) => {
   const onClickLogout = async () => {
     await signOut(auth);
   };
-
-  const info = useSelector(({ authReducer }) => authReducer.userInfo);
-
-  const isLogged = JSON.parse(sessionStorage.getItem('accessToken'));
   return (
     <StyledHeader>
       <StyledFigure to={'/'}>
@@ -73,7 +71,7 @@ const Header = ({ authState }) => {
       {isLogged ? (
         <div style={{ display: 'flex' }}>
           <StyledProfile to={'/mypage'}>
-            <img src={info.profile || bookieProfile} alt="profile" />
+            <img src={userInfo.profile || bookieProfile} alt="profile" />
           </StyledProfile>
           <LogoutButton>
             <CustomButton onClick={onClickLogout} text={'logout'} />

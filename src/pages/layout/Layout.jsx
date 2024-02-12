@@ -7,14 +7,15 @@ const StyledLayout = styled.div`
   margin: 0 auto;
 `;
 const StyledMain = styled.main`
-  height: calc(100vh - 70px);
+  height: 100vh;
   padding-top: 70px;
+  background-color: ${({ theme }) => theme.colors.bg};
 `;
-const Layout = ({ authState }) => {
+const Layout = () => {
   return (
     <StyledLayout>
-      <Header authState={authState} />
-      <StyledMain style={{ paddingTop: '70px', height: 'calc(100vh - 70px)' }}>
+      <Header />
+      <StyledMain>
         <Outlet />
       </StyledMain>
     </StyledLayout>
