@@ -157,17 +157,18 @@ const StyledSlideImg = styled(StyledSlide)`
 
   const MainPage = () => {
     const navigate = useNavigate();
-    const {userInfo,isLogged}=useSelector(({authReducer})=>authReducer);
+    const { userInfo }=useSelector(({authReducer})=>authReducer);
+    const isLoggedIn = localStorage.getItem('isLoggedIn')
       
     // 로그인 여부에 따라 문구 변경
-    const greet = isLogged ? (
+    const greet = isLoggedIn ? (
         <h1><StyleTitle>{userInfo.nickname}</StyleTitle><StyleGreet>님, 환영합니다</StyleGreet></h1>
       ) : (
         <h1><StyleTitle>BOOKIE</StyleTitle><StyleGreet> 에 오신 것을 환영합니다</StyleGreet></h1> 
       );
   
     // 로그인 여부에 따라 이동 페이지 변경
-    const pagemove = isLogged ? (
+    const pagemove = isLoggedIn ? (
       // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
       <CustomButton text="시작하기" size="large" radius="circle"  color="main" onClick={() => {
         navigate(`/review`);
