@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import TapList from '../../components/tap/TapList';
-import TapContent from '../../components/tap/TapContent';
+import TapList from './tap/TapList';
+import TapContent from './tap/TapContent';
 import React, { useState } from 'react';
 
 const MyPage = () => {

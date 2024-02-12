@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
+import { auth } from '../../../firebase/firebase';
 
 const TapList = ({ onSelectTab, activeTab, setActiveTab }) => {
   const navigate = useNavigate();

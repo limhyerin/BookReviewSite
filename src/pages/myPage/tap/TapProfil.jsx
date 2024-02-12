@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Avatar from '../avatar/Avatar';
-import CustomButton from '../CustomButton';
+import CustomButton from '../../../components/CustomButton';
 import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth'; // Firebase 인증 모듈에서 필요한 함수 가져오기
 
 const TapProfil = () => {

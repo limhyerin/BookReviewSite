@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import bookieProfileImage from '../../assets/bookieProfile.jpg';
+import bookieProfileImage from '../../../assets/bookieProfile.jpg';
 
 const TapReview = () => {
   return (
