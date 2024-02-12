@@ -2,37 +2,50 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
-import { getAuth, onAuthStateChanged, updateProfile } from 'firebase/auth'; // Firebase 인증 모듈에서 필요한 함수 가져오기
+import { useSelector } from 'react-redux';
+import { db } from '../../../firebase/firebase';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
 
 const TapProfil = () => {
+  const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
 
-  // 사용자 로그인 상태 변경 감지
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user); // 로그인된 사용자가 없으면 null을 반환
-    });
+    const fetchData = async () => {
+      try {
+        if (!userInfo || !userInfo.uid) return; // userInfo 또는 userInfo.uid가 없는 경우 실행하지 않음
 
-    return () => unsubscribe();
-  }, []);
+        const docRef = doc(db, 'users', userInfo.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error getting document:', error);
+      }
+    };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
+    fetchData();
+  }, [userInfo]);
 
   const handleSaveClick = async () => {
     try {
-      await updateProfile(currentUser, {
-        displayName: newNickname
-      });
+      if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
+
+      const docRef = doc(db, 'users', userInfo.uid);
+      // 닉네임 업데이트
+      await updateDoc(docRef, { nickname: newNickname });
       setIsEditing(false);
       console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
     }
+    window.location.reload();
+    //닉네임 변경 후 리로딩
   };
 
   const handleChange = (event) => {
@@ -44,22 +57,20 @@ const TapProfil = () => {
       <User>
         <Avatar />
         <div>
-          {currentUser && currentUser.displayName ? (
+          {userData && userData.nickname ? (
             isEditing ? (
               <NicknameInput type="text" value={newNickname} onChange={handleChange} placeholder="새로운 닉네임 입력" />
             ) : (
-              <p>{currentUser.displayName}</p>
+              <p>{userData.nickname}</p>
             )
-          ) : (
-            <p>사용자가 로그인되어 있지 않습니다.</p>
-          )}
+          ) : null}
         </div>
       </User>
       <div>
-        {currentUser && currentUser.displayName && isEditing ? (
+        {userData && userData.nickname && isEditing ? (
           <CustomButton text={'수정 완료'} onClick={handleSaveClick} />
         ) : (
-          <CustomButton text={'수정하기'} onClick={handleEditClick} />
+          <CustomButton text={'수정하기'} onClick={() => setIsEditing(true)} />
         )}
       </div>
     </UserInfo>
