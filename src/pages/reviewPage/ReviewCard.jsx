@@ -1,31 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { db } from '../../firebase/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import useUserData from '../../hooks/useUserData';
 const ReviewCard = ({ review }) => {
-  const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [userData, setUserData] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!userInfo || !userInfo.uid) return;
-
-        const userDocRef = doc(db, 'users', review.author);
-        const userDocSnap = await getDoc(userDocRef);
-        if (userDocSnap.exists()) {
-          console.log(userDocSnap.data());
-          setUserData(userDocSnap.data());
-        }
-      } catch (err) {
-        console.error('Error getting document:', err);
-      }
-    };
-    fetchData();
-  }, [userInfo, review.author]);
+  const { userData } = useUserData(review.authorId);
 
   return (
     <StyledReviewCard key={review.id}>
