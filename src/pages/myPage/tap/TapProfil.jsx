@@ -5,11 +5,22 @@ import CustomButton from '../../../components/CustomButton';
 import { useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import CustomLoading from '../../../components/CustomLoading';
 
 const TapProfil = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [newNickname, setNewNickname] = useState('');
+  const [newNickname, setNewNickname] = useState(userInfo.nickname ? userInfo.nickname : '');
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 로딩 상태를 변경합니다.
+    const fetchNickname = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 550));
+      setLoading(false);
+    };
+    fetchNickname();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +42,13 @@ const TapProfil = () => {
     fetchData();
   }, [userInfo]);
 
+  useEffect(() => {
+    // userData가 변경될 때마다 새로운 닉네임 설정
+    if (userData) {
+      setNewNickname(userData.nickname || '');
+    }
+  }, [userData]);
+
   const handleSaveClick = async () => {
     try {
       if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
@@ -50,17 +68,19 @@ const TapProfil = () => {
     setNewNickname(event.target.value);
   };
 
-  return (
+  return loading ? (
+    // 로딩 중일 때 로딩 컴포넌트를 표시합니다.
+    <LoadingContainer>
+      <StyledLoading>
+        <CustomLoading />
+      </StyledLoading>
+    </LoadingContainer>
+  ) : (
     <UserInfo>
       <User>
         <Avatar />
         <div>
-          <NicknameInput
-            type="text"
-            value={newNickname}
-            onChange={handleChange}
-            placeholder={userData && userData.nickname ? userData.nickname : '새로운 닉네임 입력'}
-          />
+          <NicknameInput type="text" value={newNickname} onChange={handleChange} />
         </div>
       </User>
       <div>{userData && userData.nickname ? <CustomButton text={'수정하기'} onClick={handleSaveClick} /> : null}</div>
@@ -79,6 +99,7 @@ const UserInfo = styled.div`
   margin: -7rem 20rem;
   border-radius: 10px;
   border: 1px solid #ededed;
+  position: relative;
 `;
 
 const User = styled.div`
@@ -95,6 +116,20 @@ const NicknameInput = styled.input`
   border-radius: 4px;
   font-size: 16px;
   outline: none;
+`;
+
+const StyledLoading = styled.div`
+  text-align: center;
+  position: absolute;
+  left: 60%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+`;
+
+const LoadingContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 export default TapProfil;
