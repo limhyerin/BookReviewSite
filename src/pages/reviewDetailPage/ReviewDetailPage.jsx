@@ -26,9 +26,11 @@ import { db } from '../../firebase/firebase.js';
 
 const ReviewDetailPage = () => {
   const navigate = useNavigate();
+
   const dispatch = useDispatch();
   //id값 설정
   const { id } = useParams();
+
   const reviews = useSelector((state) => state.reviewsReducer.reviews); //useSelector로 리뷰데이터 가져오기
   const newReviewDetail = reviews.find((review) => review.id === id) || {}; // 가져온 데이터를 useParams아이디랑 매치시키기
   //상태업데이트
