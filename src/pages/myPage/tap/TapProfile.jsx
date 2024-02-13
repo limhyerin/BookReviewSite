@@ -7,7 +7,7 @@ import { db } from '../../../firebase/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore'; // getDoc 함수 추가
 import CustomLoading from '../../../components/CustomLoading';
 
-const TapProfil = () => {
+const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [newNickname, setNewNickname] = useState(userInfo.nickname ? userInfo.nickname : '');
   const [userData, setUserData] = useState(null);
@@ -103,15 +103,17 @@ const TapProfil = () => {
 
 const UserInfo = styled.div`
   display: flex;
-  width: 20rem;
+  max-width: 600px;
+  min-width: 300px;
   height: 30rem;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   background-color: #fff;
-  margin: -7rem 20rem;
+  margin: 0 auto;
+
   border-radius: 10px;
-  border: 1px solid #ededed;
+  border: 1px solid #ccc;
   position: relative;
 `;
 
@@ -123,7 +125,8 @@ const User = styled.div`
 `;
 
 const NicknameInput = styled.input`
-  width: 100%;
+  max-width: 250px;
+  min-width: 200px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -132,11 +135,10 @@ const NicknameInput = styled.input`
 `;
 
 const StyledLoading = styled.div`
-  text-align: center;
-  position: absolute;
-  left: 60%;
-  top: 30%;
-  transform: translate(-50%, -50%);
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoadingContainer = styled.div`
@@ -145,4 +147,4 @@ const LoadingContainer = styled.div`
   height: 100%;
 `;
 
-export default TapProfil;
+export default TapProfile;

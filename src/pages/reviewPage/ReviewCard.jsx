@@ -33,6 +33,10 @@ const StyledReviewCard = styled.li`
   //width: 22%;
   border-radius: 10px;
   background-color: #fff;
+  a {
+    text-decoration: none;
+    color: black;
+  }
   .card {
     /* border: 1px solid ${(props) => props.theme.colors.mainGray}; */
     padding: 10px;
@@ -60,6 +64,7 @@ const StyledReviewCard = styled.li`
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
 
       img {
         width: 100%;

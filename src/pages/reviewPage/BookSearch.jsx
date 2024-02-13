@@ -19,7 +19,7 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
           // 네이버 책 검색 API에 필요한 인증 헤더를 추가합니다.
         }
       });
-      console.log('books', response.data.items);
+
       setBooks(response.data.items);
     } catch (error) {
       console.error('Error fetching data:', error);
