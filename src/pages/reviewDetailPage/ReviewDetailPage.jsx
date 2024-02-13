@@ -19,7 +19,9 @@ import {
   StyledBookAuthor,
   StyledBookTitleAuthor,
   StyledBookGenre,
-  StyledInfo
+  StyledInfo,
+  StyledPage,
+  StyledTitle
 } from './ReviewDetailPageStyled.js';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -100,7 +102,7 @@ const ReviewDetailPage = () => {
 
   return (
     //삼항연산자 이용, update의 초기값을 false로 놓고 false면 리뷰구현 true면 수정부분구현
-    <div>
+    <StyledPage>
       {' '}
       {!loading &&
         (update ? (
@@ -114,18 +116,16 @@ const ReviewDetailPage = () => {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                     ></StyledTitleInput>
-                    {reviewAuthorId === currentUserId && (
-                      <StyledBtnWrapper>
-                        <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
-                        <StyledDBtn text="취소" color="main" onClick={rollbackHandler}></StyledDBtn>
-                      </StyledBtnWrapper>
-                    )}
+                    <StyledBtnWrapper>
+                      <StyledUBtn text="저장" color="main" onClick={saveHandler} />
+                      <StyledDBtn text="취소" color="red" onClick={rollbackHandler} />
+                    </StyledBtnWrapper>
                   </StyledTitleAndUbtnAndDbtn>
                   <StyledUserInfo>
                     <StyledLogo>
                       <img src={newReviewDetail.authorProfile} alt="Profile" />
-                      {newReviewDetail.authorName}
                     </StyledLogo>
+                    <StyledTitle>{newReviewDetail.authorName}</StyledTitle>
                     <StyledInfo>{reviewDate}</StyledInfo>
                   </StyledUserInfo>
                   <StyledContentTextarea
@@ -146,7 +146,7 @@ const ReviewDetailPage = () => {
                 </StyledReviewBox>
                 <StyledHomeBtn
                   text="뒤로가기"
-                  color="main"
+                  color="white"
                   onClick={() => {
                     navigate(`/review`);
                   }}
@@ -162,16 +162,16 @@ const ReviewDetailPage = () => {
                   <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
                   {reviewAuthorId === currentUserId && (
                     <StyledBtnWrapper>
-                      <StyledUBtn text="수정" color="main" onClick={editHandler}></StyledUBtn>
-                      <StyledDBtn text="삭제" color="main" onClick={deleteHandler}></StyledDBtn>
+                      <StyledUBtn text="수정" color="main" onClick={editHandler} />
+                      <StyledDBtn text="삭제" color="white" onClick={deleteHandler} />
                     </StyledBtnWrapper>
                   )}
                 </StyledTitleAndUbtnAndDbtn>
                 <StyledUserInfo>
                   <StyledLogo>
                     <img src={newReviewDetail.authorProfile} alt="Profile" />
-                    {newReviewDetail.authorName}
                   </StyledLogo>
+                  <StyledTitle>{newReviewDetail.authorName}</StyledTitle>
                   <StyledInfo>{reviewDate}</StyledInfo>
                 </StyledUserInfo>
                 <StyledReviewContent>{newReviewDetail.content}</StyledReviewContent>
@@ -188,7 +188,7 @@ const ReviewDetailPage = () => {
               </StyledReviewBox>
               <StyledHomeBtn
                 text="뒤로가기"
-                color="main"
+                color="white"
                 onClick={() => {
                   navigate(`/review`);
                 }}
@@ -201,7 +201,7 @@ const ReviewDetailPage = () => {
           <CustomLoading />
         </StyledCustomLoading>
       )}
-    </div>
+    </StyledPage>
   );
 };
 
