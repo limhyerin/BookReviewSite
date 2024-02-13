@@ -5,7 +5,7 @@ import CustomButton from '../../../components/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore'; // getDoc 함수 추가
-import { updateProfile } from '../../../redux/modules/authReducer';
+import { updateNickname, updateProfile } from '../../../redux/modules/authReducer';
 
 const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
@@ -22,6 +22,7 @@ const TapProfile = () => {
       const userDocRef = doc(db, 'users', userInfo.uid);
       // 닉네임 업데이트
       await updateDoc(userDocRef, { nickname: newNickname });
+      dispatch(updateNickname(newNickname));
       console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
