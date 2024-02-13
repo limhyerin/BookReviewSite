@@ -8,16 +8,17 @@ const ReviewCard = ({ review }) => {
       <Link key={review.id} to={`/review-detail/${review.id}`}>
         <div className="card">
           <p className="userWrap">
-            <span className="profile">{/* <img src="프사" alt="프사" /> */}</span>
+            <span className="profile">
+              <img src={review.authorProfile} alt="프사" />
+            </span>
             <span>{review.authorName}</span>
           </p>
           <div className="imgWrapper">
             <img src={review.image} alt={review.title} />
           </div>
-          <p className="bookTitle">
-            {review.bookAuthor} - {review.bookTitle}
-          </p>
-          <p className="title">{review.title}</p>
+          <p className="bookTitle">{/* {review.bookAuthor} - {review.bookTitle} */}</p>
+          <p className="title"> {review.title}</p>
+          <p className="content"> {review.content}</p>
         </div>
       </Link>
     </StyledReviewCard>
@@ -39,9 +40,9 @@ const StyledReviewCard = styled.li`
     border-radius: 10px;
     box-shadow: 4px 8px 8px hsl(0deg 0% 0% / 0.25);
 
-    padding: 10px;
-    overflow: hidden;
-    white-space: nowrap;
+    padding: 10px 10px 30px 10px;
+    /* overflow: hidden;
+    white-space: nowrap; */
     .userWrap {
       display: flex;
       align-items: center;
@@ -50,17 +51,26 @@ const StyledReviewCard = styled.li`
       border-bottom: 1px solid ${(props) => props.theme.colors.mainGray};
     }
     .profile {
-      width: 30px;
-      height: 30px;
-      background-color: #ccc;
+      width: 40px;
+      height: 40px;
+      box-shadow: 1px 2px 2px hsl(0deg 0% 0% / 0.25);
       display: inline-block;
       border-radius: 30px;
-      margin-right: 5px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+      }
     }
     .bookTitle {
       margin-top: 10px;
       text-overflow: ellipsis;
       overflow: hidden;
+      color: #333;
+      font-size: ${(props) => props.theme.fontSize.xs};
     }
     .imgWrapper {
       height: 270px;
@@ -73,6 +83,20 @@ const StyledReviewCard = styled.li`
       border-top: 1px solid ${(props) => props.theme.colors.mainGray};
       margin-top: 10px;
       padding: 10px;
+      text-align: left;
+    }
+    .content {
+      font-size: ${(props) => props.theme.fontSize.xs};
+      color: #666;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      text-align: left;
+      padding: 0 10px 20px 10px;
+      height: 45px;
+      line-height: 130%;
     }
   }
 `;
