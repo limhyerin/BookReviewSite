@@ -115,6 +115,13 @@ const SignInPage = () => {
       console.error(error);
     }
   };
+
+  const onClickKakaoSignIn = () => {
+    const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+    const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&scope=profile_nickname,account_email`;
+  };
+
   return isLoading ? (
     <SignInWrapper>
       <CustomLoading />
@@ -133,6 +140,7 @@ const SignInPage = () => {
           setValidation={setValidation}
           onClickGoogleSignIn={onClickGoogleSignIn}
           onClickGithubSignIn={onClickGithubSignIn}
+          onClickKakaoSignIn={onClickKakaoSignIn}
         />
         <Link to={'/signup'}>{`> 회원가입 하러가기`}</Link>
       </SignInWrapper>
