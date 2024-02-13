@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useSelector } from 'react-redux';
 import bookieProfile from '../../../assets/bookieProfile.png';
 import { storage } from '../../../firebase/firebase';
+import CustomLoading from '../../../components/CustomLoading';
 
-const Avatar = ({ onChange }) => {
+const Avatar = ({ loading, setLoading, onChange }) => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [imageUrl, setImageUrl] = useState(userInfo.profile || bookieProfile);
-
-  useEffect(() => {
-    console.log(imageUrl); // 이미지 URL 출력
-  }, [imageUrl]); // imageUrl이 변경될 때마다 실행
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     const storageRef = ref(storage);
     const fileRef = ref(storageRef, file.name);
-
+    setLoading(true);
     await uploadBytes(fileRef, file);
     const imageUrl = await getDownloadURL(fileRef);
-
-    setImageUrl(imageUrl); // 이미지 URL을 상태에 저장
     onChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
   };
 
@@ -29,7 +22,7 @@ const Avatar = ({ onChange }) => {
     <AvatarContainer>
       <ImageWrapper>
         {/* 이미지를 표시합니다. */}
-        <Image src={imageUrl} alt="avatar" />
+        {loading ? <CustomLoading /> : <Image src={userInfo.profile || bookieProfile} alt="avatar" />}
       </ImageWrapper>
       {/* 파일 업로드 인풋을 추가합니다. */}
       <ImageInput type="file" id="avatarInput" onChange={handleImageChange} accept="image/*" />
@@ -44,6 +37,9 @@ const AvatarContainer = styled.div`
 `;
 
 const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 150px;
   height: 150px;
   border-radius: 50%;
