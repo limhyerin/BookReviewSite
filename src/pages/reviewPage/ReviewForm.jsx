@@ -7,7 +7,6 @@ import CustomButton from '../../components/CustomButton';
 import { DropdownProvider } from '../../components/DropdownContext';
 import Dropdown from '../../components/Dropdown';
 import styled from 'styled-components';
-
 const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -16,6 +15,7 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [selectedGenre, setSelectedGenre] = useState('기타');
   const { userInfo } = useSelector((state) => state.authReducer);
 
+  console.log('userInfo=>', userInfo);
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };
@@ -37,7 +37,8 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
       createdAt: new Date(),
       genre: selectedGenre,
       author: userInfo ? userInfo.uid : '',
-      authorName: userInfo ? userInfo.nickname : ''
+      authorName: userInfo ? userInfo.nickname : '',
+      authorProfile: userInfo.profile ? userInfo.profile : process.env.PUBLIC_URL + '/images/bookieProfile.png'
     };
     const docId = await addData(newReviewData);
     newReviewData.id = docId;
