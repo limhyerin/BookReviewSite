@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
+import CustomLoading from '../../components/CustomLoading';
 import ImageSlide from './ImageSlide';
+
+const StyledLoading = styled.div`
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 // greeting : 인사문구 css
 const StyledHello = styled.div`
@@ -16,12 +25,12 @@ const StyledHello = styled.div`
 `;
 
 // bookie, 닉네임 굵기 지정
-const StyleTitle = styled.span`
+const StyledTitle = styled.span`
   font-weight: large;
 `;
 
 // 나머지 환영 문구 굵기 지정
-const StyleGreet = styled.span`
+const StyledGreet = styled.span`
   font-weight: normal;
 `;
 
@@ -130,13 +139,25 @@ const StyledContainer = styled.div`
   const MainPage = () => {
     const navigate = useNavigate();
     const { userInfo }=useSelector(({authReducer})=>authReducer);
-    const isLoggedIn = localStorage.getItem('isLoggedIn')
-      
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const [ loading, setLoading ] = useState(true);
+
+    useEffect(() => {
+      const fetchNickname = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 550));
+        setLoading(false);
+      }
+      fetchNickname();
+    }, [])
+    
     // 로그인 여부에 따라 문구 변경
     const greet = isLoggedIn ? (
-        <h1><StyleTitle>{userInfo.nickname}</StyleTitle><StyleGreet>님, 환영합니다</StyleGreet></h1>
+        <h1>
+          <StyledTitle>{ userInfo.nickname }</StyledTitle>
+          <StyledGreet>님, 환영합니다</StyledGreet>
+        </h1>
       ) : (
-        <h1><StyleTitle>BOOKIE</StyleTitle><StyleGreet> 에 오신 것을 환영합니다</StyleGreet></h1> 
+        <h1><StyledTitle>BOOKIE</StyledTitle><StyledGreet> 에 오신 것을 환영합니다</StyledGreet></h1> 
       );
   
     // 로그인 여부에 따라 이동 페이지 변경
@@ -152,7 +173,11 @@ const StyledContainer = styled.div`
       }}></CustomButton>
     );
 
-  return (
+  return loading ? (
+  <StyledLoading>
+    <CustomLoading />
+  </StyledLoading>) :
+  (
     <>
         <StyledHello>{ greet }</StyledHello>
         <StyledExplan>부기와 함께하는 독서 기록</StyledExplan>
