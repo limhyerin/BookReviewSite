@@ -43,7 +43,7 @@ const Router = () => {
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signin/kakaosignin" element={<KakaoSignInPage />} />
-          <Route path="/signin/kakaosignup" element={<KaKaoSignUpPage />} />
+          <Route path="/signup/kakaosignup" element={<KaKaoSignUpPage />} />
           <Route path="/signup" element={<SignUpPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
