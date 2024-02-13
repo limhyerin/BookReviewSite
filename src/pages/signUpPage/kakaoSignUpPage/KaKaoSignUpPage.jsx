@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import CustomLoading from '../../../components/CustomLoading';
-import { auth } from '../../../firebase/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../../../firebase/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
+import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-const KakaoSignInPage = () => {
+const KaKaoSignUpPage = () => {
   const code = new URL(window.location.href).searchParams.get('code');
   const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-  const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_SIGNIN_REDIRECT_URI;
+  const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_SIGNUP_REDIRECT_URI;
   const BASE_URL = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&code=${code}`;
   const option = {
     method: 'POST',
@@ -27,14 +28,17 @@ const KakaoSignInPage = () => {
   };
 
   useEffect(() => {
-    const kakaoSignIn = async () => {
+    const kakaoSignUp = async () => {
       try {
         if (code) {
           const { access_token } = await getToken(code);
           console.log(access_token);
           const {
             data: {
-              kakao_account: { email }
+              kakao_account: {
+                email,
+                profile: { nickname }
+              }
             }
           } = await axios.post(
             'https://kapi.kakao.com/v2/user/me',
@@ -46,8 +50,10 @@ const KakaoSignInPage = () => {
               }
             }
           );
-          const signinRes = await signInWithEmailAndPassword(auth, email, 'password');
-          console.log('로그인 성공', signinRes);
+          const { user } = await createUserWithEmailAndPassword(auth, email, 'password');
+          console.log('회원가입', user);
+          const signUpData = doc(db, 'users', user.uid);
+          await setDoc(signUpData, { userId: email, password: 'password', nickname, uid: user.uid });
           navigate('/');
         }
       } catch (error) {
@@ -57,13 +63,13 @@ const KakaoSignInPage = () => {
       }
     };
 
-    kakaoSignIn();
+    kakaoSignUp();
   }, []);
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-      <CustomLoading />
+      <CustomLoading />;
     </div>
   );
 };
 
-export default KakaoSignInPage;
+export default KaKaoSignUpPage;

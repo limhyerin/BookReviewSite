@@ -59,20 +59,6 @@ const SignInPage = () => {
       const result = await getRedirectResult(auth);
       console.log(result);
       if (result) {
-        const d = await getDoc(doc(db, 'users', result.user.uid));
-        if (d.data()) {
-          console.log('true check');
-        } else {
-          console.log('false check');
-          const signUpData = {
-            userId: result.user.providerData[0].email,
-            password: '',
-            nickname: result.user.providerData[0].displayName,
-            profile: '',
-            uid: result.user.uid
-          };
-          await setDoc(doc(db, 'users', result.user.uid), signUpData);
-        }
         navigate('/');
       } else {
         setIsLoading(false);
@@ -118,8 +104,8 @@ const SignInPage = () => {
 
   const onClickKakaoSignIn = () => {
     const KAKAO_REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-    const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&scope=profile_nickname,account_email`;
+    const KAKAO_REDIRECT_URI = process.env.REACT_APP_KAKAO_SIGNIN_REDIRECT_URI;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&scope=profile_nickname,account_email,openid`;
   };
 
   return isLoading ? (
@@ -138,8 +124,8 @@ const SignInPage = () => {
           onSubmit={onSignIn}
           setUserInfo={setUserInfo}
           setValidation={setValidation}
-          onClickGoogleSignIn={onClickGoogleSignIn}
-          onClickGithubSignIn={onClickGithubSignIn}
+          onClickGoogle={onClickGoogleSignIn}
+          onClickGithub={onClickGithubSignIn}
           onClickKakaoSignIn={onClickKakaoSignIn}
         />
         <Link to={'/signup'}>{`> 회원가입 하러가기`}</Link>
