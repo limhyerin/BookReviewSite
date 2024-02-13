@@ -5,11 +5,22 @@ import CustomButton from '../../../components/CustomButton';
 import { useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import CustomLoading from '../../../components/CustomLoading';
 
 const TapProfil = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [newNickname, setNewNickname] = useState(userInfo.nickname ? userInfo.nickname : '');
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 로딩 상태를 변경합니다.
+    const fetchNickname = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 550));
+      setLoading(false);
+    };
+    fetchNickname();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +68,14 @@ const TapProfil = () => {
     setNewNickname(event.target.value);
   };
 
-  return (
+  return loading ? (
+    // 로딩 중일 때 로딩 컴포넌트를 표시합니다.
+    <LoadingContainer>
+      <StyledLoading>
+        <CustomLoading />
+      </StyledLoading>
+    </LoadingContainer>
+  ) : (
     <UserInfo>
       <User>
         <Avatar />
@@ -81,6 +99,7 @@ const UserInfo = styled.div`
   margin: -7rem 20rem;
   border-radius: 10px;
   border: 1px solid #ededed;
+  position: relative;
 `;
 
 const User = styled.div`
@@ -97,6 +116,20 @@ const NicknameInput = styled.input`
   border-radius: 4px;
   font-size: 16px;
   outline: none;
+`;
+
+const StyledLoading = styled.div`
+  text-align: center;
+  position: absolute;
+  left: 60%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+`;
+
+const LoadingContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 export default TapProfil;
