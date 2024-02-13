@@ -2,17 +2,19 @@ import styled from 'styled-components';
 import CustomButton from '../../components/CustomButton';
 
 export const StyledReviewDetailUi = styled.div`
-  width: 800px;
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 20px auto 0px auto;
 `;
 
 export const StyledReviewBox = styled.div`
-  border: 1px solid black;
-  border-radius: 5px;
+  background-color: ivory;
+  border-radius: 20px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
 `;
 
 export const StyledTitleAndUbtnAndDbtn = styled.div`
@@ -20,32 +22,42 @@ export const StyledTitleAndUbtnAndDbtn = styled.div`
   height: 50px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid black;
   align-items: center;
 `;
-export const StyledLogoAndNicknameAndDate = styled.div`
-  width: 800px;
+export const StyledUserInfo = styled.div`
+  margin-right: 20px;
+  width: 780px;
   height: 50px;
   display: flex;
+  justify-content: left;
+  align-items: center;
   border-bottom: 1px solid black;
 `;
 export const StyledReviewContent = styled.div`
-  width: 800px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 760px;
   height: 200px;
-  border-bottom: 1px solid black;
 `;
 export const StyledBookInfo = styled.div`
-  width: 800px;
-  height: 150px;
+  width: 700px;
+  height: 200px;
+  padding: 10px;
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  background-color: lightgray;
+  border: 0px solid;
+  border-radius: 15px;
 `;
 export const StyledHomeBtn = styled(CustomButton)`
   width: 100px;
   margin: 20px auto 0px auto;
 `;
 export const StyledReviewTitle = styled.p`
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 20px;
 `;
 //커스텀버튼 re커스터마이징
 export const StyledUBtn = styled(CustomButton)`
@@ -63,8 +75,11 @@ export const StyledBtnWrapper = styled.div`
 export const StyledLogo = styled.div`
   width: 45px;
   height: 45px;
-  margin-left: 10px;
+  margin-left: 50px;
   margin-top: 4px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
   img {
     width: 100%;
     height: 100%;
@@ -73,23 +88,26 @@ export const StyledLogo = styled.div`
 `;
 export const StyledBookCover = styled.div`
   width: 100px;
-  height: 150px;
-  margin-left: 10px;
-  margin-top: 4px;
+  height: 140px;
+  margin: 20px;
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
 `;
 
 export const StyledTitleInput = styled.input`
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 20px;
 `;
 export const StyledContentTextarea = styled.textarea`
-  width: 800px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 760px;
   height: 200px;
-  border-bottom: 1px solid black;
 `;
 
 export const StyledCustomLoading = styled.div`
@@ -97,4 +115,30 @@ export const StyledCustomLoading = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 50vh;
+`;
+export const StyledBookTitleAuthor = styled.div`
+  margin: 20px;
+  width: 300px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: start;
+`;
+
+export const StyledBookTitle = styled.div`
+  margin-bottom: 40px;
+  font-weight: bolder;
+`;
+
+export const StyledBookAuthor = styled.div`
+  margin-bottom: 40px;
+`;
+export const StyledBookGenre = styled.div`
+  font-size: 12px;
+`;
+
+export const StyledInfo = styled.div`
+  display: flex;
+  margin-left: 530px;
 `;

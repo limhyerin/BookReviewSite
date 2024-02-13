@@ -4,7 +4,7 @@ import {
   StyledReviewTitle,
   StyledUBtn,
   StyledDBtn,
-  StyledLogoAndNicknameAndDate,
+  StyledUserInfo,
   StyledReviewContent,
   StyledBookInfo,
   StyledBtnWrapper,
@@ -14,7 +14,12 @@ import {
   StyledBookCover,
   StyledTitleInput,
   StyledContentTextarea,
-  StyledCustomLoading
+  StyledCustomLoading,
+  StyledBookTitle,
+  StyledBookAuthor,
+  StyledBookTitleAuthor,
+  StyledBookGenre,
+  StyledInfo
 } from './ReviewDetailPageStyled.js';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -51,7 +56,7 @@ const ReviewDetailPage = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {
-      // 현재 로그인한 사용자의 UID 설정
+      // 현재 로그인한 사용자의 UID
       setCurrentUserId(user.uid);
     }
   }, []);
@@ -73,7 +78,7 @@ const ReviewDetailPage = () => {
     await updateDoc(reviewRef, { title, content });
     dispatch(updateReview(id, { title, content }));
     setUpdate(false);
-    navigate('/review');
+    navigate(`/review-detail/${id}`);
   };
   //fire base 삭제로직
   const deleteHandler = async () => {
@@ -85,7 +90,7 @@ const ReviewDetailPage = () => {
     }
   };
   console.log(newReviewDetail.createdAt);
-  //로딩실행
+  //로딩실행 , redux persist도 있다 찾아보기
   useEffect(() => {
     if (loading) {
       console.log('loading...');
@@ -105,28 +110,34 @@ const ReviewDetailPage = () => {
               <StyledReviewDetailUi>
                 <StyledReviewBox>
                   <StyledTitleAndUbtnAndDbtn>
-                    <StyledTitleInput placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
-                    <StyledBtnWrapper>
-                      <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
-                      <StyledDBtn text="취소" color="main" onClick={rollbackHandler}></StyledDBtn>
-                    </StyledBtnWrapper>
+                    <StyledTitleInput value={title} onChange={(e) => setTitle(e.target.value)}></StyledTitleInput>
+                    {reviewAuthorId === currentUserId && (
+                      <StyledBtnWrapper>
+                        <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
+                        <StyledDBtn text="취소" color="main" onClick={rollbackHandler}></StyledDBtn>
+                      </StyledBtnWrapper>
+                    )}
                   </StyledTitleAndUbtnAndDbtn>
-                  <StyledLogoAndNicknameAndDate>
+                  <StyledUserInfo>
                     <StyledLogo>
                       <img src={bookieProfile} alt="Profile" />
+                      {newReviewDetail.authorName}
                     </StyledLogo>
-                    {newReviewDetail.authorName} {reviewDate}
-                  </StyledLogoAndNicknameAndDate>
+                    <StyledInfo>{reviewDate}</StyledInfo>
+                  </StyledUserInfo>
                   <StyledContentTextarea
-                    placeholder="내용"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                  />
+                  ></StyledContentTextarea>
                   <StyledBookInfo>
                     <StyledBookCover>
                       <img src={newReviewDetail.image || book} alt="Book Cover" />
                     </StyledBookCover>
-                    {newReviewDetail.bookTitle} {newReviewDetail.bookAuthor}
+                    <StyledBookTitleAuthor>
+                      <StyledBookTitle>{newReviewDetail.bookTitle}</StyledBookTitle>
+                      <StyledBookAuthor>{newReviewDetail.bookAuthor} 지음</StyledBookAuthor>
+                      <StyledBookGenre> 장 르 : {newReviewDetail.genre}</StyledBookGenre>
+                    </StyledBookTitleAuthor>
                   </StyledBookInfo>
                 </StyledReviewBox>
                 <StyledHomeBtn
@@ -152,18 +163,23 @@ const ReviewDetailPage = () => {
                     </StyledBtnWrapper>
                   )}
                 </StyledTitleAndUbtnAndDbtn>
-                <StyledLogoAndNicknameAndDate>
+                <StyledUserInfo>
                   <StyledLogo>
                     <img src={bookieProfile} alt="Profile" />
+                    {newReviewDetail.authorName}
                   </StyledLogo>
-                  {newReviewDetail.authorName} {reviewDate}
-                </StyledLogoAndNicknameAndDate>
+                  <StyledInfo>{reviewDate}</StyledInfo>
+                </StyledUserInfo>
                 <StyledReviewContent>{newReviewDetail.content}</StyledReviewContent>
                 <StyledBookInfo>
                   <StyledBookCover>
                     <img src={newReviewDetail.image || book} alt="Book Cover" />
                   </StyledBookCover>
-                  {newReviewDetail.bookTitle} {newReviewDetail.bookAuthor}
+                  <StyledBookTitleAuthor>
+                    <StyledBookTitle>{newReviewDetail.bookTitle}</StyledBookTitle>
+                    <StyledBookAuthor>{newReviewDetail.bookAuthor} 지음</StyledBookAuthor>
+                    <StyledBookGenre> 장 르 : {newReviewDetail.genre}</StyledBookGenre>
+                  </StyledBookTitleAuthor>
                 </StyledBookInfo>
               </StyledReviewBox>
               <StyledHomeBtn
