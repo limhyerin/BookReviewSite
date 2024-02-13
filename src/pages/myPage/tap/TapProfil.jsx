@@ -8,7 +8,6 @@ import { getDoc, doc, updateDoc } from 'firebase/firestore';
 
 const TapProfil = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [isEditing, setIsEditing] = useState(false);
   const [newNickname, setNewNickname] = useState('');
   const [userData, setUserData] = useState(null);
 
@@ -39,7 +38,6 @@ const TapProfil = () => {
       const docRef = doc(db, 'users', userInfo.uid);
       // 닉네임 업데이트
       await updateDoc(docRef, { nickname: newNickname });
-      setIsEditing(false);
       console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
@@ -57,22 +55,15 @@ const TapProfil = () => {
       <User>
         <Avatar />
         <div>
-          {userData && userData.nickname ? (
-            isEditing ? (
-              <NicknameInput type="text" value={newNickname} onChange={handleChange} placeholder="새로운 닉네임 입력" />
-            ) : (
-              <p>{userData.nickname}</p>
-            )
-          ) : null}
+          <NicknameInput
+            type="text"
+            value={newNickname}
+            onChange={handleChange}
+            placeholder={userData && userData.nickname ? userData.nickname : '새로운 닉네임 입력'}
+          />
         </div>
       </User>
-      <div>
-        {userData && userData.nickname && isEditing ? (
-          <CustomButton text={'수정 완료'} onClick={handleSaveClick} />
-        ) : (
-          <CustomButton text={'수정하기'} onClick={() => setIsEditing(true)} />
-        )}
-      </div>
+      <div>{userData && userData.nickname ? <CustomButton text={'수정하기'} onClick={handleSaveClick} /> : null}</div>
     </UserInfo>
   );
 };
