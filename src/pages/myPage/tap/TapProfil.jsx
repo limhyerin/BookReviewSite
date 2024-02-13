@@ -8,7 +8,7 @@ import { getDoc, doc, updateDoc } from 'firebase/firestore';
 
 const TapProfil = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [newNickname, setNewNickname] = useState('');
+  const [newNickname, setNewNickname] = useState(userInfo.nickname ? userInfo.nickname : '');
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
