@@ -4,10 +4,10 @@ import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
 import { useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore'; // getDoc 함수 추가
 import CustomLoading from '../../../components/CustomLoading';
 
-const TapProfil = () => {
+const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [newNickname, setNewNickname] = useState(userInfo.nickname ? userInfo.nickname : '');
   const [userData, setUserData] = useState(null);
@@ -27,10 +27,10 @@ const TapProfil = () => {
       try {
         if (!userInfo || !userInfo.uid) return; // userInfo 또는 userInfo.uid가 없는 경우 실행하지 않음
 
-        const docRef = doc(db, 'users', userInfo.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+        const userDocRef = doc(db, 'users', userInfo.uid);
+        const userDocSnap = await getDoc(userDocRef); // getDoc 함수 사용
+        if (userDocSnap.exists()) {
+          setUserData(userDocSnap.data());
         } else {
           console.log('No such document!');
         }
@@ -53,15 +53,28 @@ const TapProfil = () => {
     try {
       if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
 
-      const docRef = doc(db, 'users', userInfo.uid);
+      const userDocRef = doc(db, 'users', userInfo.uid);
       // 닉네임 업데이트
-      await updateDoc(docRef, { nickname: newNickname });
+      await updateDoc(userDocRef, { nickname: newNickname });
       console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
     }
     window.location.reload();
     //닉네임 변경 후 리로딩
+  };
+
+  const handleAvatarChange = async (profile) => {
+    try {
+      if (!userInfo || !userInfo.uid) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
+
+      const userDocRef = doc(db, 'users', userInfo.uid);
+      // 프로필 이미지 업데이트
+      await updateDoc(userDocRef, { profile });
+      console.log('프로필 이미지가 업데이트되었습니다.');
+    } catch (error) {
+      console.error('프로필 이미지 업데이트 오류:', error);
+    }
   };
 
   const handleChange = (event) => {
@@ -78,7 +91,7 @@ const TapProfil = () => {
   ) : (
     <UserInfo>
       <User>
-        <Avatar />
+        <Avatar onChange={handleAvatarChange} />
         <div>
           <NicknameInput type="text" value={newNickname} onChange={handleChange} />
         </div>
@@ -90,15 +103,17 @@ const TapProfil = () => {
 
 const UserInfo = styled.div`
   display: flex;
-  width: 20rem;
+  max-width: 600px;
+  min-width: 300px;
   height: 30rem;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   background-color: #fff;
-  margin: -7rem 20rem;
+  margin: 0 auto;
+
   border-radius: 10px;
-  border: 1px solid #ededed;
+  border: 1px solid #ccc;
   position: relative;
 `;
 
@@ -110,7 +125,8 @@ const User = styled.div`
 `;
 
 const NicknameInput = styled.input`
-  width: 100%;
+  max-width: 250px;
+  min-width: 200px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -119,11 +135,10 @@ const NicknameInput = styled.input`
 `;
 
 const StyledLoading = styled.div`
-  text-align: center;
-  position: absolute;
-  left: 60%;
-  top: 30%;
-  transform: translate(-50%, -50%);
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoadingContainer = styled.div`
@@ -132,4 +147,4 @@ const LoadingContainer = styled.div`
   height: 100%;
 `;
 
-export default TapProfil;
+export default TapProfile;

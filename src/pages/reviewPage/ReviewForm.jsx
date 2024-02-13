@@ -15,7 +15,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [selectedGenre, setSelectedGenre] = useState('기타');
   const { userInfo } = useSelector((state) => state.authReducer);
 
-  console.log('userInfo=>', userInfo);
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };
@@ -52,8 +51,8 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
       <div className="selectWrap">
         <div className="imgWrap">
           <img src={selectedBook.image} alt={selectedBook.title} />
-          <p>제목:{selectedBook.title}</p>
-          <p>저자:{selectedBook.author}</p>
+          <p>제목 : {selectedBook.title}</p>
+          <p>저자 : {selectedBook.author}</p>
         </div>
         <DropdownProvider>
           <div>
@@ -108,6 +107,7 @@ const StyledReviewFormContainer = styled.div`
     }
     p {
       font-size: ${(props) => props.theme.fontSize.xs};
+      margin-top: 5px;
     }
     p:nth-child(1) {
       margin-bottom: 5px;

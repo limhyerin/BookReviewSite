@@ -7,10 +7,9 @@ import {
 } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { auth, db } from '../../firebase/firebase';
+import { auth } from '../../firebase/firebase';
 import CustomModal from '../../components/CustomModal';
 import { Link, useNavigate } from 'react-router-dom';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 import CustomLoading from '../../components/CustomLoading';
 import SignForm from '../../components/SignForm';
@@ -73,14 +72,17 @@ const SignInPage = () => {
 
   const onSignIn = async (event) => {
     event.preventDefault();
-    if (!validation.userId || !validation.password) return;
+    if (!validation.userId || !validation.password) {
+      setIsOpen(true);
+      return;
+    }
     const { userId, password } = userInfo;
     try {
       await signInWithEmailAndPassword(auth, userId, password);
       navigate('/');
     } catch (error) {
-      setIsOpen(true);
       console.error(error);
+      setIsOpen(true);
     }
   };
   const onClickGoogleSignIn = async (event) => {
@@ -115,7 +117,7 @@ const SignInPage = () => {
   ) : (
     <>
       <CustomModal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
-        로그인 정보가 틀렸습니다.
+        아이디, 비밀번호를 알맞게 입력해주세요.
       </CustomModal>
       <SignInWrapper>
         <h1>로그인</h1>

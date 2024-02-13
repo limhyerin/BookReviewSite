@@ -21,7 +21,6 @@ const MyPage = () => {
 
 const Container = styled.div`
   display: flex;
-  gap: 4rem;
 `;
 
 export default MyPage;

@@ -1,40 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useSelector } from 'react-redux';
+import bookieProfile from '../../../assets/bookieProfile.png';
+import { storage } from '../../../firebase/firebase';
 
-const Avatar = ({ profile }) => {
-  const [selectedImage, setSelectedImage] = useState(profile);
+const Avatar = ({ onChange }) => {
+  const { userInfo } = useSelector(({ authReducer }) => authReducer);
+  const [imageUrl, setImageUrl] = useState(userInfo.profile || bookieProfile);
 
   useEffect(() => {
-    // 페이지 로드 시, 로컬 스토리지에서 이미지 데이터 가져오기
-    const storedImage = localStorage.getItem('profileImage');
-    if (storedImage) {
-      setSelectedImage(storedImage);
-    }
-  }, []);
+    console.log(imageUrl); // 이미지 URL 출력
+  }, [imageUrl]); // imageUrl이 변경될 때마다 실행
 
-  // 이미지 변경 핸들러
-  const handleImageChange = (event) => {
-    const reader = new FileReader();
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
+    const storageRef = ref(storage);
+    const fileRef = ref(storageRef, file.name);
 
-    // 파일 읽기
-    reader.onloadend = () => {
-      setSelectedImage(reader.result); // 이미지 변경
-      // 로컬 스토리지에 이미지 데이터 저장
-      localStorage.setItem('profileImage', reader.result);
-    };
+    await uploadBytes(fileRef, file);
+    const imageUrl = await getDownloadURL(fileRef);
 
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    setImageUrl(imageUrl); // 이미지 URL을 상태에 저장
+    onChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
   };
 
   return (
     <AvatarContainer>
       <ImageWrapper>
-        <Image src={selectedImage} alt="avatar" />
+        {/* 이미지를 표시합니다. */}
+        <Image src={imageUrl} alt="avatar" />
       </ImageWrapper>
+      {/* 파일 업로드 인풋을 추가합니다. */}
       <ImageInput type="file" id="avatarInput" onChange={handleImageChange} accept="image/*" />
+      {/* 파일 업로드 버튼을 추가합니다. */}
       <ImageInputLabel htmlFor="avatarInput">이미지 변경</ImageInputLabel>
     </AvatarContainer>
   );
@@ -54,7 +53,7 @@ const ImageWrapper = styled.div`
 const Image = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 const ImageInput = styled.input`
