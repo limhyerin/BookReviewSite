@@ -72,9 +72,10 @@ const SignForm = ({
   setUserInfo,
   setValidation,
   onSubmit,
-  onClickGoogleSignIn,
-  onClickGithubSignIn,
-  onClickKakaoSignIn
+  onClickGoogle,
+  onClickGithub,
+  onClickKakaoSignIn,
+  onClickKakaoSignUp
 }) => {
   const { pathname } = useLocation();
   const [errorMsg, setErrorMsg] = useState({
@@ -137,6 +138,11 @@ const SignForm = ({
           <StyledButtonBox>
             <CustomButton text={'가입하기'} />
           </StyledButtonBox>
+          <SocialSignInBox>
+            <GoogleButton type="button" onClick={onClickGoogle} />
+            <GithubButton type="button" onClick={onClickGithub} />
+            <KakaoButton type="button" onClick={onClickKakaoSignUp} />
+          </SocialSignInBox>
         </>
       ) : (
         <>
@@ -144,8 +150,8 @@ const SignForm = ({
             <CustomButton text={'로그인'} />
           </StyledButtonBox>
           <SocialSignInBox>
-            <GoogleButton type="button" onClick={onClickGoogleSignIn} />
-            <GithubButton type="button" onClick={onClickGithubSignIn} />
+            <GoogleButton type="button" onClick={onClickGoogle} />
+            <GithubButton type="button" onClick={onClickGithub} />
             <KakaoButton type="button" onClick={onClickKakaoSignIn} />
           </SocialSignInBox>
         </>
