@@ -1,6 +1,7 @@
 const SET_USERINFO = 'authReducer/SET_USERINFO';
 const SET_ISLOGGED = 'authReducer/SET_ISLOGGED';
 const UPDATE_PROFILE = 'authReducer/UPDATE_PROFILE';
+const UPDATE_NICKNAME = 'authReducer/UPDATE_NICKNAME';
 
 export const setUserInfo = (payload) => {
   return {
@@ -20,6 +21,12 @@ export const updateProfile = (payload) => {
     payload
   };
 };
+export const updateNickname = (payload) => {
+  return {
+    type: UPDATE_NICKNAME,
+    payload
+  };
+};
 
 const data = {
   userInfo: {},
@@ -34,6 +41,8 @@ const authReducer = (state = data, action) => {
       return { ...state, isLogged: action.payload };
     case UPDATE_PROFILE:
       return { ...state, userInfo: { ...state.userInfo, profile: action.payload } };
+    case UPDATE_NICKNAME:
+      return { ...state, userInfo: { ...state.userInfo, nickname: action.payload } };
     default:
       return state;
   }
