@@ -9,9 +9,10 @@ import {
 } from 'firebase/auth';
 import { auth, db } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import SignForm from '../../components/SignForm';
 import CustomLoading from '../../components/CustomLoading';
+import CustomModal from '../../components/CustomModal';
 
 const SignUpWrapper = styled.div`
   display: flex;
@@ -35,6 +36,8 @@ const SignUpPage = () => {
     profile: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
   const [validation, setValidation] = useState({
     userId: false,
     password: false
@@ -69,7 +72,11 @@ const SignUpPage = () => {
 
   const onSignUp = async (event) => {
     event.preventDefault();
-    if (!validation.userId || !validation.password) return;
+    if (!validation.userId || !validation.password) {
+      setMessage('아이디, 비밀번호를 조건에 맞춰주세요');
+      setIsOpen(true);
+      return;
+    }
 
     const { userId, password } = userInfo;
     try {
@@ -114,6 +121,9 @@ const SignUpPage = () => {
     </SignUpWrapper>
   ) : (
     <>
+      <CustomModal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
+        {message}
+      </CustomModal>
       <SignUpWrapper>
         <h1>회원가입</h1>
         <SignForm
