@@ -1,9 +1,26 @@
-import React from 'react'
+import styled from 'styled-components';
+import TapList from './tap/TapList';
+import TapContent from './tap/TapContent';
+import React, { useState } from 'react';
 
-const Mypage = () => {
+const MyPage = () => {
+  const [activeTab, setActiveTab] = useState('내 정보 수정');
+
+  // 선택된 탭을 업데이트하는 핸들러
+  const handleTabSelect = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
-    <div>Mypage</div>
-  )
-}
+    <Container>
+      <TapList onSelectTab={handleTabSelect} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <TapContent activeTab={activeTab} />
+    </Container>
+  );
+};
 
-export default Mypage
+const Container = styled.div`
+  display: flex;
+`;
+
+export default MyPage;
