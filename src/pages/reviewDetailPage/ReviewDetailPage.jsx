@@ -24,7 +24,6 @@ import {
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import bookieProfile from '../../assets/bookieProfile.jpg';
 import book from '../../assets/book.jpg';
 import { updateReview, deleteReview } from '../../redux/modules/reviewsReducer.js';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -112,7 +111,11 @@ const ReviewDetailPage = () => {
               <StyledReviewDetailUi>
                 <StyledReviewBox>
                   <StyledTitleAndUbtnAndDbtn>
-                    <StyledTitleInput value={title} onChange={(e) => setTitle(e.target.value)}></StyledTitleInput>
+                    <StyledTitleInput
+                      maxLength={20}
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    ></StyledTitleInput>
                     {reviewAuthorId === currentUserId && (
                       <StyledBtnWrapper>
                         <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
@@ -122,12 +125,13 @@ const ReviewDetailPage = () => {
                   </StyledTitleAndUbtnAndDbtn>
                   <StyledUserInfo>
                     <StyledLogo>
-                      <img src={bookieProfile} alt="Profile" />
+                      <img src={newReviewDetail.authorProfile} alt="Profile" />
                       {newReviewDetail.authorName}
                     </StyledLogo>
                     <StyledInfo>{reviewDate}</StyledInfo>
                   </StyledUserInfo>
                   <StyledContentTextarea
+                    maxLength={200}
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   ></StyledContentTextarea>
@@ -167,7 +171,7 @@ const ReviewDetailPage = () => {
                 </StyledTitleAndUbtnAndDbtn>
                 <StyledUserInfo>
                   <StyledLogo>
-                    <img src={bookieProfile} alt="Profile" />
+                    <img src={newReviewDetail.authorProfile} alt="Profile" />
                     {newReviewDetail.authorName}
                   </StyledLogo>
                   <StyledInfo>{reviewDate}</StyledInfo>
