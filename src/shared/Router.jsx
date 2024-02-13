@@ -12,6 +12,7 @@ import Layout from '../pages/layout/Layout';
 import { doc, getDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import { setIsLogged, setUserInfo } from '../redux/modules/authReducer';
+import NotFoundPage from '../pages/notFound/NotFoundPage';
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -36,11 +37,12 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/review-detail/:id" element={<ReviewDetailPage /*newReviewData={}*/ />} />
+          <Route path="/review-detail/:id" element={<ReviewDetailPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
