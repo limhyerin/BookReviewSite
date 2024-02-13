@@ -26,9 +26,10 @@ export const StyledTitleAndUbtnAndDbtn = styled.div`
 export const StyledLogoAndNicknameAndDate = styled.div`
   width: 800px;
   height: 50px;
+  display: flex;
   border-bottom: 1px solid black;
 `;
-export const StyledReviewText = styled.div`
+export const StyledReviewContent = styled.div`
   width: 800px;
   height: 200px;
   border-bottom: 1px solid black;
