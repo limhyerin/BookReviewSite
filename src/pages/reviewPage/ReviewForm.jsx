@@ -7,6 +7,7 @@ import CustomButton from '../../components/CustomButton';
 import { DropdownProvider } from '../../components/DropdownContext';
 import Dropdown from '../../components/Dropdown';
 import styled from 'styled-components';
+
 const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -35,9 +36,7 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
       bookTitle: selectedBook.title,
       createdAt: new Date(),
       genre: selectedGenre,
-      author: userInfo ? userInfo.uid : '',
-      authorName: userInfo ? userInfo.nickname : '',
-      authorProfile: userInfo.profile ? userInfo.profile : process.env.PUBLIC_URL + '/images/bookieProfile.png'
+      authorId: userInfo ? userInfo.uid : ''
     };
     const docId = await addData(newReviewData);
     newReviewData.id = docId;
