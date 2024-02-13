@@ -26,9 +26,10 @@ export const StyledTitleAndUbtnAndDbtn = styled.div`
 export const StyledLogoAndNicknameAndDate = styled.div`
   width: 800px;
   height: 50px;
+  display: flex;
   border-bottom: 1px solid black;
 `;
-export const StyledReviewText = styled.div`
+export const StyledReviewContent = styled.div`
   width: 800px;
   height: 200px;
   border-bottom: 1px solid black;
@@ -80,4 +81,13 @@ export const StyledBookCover = styled.div`
     height: 100%;
     object-fit: contain;
   }
+`;
+
+export const StyledTitleInput = styled.input`
+  font-size: 12px;
+`;
+export const StyledContentTextarea = styled.textarea`
+  width: 800px;
+  height: 200px;
+  border-bottom: 1px solid black;
 `;

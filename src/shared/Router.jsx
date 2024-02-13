@@ -14,6 +14,7 @@ import SignUpPage from '../pages/signUpPage/SignUpPage';
 import Layout from '../pages/layout/Layout';
 import NotFoundPage from '../pages/notFound/NotFoundPage';
 import KakaoSignInPage from '../pages/signInPage/kakaoSignInPage/KakaoSignInPage';
+import KaKaoSignUpPage from '../pages/signUpPage/kakaoSignUpPage/KaKaoSignUpPage';
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const Router = () => {
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signin/kakaosignin" element={<KakaoSignInPage />} />
+          <Route path="/signin/kakaosignup" element={<KaKaoSignUpPage />} />
           <Route path="/signup" element={<SignUpPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
