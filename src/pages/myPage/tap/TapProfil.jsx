@@ -4,7 +4,7 @@ import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
 import { useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore'; // getDoc 함수 추가
 import CustomLoading from '../../../components/CustomLoading';
 
 const TapProfil = () => {
@@ -27,10 +27,10 @@ const TapProfil = () => {
       try {
         if (!userInfo || !userInfo.uid) return; // userInfo 또는 userInfo.uid가 없는 경우 실행하지 않음
 
-        const docRef = doc(db, 'users', userInfo.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+        const userDocRef = doc(db, 'users', userInfo.uid);
+        const userDocSnap = await getDoc(userDocRef); // getDoc 함수 사용
+        if (userDocSnap.exists()) {
+          setUserData(userDocSnap.data());
         } else {
           console.log('No such document!');
         }
@@ -53,15 +53,28 @@ const TapProfil = () => {
     try {
       if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
 
-      const docRef = doc(db, 'users', userInfo.uid);
+      const userDocRef = doc(db, 'users', userInfo.uid);
       // 닉네임 업데이트
-      await updateDoc(docRef, { nickname: newNickname });
+      await updateDoc(userDocRef, { nickname: newNickname });
       console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
     }
     window.location.reload();
     //닉네임 변경 후 리로딩
+  };
+
+  const handleAvatarChange = async (profile) => {
+    try {
+      if (!userInfo || !userInfo.uid) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
+
+      const userDocRef = doc(db, 'users', userInfo.uid);
+      // 프로필 이미지 업데이트
+      await updateDoc(userDocRef, { profile });
+      console.log('프로필 이미지가 업데이트되었습니다.');
+    } catch (error) {
+      console.error('프로필 이미지 업데이트 오류:', error);
+    }
   };
 
   const handleChange = (event) => {
@@ -78,7 +91,7 @@ const TapProfil = () => {
   ) : (
     <UserInfo>
       <User>
-        <Avatar />
+        <Avatar onChange={handleAvatarChange} />
         <div>
           <NicknameInput type="text" value={newNickname} onChange={handleChange} />
         </div>
