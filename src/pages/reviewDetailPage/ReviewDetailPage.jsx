@@ -11,7 +11,9 @@ import {
   StyledReviewBox,
   StyledLogo,
   StyledHomeBtn,
-  StyledBookCover
+  StyledBookCover,
+  StyledTitleInput,
+  StyledContentTextarea
 } from './ReviewDetailPageStyled.js';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -24,34 +26,36 @@ import { db } from '../../firebase/firebase.js';
 
 const ReviewDetailPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //id값 설정
   const { id } = useParams();
   const reviews = useSelector((state) => state.reviewsReducer.reviews); //useSelector로 리뷰데이터 가져오기
   const newReviewDetail = reviews.find((review) => review.id === id) || {}; // 가져온 데이터를 useParams아이디랑 매치시키기
-  const dispatch = useDispatch();
+  //상태업데이트
   const [update, setUpdate] = useState(false);
   const [title, setTitle] = useState(newReviewDetail.title || '');
   const [content, setContent] = useState(newReviewDetail.content || '');
-  let reviewDate = ''; // 초기 상태는 빈 문자열로 설정
+  let reviewDate = '';
   if (newReviewDetail.createdAt && newReviewDetail.createdAt.toDate) {
     // createdAt이 정의되어 있고 toDate 메서드를 가지고 있는 경우에만 toDate 호출
     const date = newReviewDetail.createdAt.toDate();
-    reviewDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    reviewDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시`;
   }
   //수정상태로 전환,롤백
   const editHandler = () => setUpdate(true);
-  // const rollbackHandler = ()
-  //fire base 업데이트로직!
+  const rollbackHandler = () => setUpdate(false);
+  //fire base 업데이트로직
   const saveHandler = async () => {
-    const reviewRef = doc(db, 'reviews', id);
+    const reviewRef = doc(db, 'book-reviews', id); //db는 초기화된 Firestore 인스턴스, 'book-reviews'는 컬렉션의 이름, id는 ReviewDetailPage의 ID.
     await updateDoc(reviewRef, { title, content });
     dispatch(updateReview(id, { title, content }));
     setUpdate(false);
     navigate('/review');
   };
-  //fire base 삭제로직!
+  //fire base 삭제로직
   const deleteHandler = async () => {
     if (window.confirm('이 리뷰를 삭제하시겠습니까?')) {
-      const reviewRef = doc(db, 'reviews', id);
+      const reviewRef = doc(db, 'book-reviews', id);
       await deleteDoc(reviewRef);
       dispatch(deleteReview(id));
       navigate('/review');
@@ -63,12 +67,39 @@ const ReviewDetailPage = () => {
     <div>
       {update ? (
         <>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} />
-          <textarea value={content} onChange={(e) => setContent(e.target.value)} />
-          <StyledBtnWrapper>
-            <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
-            <StyledDBtn text="취소" color="main" onClick={1}></StyledDBtn>
-          </StyledBtnWrapper>
+          <>
+            <StyledReviewDetailUi>
+              <StyledReviewBox>
+                <StyledTitleAndUbtnAndDbtn>
+                  <StyledTitleInput value={title} onChange={(e) => setTitle(e.target.value)} />
+                  <StyledBtnWrapper>
+                    <StyledUBtn text="저장" color="main" onClick={saveHandler}></StyledUBtn>
+                    <StyledDBtn text="취소" color="main" onClick={rollbackHandler}></StyledDBtn>
+                  </StyledBtnWrapper>
+                </StyledTitleAndUbtnAndDbtn>
+                <StyledLogoAndNicknameAndDate>
+                  <StyledLogo>
+                    <img src={bookieProfile} alt="Profile" />
+                  </StyledLogo>
+                  {newReviewDetail.authorName} {reviewDate}
+                </StyledLogoAndNicknameAndDate>
+                <StyledContentTextarea value={content} onChange={(e) => setContent(e.target.value)} />
+                <StyledBookInfo>
+                  <StyledBookCover>
+                    <img src={newReviewDetail.image || book} alt="Book Cover" />
+                  </StyledBookCover>
+                  {newReviewDetail.bookTitle} {newReviewDetail.authorName}
+                </StyledBookInfo>
+              </StyledReviewBox>
+              <StyledHomeBtn
+                text="뒤로가기"
+                color="main"
+                onClick={() => {
+                  navigate(`/review`);
+                }}
+              ></StyledHomeBtn>
+            </StyledReviewDetailUi>
+          </>
         </>
       ) : (
         <>

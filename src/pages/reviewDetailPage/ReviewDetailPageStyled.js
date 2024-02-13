@@ -82,3 +82,12 @@ export const StyledBookCover = styled.div`
     object-fit: contain;
   }
 `;
+
+export const StyledTitleInput = styled.input`
+  font-size: 12px;
+`;
+export const StyledContentTextarea = styled.textarea`
+  width: 800px;
+  height: 200px;
+  border-bottom: 1px solid black;
+`;
