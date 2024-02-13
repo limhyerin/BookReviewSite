@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { auth, db } from '../firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { setIsLogged, setUserInfo } from '../redux/modules/authReducer';
 import MainPage from '../pages/mainPage/MainPage';
 import MyPage from '../pages/myPage/MyPage';
 import ReviewDetailPage from '../pages/reviewDetailPage/ReviewDetailPage';
 import ReviewPage from '../pages/reviewPage/ReviewPage';
 import SignInPage from '../pages/signInPage/SignInPage';
 import SignUpPage from '../pages/signUpPage/SignUpPage';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../firebase/firebase';
 import Layout from '../pages/layout/Layout';
-import { doc, getDoc } from 'firebase/firestore';
-import { useDispatch } from 'react-redux';
-import { setIsLogged, setUserInfo } from '../redux/modules/authReducer';
 import NotFoundPage from '../pages/notFound/NotFoundPage';
+import KakaoSignInPage from '../pages/signInPage/kakaoSignInPage/KakaoSignInPage';
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const Router = () => {
           <Route path="/review-detail/:id" element={<ReviewDetailPage />} />
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signin/kakaosignin" element={<KakaoSignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

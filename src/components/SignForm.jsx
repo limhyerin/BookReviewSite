@@ -67,7 +67,15 @@ const KakaoButton = styled(RiKakaoTalkFill)`
   cursor: pointer;
 `;
 
-const SignForm = ({ userInfo, setUserInfo, setValidation, onSubmit, onClickGoogleSignIn, onClickGithubSignIn }) => {
+const SignForm = ({
+  userInfo,
+  setUserInfo,
+  setValidation,
+  onSubmit,
+  onClickGoogleSignIn,
+  onClickGithubSignIn,
+  onClickKakaoSignIn
+}) => {
   const { pathname } = useLocation();
   const [errorMsg, setErrorMsg] = useState({
     userId: '',
@@ -138,7 +146,7 @@ const SignForm = ({ userInfo, setUserInfo, setValidation, onSubmit, onClickGoogl
           <SocialSignInBox>
             <GoogleButton type="button" onClick={onClickGoogleSignIn} />
             <GithubButton type="button" onClick={onClickGithubSignIn} />
-            <KakaoButton type="button" />
+            <KakaoButton type="button" onClick={onClickKakaoSignIn} />
           </SocialSignInBox>
         </>
       )}
