@@ -27,6 +27,7 @@ const ReviewDetailPage = () => {
   const [update, setUpdate] = useState(false);
   const [inputValue, setInputValue] = useState(newReviewDetail.content || '');
 
+  console.log(reviews);
   const uBtnHandler = () => (update ? TextAreaUBtnHandler() : setUpdate(!update));
 
   const TextAreaUBtnHandler = () => {
@@ -56,7 +57,7 @@ const ReviewDetailPage = () => {
             <StyledLogo>
               <img src={bookieProfile} alt="Profile" />
             </StyledLogo>
-            {newReviewDetail.authorName} {newReviewDetail.createdAt}
+            {/* {newReviewDetail.authorName} {newReviewDetail.createdAt} */}
           </StyledLogoAndNicknameAndDate>
           <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
           <StyledBookInfo>
