@@ -15,7 +15,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
   const [selectedGenre, setSelectedGenre] = useState('기타');
   const { userInfo } = useSelector((state) => state.authReducer);
 
-  console.log('userInfo=>', userInfo);
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   };

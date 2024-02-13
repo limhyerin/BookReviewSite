@@ -91,3 +91,10 @@ export const StyledContentTextarea = styled.textarea`
   height: 200px;
   border-bottom: 1px solid black;
 `;
+
+export const StyledCustomLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50vh;
+`;
