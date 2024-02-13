@@ -56,7 +56,7 @@ const ReviewDetailPage = () => {
             <StyledLogo>
               <img src={bookieProfile} alt="Profile" />
             </StyledLogo>
-            {newReviewDetail.authorName} {newReviewDetail.createdAt}
+            {/* {newReviewDetail.authorName} {newReviewDetail.createdAt} */}
           </StyledLogoAndNicknameAndDate>
           <StyledReviewText>{newReviewDetail.content}</StyledReviewText>
           <StyledBookInfo>

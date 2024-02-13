@@ -53,10 +53,11 @@ const ReviewPage = () => {
       </CustomModal>
       <StyledReviewPageContainer>
         <CustomSidebar items={newGenreLists} setItem={setSelectedGenre} selectedItem={selectedGenre} />
-        {reviews.length > 0 ? (
-          <ReviewsContainer openModal={openModal} selectedGenre={selectedGenre} reviews={reviews} />
-        ) : (
-          <div className="loadingIcon">{loading && <CustomLoading />}</div>
+        {!loading && <ReviewsContainer openModal={openModal} selectedGenre={selectedGenre} reviews={reviews} />}
+        {loading && (
+          <div className="loadingIcon">
+            <CustomLoading />
+          </div>
         )}
       </StyledReviewPageContainer>
     </div>
