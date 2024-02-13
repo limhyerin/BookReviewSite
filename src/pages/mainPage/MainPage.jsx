@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/CustomButton';
+import ImageSlide from './ImageSlide';
 
 // greeting : 인사문구 css
 const StyledHello = styled.div`
@@ -54,8 +55,7 @@ const StyledSlideright = keyframes`
     transform: translateX(-1200px);
   }
 `;
-
-const StyledSliderWrapper = styled.div`
+const StyledSliderWrapperRight = styled.div`
   position: absolute;
   display: flex;
   width: 2400px;
@@ -109,34 +109,6 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledBox = styled.div`
-  position: relative;
-  width: 1200px;
-  height: 280px;
-  margin: 20px auto;
-  overflow: hidden;
-`;
-
-const StyledSlider = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 1200px;
-`;
-
-const StyledSlide = styled.div`
-  width: 190px;
-  height: 280px;
-  margin-left: 50px;
-  background-position: center;
-  background-size: cover;
-`;
-
-const StyledSlideImg = styled(StyledSlide)`
-  width: 190px;
-  height: 280px;
-  margin-left: 50px;
-`;
-
   // top : 이미지 url 목록
   const imageUrlsTop = [
     'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
@@ -182,45 +154,13 @@ const StyledSlideImg = styled(StyledSlide)`
 
   return (
     <>
-        <StyledHello>
-          { greet }
-        </StyledHello>
-        <StyledExplan>
-          부기와 함께하는 독서 기록
-        </StyledExplan>
+        <StyledHello>{ greet }</StyledHello>
+        <StyledExplan>부기와 함께하는 독서 기록</StyledExplan>
         <StyledContainer>
-          <StyledBox>
-            <StyledSliderWrapper>
-              <StyledSlider>
-              {imageUrlsTop.map((url, index) => (
-                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
-              ))}
-              </StyledSlider>
-              <StyledSlider>
-              {imageUrlsTop.map((url, index) => (
-                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
-              ))}
-              </StyledSlider>
-            </StyledSliderWrapper>
-          </StyledBox>
-          <StyledBox>
-            <StyledSliderWrapperLeft>
-              <StyledSlider>
-              {imageUrlsBottom.map((url, index) => (
-                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
-              ))}
-              </StyledSlider>
-              <StyledSlider>
-              {imageUrlsBottom.map((url, index) => (
-                <StyledSlideImg key={index} style={{ backgroundImage: `url(${url})` }} />
-              ))}
-              </StyledSlider>
-            </StyledSliderWrapperLeft>
-          </StyledBox>
+            <ImageSlide StyledSliderWrapper={StyledSliderWrapperRight} imageUrls={imageUrlsTop}/>
+            <ImageSlide StyledSliderWrapper={StyledSliderWrapperLeft} imageUrls={imageUrlsBottom}/>
         </StyledContainer>
-        <StyledBtn>
-          { pagemove }
-        </StyledBtn>
+        <StyledBtn>{ pagemove }</StyledBtn>
     </>
   )
 }
