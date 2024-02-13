@@ -8,7 +8,7 @@ const WholeReviews = ({ selectedGenre, reviews }) => {
     if (reviews.length > 0) {
       return reviews.map((review) => <ReviewCard key={review.id} review={review} />);
     } else {
-      return <StyledNoReviews>작성된 리뷰가 없습니다</StyledNoReviews>;
+      return <StyledNoReviews>작성된 리뷰가 없습니다.</StyledNoReviews>;
     }
   }
 };
@@ -24,7 +24,7 @@ const FilteredReviews = ({ reviews, selectedGenre }) => {
   }
 };
 
-const ReviewsContainer = ({ openModal, selectedGenre, reviews }) => {
+const ReviewsContainer = ({ loading, openModal, selectedGenre, reviews }) => {
   return (
     <StyledReviewsContainer>
       <div className="pageTitleWrap">
