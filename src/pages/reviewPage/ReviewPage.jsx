@@ -6,9 +6,9 @@ import ReviewForm from './ReviewForm';
 import { useSelector } from 'react-redux';
 import { genreList } from '../../common/constants';
 import CustomSidebar from './CustomSidebar';
-import ReviewsContainer from './ReviewsContainer';
 import CustomLoading from '../../components/CustomLoading';
 import styled from 'styled-components';
+import ReviewsContainer from './ReviewsContainer';
 
 const ReviewPage = () => {
   const reviews = useSelector((state) => state.reviewsReducer).reviews;
