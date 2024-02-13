@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from '../../../firebase/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useSelector } from 'react-redux';
 import bookieProfile from '../../../assets/bookieProfile.png';
-
-const firebaseApp = initializeApp(firebaseConfig);
-const storage = getStorage(firebaseApp);
+import { storage } from '../../../firebase/firebase';
 
 const Avatar = ({ onChange }) => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
