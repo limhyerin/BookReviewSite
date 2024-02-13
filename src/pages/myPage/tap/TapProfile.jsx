@@ -12,14 +12,6 @@ const TapProfile = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   // 로딩 상태를 변경합니다.
-  //   const fetchNickname = async () => {
-  //     await new Promise((resolve) => setTimeout(resolve, 550));
-  //     setLoading(false);
-  //   };
-  //   fetchNickname();
-  // }, []);
 
   console.log(userInfo.uid);
   const handleSaveClick = async (event) => {
@@ -64,14 +56,6 @@ const TapProfile = () => {
     </UserInfo>
   );
 };
-// loading ? (
-//   // 로딩 중일 때 로딩 컴포넌트를 표시합니다.
-//   <LoadingContainer>
-//     <StyledLoading>
-//       <CustomLoading />
-//     </StyledLoading>
-//   </LoadingContainer>
-// ) :
 
 const UserInfo = styled.div`
   display: flex;
@@ -111,19 +95,6 @@ const NicknameInput = styled.input`
   border-radius: 4px;
   font-size: 16px;
   outline: none;
-`;
-
-const StyledLoading = styled.div`
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const LoadingContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
 `;
 
 export default TapProfile;
