@@ -38,7 +38,7 @@ const StyledExplan = styled.div`
 // 페이지 이동 버튼
 const StyledBtn = styled.div`
   position:sticky;
-  bottom: 50px;
+  bottom: 55px;
   text-align: center;
   width: 800px;
   height: 50px;
