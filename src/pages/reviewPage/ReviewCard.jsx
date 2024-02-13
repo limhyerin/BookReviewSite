@@ -1,17 +1,19 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+import useUserData from '../../hooks/useUserData';
 const ReviewCard = ({ review }) => {
+  const { userData } = useUserData(review.authorId);
+
   return (
     <StyledReviewCard key={review.id}>
       <Link key={review.id} to={`/review-detail/${review.id}`}>
         <div className="card">
           <p className="userWrap">
             <span className="profile">
-              <img src={review.authorProfile} alt="프사" />
+              <img src={userData ? userData.profile : ''} alt="프사" />
             </span>
-            <span>{review.authorName}</span>
+            <span>{userData ? userData.nickname : ''}</span>
           </p>
           <div className="imgWrapper">
             <img src={review.image} alt={review.title} />
