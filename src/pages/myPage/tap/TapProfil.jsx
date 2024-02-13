@@ -31,6 +31,13 @@ const TapProfil = () => {
     fetchData();
   }, [userInfo]);
 
+  useEffect(() => {
+    // userData가 변경될 때마다 새로운 닉네임 설정
+    if (userData) {
+      setNewNickname(userData.nickname || '');
+    }
+  }, [userData]);
+
   const handleSaveClick = async () => {
     try {
       if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
@@ -55,12 +62,7 @@ const TapProfil = () => {
       <User>
         <Avatar />
         <div>
-          <NicknameInput
-            type="text"
-            value={newNickname}
-            onChange={handleChange}
-            placeholder={userData && userData.nickname ? userData.nickname : '새로운 닉네임 입력'}
-          />
+          <NicknameInput type="text" value={newNickname} onChange={handleChange} />
         </div>
       </User>
       <div>{userData && userData.nickname ? <CustomButton text={'수정하기'} onClick={handleSaveClick} /> : null}</div>
