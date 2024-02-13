@@ -144,7 +144,7 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchNickname = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 550));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
     };
     fetchNickname();
