@@ -46,7 +46,7 @@ const StyledExplan = styled.div`
 
 // 페이지 이동 버튼
 const StyledBtn = styled.div`
-  position:sticky;
+  position: sticky;
   bottom: 50px;
   text-align: center;
   width: 800px;
@@ -96,7 +96,7 @@ const StyledContainer = styled.div`
   overflow: hidden;
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -107,7 +107,7 @@ const StyledContainer = styled.div`
   }
 
   ::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     right: 0;
@@ -118,76 +118,91 @@ const StyledContainer = styled.div`
   }
 `;
 
-  // top : 이미지 url 목록
-  const imageUrlsTop = [
-    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
-    'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
-    'https://img.ridicdn.net/cover/2155023408/xxlarge',
-    'https://image.aladin.co.kr/product/33029/76/cover500/e362532114_1.jpg',
-    'https://image.yes24.com/Goods/123318244/XL'
-  ];
+// top : 이미지 url 목록
+const imageUrlsTop = [
+  'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
+  'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
+  'https://img.ridicdn.net/cover/2155023408/xxlarge',
+  'https://image.aladin.co.kr/product/33029/76/cover500/e362532114_1.jpg',
+  'https://image.yes24.com/Goods/123318244/XL'
+];
 
-  // bottom : 이미지 url 목록
-  const imageUrlsBottom = [
-    'https://image.yes24.com/goods/123451481/XL',
-    'https://image.yes24.com/Goods/118040295/XL',
-    'https://img.ridicdn.net/cover/606002474/xxlarge',
-    'https://ibookpark.com/wp-content/uploads/2022/04/x9791187142560.jpg',
-    'https://image.yes24.com/goods/124027690/XL'
-  ];
+// bottom : 이미지 url 목록
+const imageUrlsBottom = [
+  'https://image.yes24.com/goods/123451481/XL',
+  'https://image.yes24.com/Goods/118040295/XL',
+  'https://img.ridicdn.net/cover/606002474/xxlarge',
+  'https://ibookpark.com/wp-content/uploads/2022/04/x9791187142560.jpg',
+  'https://image.yes24.com/goods/124027690/XL'
+];
 
-  const MainPage = () => {
-    const navigate = useNavigate();
-    const { userInfo }=useSelector(({authReducer})=>authReducer);
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const [ loading, setLoading ] = useState(true);
+const MainPage = () => {
+  const navigate = useNavigate();
+  const { userInfo } = useSelector(({ authReducer }) => authReducer);
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      const fetchNickname = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 550));
-        setLoading(false);
-      }
-      fetchNickname();
-    }, [])
-    
-    // 로그인 여부에 따라 문구 변경
-    const greet = isLoggedIn ? (
-        <h1>
-          <StyledTitle>{ userInfo.nickname }</StyledTitle>
-          <StyledGreet>님, 환영합니다</StyledGreet>
-        </h1>
-      ) : (
-        <h1><StyledTitle>BOOKIE</StyledTitle><StyledGreet> 에 오신 것을 환영합니다</StyledGreet></h1> 
-      );
-  
-    // 로그인 여부에 따라 이동 페이지 변경
-    const pagemove = isLoggedIn ? (
-      // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
-      <CustomButton text="시작하기" size="large" radius="circle"  color="main" onClick={() => {
+  useEffect(() => {
+    const fetchNickname = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 550));
+      setLoading(false);
+    };
+    fetchNickname();
+  }, []);
+
+  // 로그인 여부에 따라 문구 변경
+  const greet = isLoggedIn ? (
+    <h1>
+      <StyledTitle>{userInfo.nickname}</StyledTitle>
+      <StyledGreet>님, 환영합니다</StyledGreet>
+    </h1>
+  ) : (
+    <h1>
+      <StyledTitle>BOOKIE</StyledTitle>
+      <StyledGreet> 에 오신 것을 환영합니다</StyledGreet>
+    </h1>
+  );
+
+  // 로그인 여부에 따라 이동 페이지 변경
+  const pagemove = isLoggedIn ? (
+    // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
+    <CustomButton
+      text="시작하기"
+      size="large"
+      radius="circle"
+      color="main"
+      onClick={() => {
         navigate(`/review`);
-      }}></CustomButton>
-    ) : (
-      // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
-      <CustomButton text="시작하기" size="large" radius="circle" color="main" onClick={() => {
+      }}
+    ></CustomButton>
+  ) : (
+    // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
+    <CustomButton
+      text="시작하기"
+      size="large"
+      radius="circle"
+      color="main"
+      onClick={() => {
         navigate(`/signin`);
-      }}></CustomButton>
-    );
+      }}
+    ></CustomButton>
+  );
 
   return loading ? (
-  <StyledLoading>
-    <CustomLoading />
-  </StyledLoading>) :
-  (
+    <StyledLoading>
+      <CustomLoading />
+    </StyledLoading>
+  ) : (
     <>
-        <StyledHello>{ greet }</StyledHello>
-        <StyledExplan>부기와 함께하는 독서 기록</StyledExplan>
-        <StyledContainer>
-            <ImageSlide StyledSliderWrapper={StyledSliderWrapperRight} imageUrls={imageUrlsTop}/>
-            <ImageSlide StyledSliderWrapper={StyledSliderWrapperLeft} imageUrls={imageUrlsBottom}/>
-        </StyledContainer>
-        <StyledBtn>{ pagemove }</StyledBtn>
+      <StyledHello>{greet}</StyledHello>
+      <StyledExplan>부기와 함께하는 독서 기록</StyledExplan>
+      <StyledContainer>
+        <ImageSlide StyledSliderWrapper={StyledSliderWrapperRight} imageUrls={imageUrlsTop} />
+        <ImageSlide StyledSliderWrapper={StyledSliderWrapperLeft} imageUrls={imageUrlsBottom} />
+      </StyledContainer>
+      <StyledBtn>{pagemove}</StyledBtn>
     </>
-  )
-}
+  );
+};
 
 export default MainPage;
