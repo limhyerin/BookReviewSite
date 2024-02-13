@@ -38,7 +38,7 @@ const StyledExplan = styled.div`
 // 페이지 이동 버튼
 const StyledBtn = styled.div`
   position:sticky;
-  bottom: 55px;
+  bottom: 50px;
   text-align: center;
   width: 800px;
   height: 50px;
@@ -55,7 +55,6 @@ const StyledSlideright = keyframes`
     transform: translateX(-1200px);
   }
 `;
-
 const StyledSliderWrapperRight = styled.div`
   position: absolute;
   display: flex;
