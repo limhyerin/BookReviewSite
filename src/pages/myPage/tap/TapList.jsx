@@ -6,7 +6,8 @@ import { auth } from '../../../firebase/firebase';
 const TapList = ({ onSelectTab, activeTab, setActiveTab }) => {
   const navigate = useNavigate();
   const onActiveList = (e) => {
-    if (e.target === e.currentTarget) return;
+    if (e.target.nodeName !== 'LI') return;
+
     setActiveTab(e.target.textContent);
   };
 
