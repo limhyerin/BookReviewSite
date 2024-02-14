@@ -34,11 +34,11 @@ const StyledButtonBox = styled.div`
 
 const StyledProfile = styled(Link)`
   img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     box-shadow: 1px 1px 1px black;
-    object-fit: contain;
+    object-fit: cover;
     background-color: #fff;
   }
 `;
@@ -52,7 +52,7 @@ const LogoutButton = styled.div`
 const Header = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isLogged, userInfo } = useSelector(({ authReducer }) => authReducer);
+  const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const isLoggedIn = localStorage.getItem('isLoggedIn');
   const navigateToSignIn = () => {
     navigate('/signin');
@@ -60,23 +60,16 @@ const Header = () => {
   const navigateToSignUp = () => {
     navigate('/signup');
   };
-
-  const onClickLogout = async () => {
-    await signOut(auth);
-  };
   return (
     <StyledHeader>
       <StyledFigure to={'/'}>
         <img src={bookieLogo} alt="logo" />
       </StyledFigure>
       {isLoggedIn && (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <StyledProfile to={'/mypage'}>
             <img src={userInfo.profile || bookieProfile} alt="profile" />
           </StyledProfile>
-          <LogoutButton>
-            <CustomButton onClick={onClickLogout} text={'logout'} />
-          </LogoutButton>
         </div>
       )}
       {!pathname.includes('sign') && !isLoggedIn && (

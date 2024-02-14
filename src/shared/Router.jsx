@@ -4,7 +4,7 @@ import { auth, db } from '../firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { setIsLogged, setUserInfo } from '../redux/modules/authReducer';
+import { setUserInfo } from '../redux/modules/authReducer';
 import MainPage from '../pages/mainPage/MainPage';
 import MyPage from '../pages/myPage/MyPage';
 import ReviewDetailPage from '../pages/reviewDetailPage/ReviewDetailPage';
@@ -22,11 +22,9 @@ const Router = () => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const d = await getDoc(doc(db, 'users', user.uid));
-        if (d.data()) dispatch(setIsLogged(true));
         dispatch(setUserInfo(d.data()));
         localStorage.setItem('isLoggedIn', true);
       } else {
-        dispatch(setIsLogged(false));
         localStorage.removeItem('isLoggedIn');
       }
     });
