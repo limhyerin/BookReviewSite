@@ -51,10 +51,6 @@ const ReviewDetailPage = () => {
   const reviews = useSelector((state) => state.reviewsReducer.reviews); //useSelector로 리뷰데이터 가져오기
   const newReviewDetail = reviews.find((review) => review.id === id) || {}; // 가져온 데이터를 useParams아이디랑 매치시키기
 
-  useEffect(() => {
-    if (Object.keys(newReviewDetail).length === 0) navigate('/error');
-  }, [navigate]);
-
   //상태업데이트
   const [update, setUpdate] = useState(false);
   const [title, setTitle] = useState(newReviewDetail.title || '');
@@ -187,6 +183,10 @@ const ReviewDetailPage = () => {
               <StyledReviewBox>
                 <StyledTitleAndUbtnAndDbtn>
                   <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
+                  <StyledBtnWrapper>
+                    <StyledUBtn text="수정" color="main" onClick={editHandler} />
+                    <StyledDBtn text="삭제" color="white" onClick={deleteHandler} />
+                  </StyledBtnWrapper>
                   {reviewAuthorId === currentUserId && (
                     <StyledBtnWrapper>
                       <StyledUBtn text="수정" color="main" onClick={editHandler} />

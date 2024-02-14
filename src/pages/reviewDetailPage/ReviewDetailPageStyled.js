@@ -105,7 +105,8 @@ export const StyledTitleInput = styled.input`
 export const StyledContentTextarea = styled.textarea`
   margin: 20px;
   width: 760px;
-  height: 180px;
+  height: 200px;
+  font-size: 16px;
 `;
 
 export const StyledCustomLoading = styled.div`
@@ -125,17 +126,14 @@ export const StyledBookTitleAuthor = styled.div`
 `;
 
 export const StyledBookTitle = styled.div`
-  width: 700px;
   margin-bottom: 20px;
   font-weight: bolder;
 `;
 
 export const StyledBookAuthor = styled.div`
-  width: 700px;
   margin-bottom: 20px;
 `;
 export const StyledBookGenre = styled.div`
-  width: 700px;
   font-size: 12px;
 `;
 
