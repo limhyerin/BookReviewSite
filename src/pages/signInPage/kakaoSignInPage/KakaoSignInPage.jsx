@@ -31,7 +31,6 @@ const KakaoSignInPage = () => {
       try {
         if (code) {
           const { access_token } = await getToken(code);
-          console.log(access_token);
           const {
             data: {
               kakao_account: { email }
@@ -46,8 +45,7 @@ const KakaoSignInPage = () => {
               }
             }
           );
-          const signinRes = await signInWithEmailAndPassword(auth, email, 'password');
-          console.log('로그인 성공', signinRes);
+          await signInWithEmailAndPassword(auth, email, 'password');
           navigate('/');
         }
       } catch (error) {

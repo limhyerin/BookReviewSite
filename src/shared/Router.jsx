@@ -20,7 +20,6 @@ const Router = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      console.log('user', user);
       if (user) {
         const d = await getDoc(doc(db, 'users', user.uid));
         if (d.data()) dispatch(setIsLogged(true));
