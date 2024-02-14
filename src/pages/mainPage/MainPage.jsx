@@ -14,7 +14,6 @@ const StyledLoading = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-// greeting : 인사문구 css
 const StyledHello = styled.div`
   text-align: center;
   width: 800px;
@@ -24,17 +23,14 @@ const StyledHello = styled.div`
   margin: 50px auto 30px auto;
 `;
 
-// bookie, 닉네임 굵기 지정
 const StyledTitle = styled.span`
   font-weight: large;
 `;
 
-// 나머지 환영 문구 굵기 지정
 const StyledGreet = styled.span`
   font-weight: normal;
 `;
 
-// 세부설명
 const StyledExplan = styled.div`
   text-align: center;
   width: 800px;
@@ -44,7 +40,6 @@ const StyledExplan = styled.div`
   margin: 5px auto 5px auto;
 `;
 
-// 페이지 이동 버튼
 const StyledBtn = styled.div`
   position: sticky;
   bottom: 50px;
@@ -54,8 +49,6 @@ const StyledBtn = styled.div`
   margin: 30px auto auto auto;
 `;
 
-// animation
-// 오른쪽에서 왼쪽 방향 애니메이션
 const StyledSlideright = keyframes`
   0% {
     transform: translateX(0);
@@ -71,7 +64,6 @@ const StyledSliderWrapperRight = styled.div`
   animation: ${StyledSlideright} 11s linear infinite;
 `;
 
-// 왼쪽에서 오른쪽 방향 애니메이션
 const StyledSlideLeft = keyframes`
   0% {
     transform: translateX(-1200px);
@@ -87,7 +79,6 @@ const StyledSliderWrapperLeft = styled.div`
   animation: ${StyledSlideLeft} 11s linear infinite;
 `;
 
-// 전체 좌우 흐림 효과 적용
 const StyledContainer = styled.div`
   position: relative;
   width: 1200px;
@@ -118,7 +109,6 @@ const StyledContainer = styled.div`
   }
 `;
 
-// top : 이미지 url 목록
 const imageUrlsTop = [
   'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791198530325.jpg',
   'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9791193128428.jpg',
@@ -127,7 +117,6 @@ const imageUrlsTop = [
   'https://image.yes24.com/Goods/123318244/XL'
 ];
 
-// bottom : 이미지 url 목록
 const imageUrlsBottom = [
   'https://image.yes24.com/goods/123451481/XL',
   'https://image.yes24.com/Goods/118040295/XL',
@@ -150,7 +139,6 @@ const MainPage = () => {
     fetchNickname();
   }, []);
 
-  // 로그인 여부에 따라 문구 변경
   const greet = isLoggedIn ? (
     <h1>
       <StyledTitle>{userInfo.nickname}</StyledTitle>
@@ -163,9 +151,7 @@ const MainPage = () => {
     </h1>
   );
 
-  // 로그인 여부에 따라 이동 페이지 변경
   const pagemove = isLoggedIn ? (
-    // 로그인시, 버튼 클릭 후 리뷰페이지로 이동
     <CustomButton
       text="시작하기"
       size="large"
@@ -176,7 +162,6 @@ const MainPage = () => {
       }}
     ></CustomButton>
   ) : (
-    // 비로그인시, 버튼 클릭 후 로그인 페이지로 이동
     <CustomButton
       text="시작하기"
       size="large"

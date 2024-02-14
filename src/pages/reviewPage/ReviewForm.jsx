@@ -55,7 +55,6 @@ const ReviewForm = ({ selectedBook, setIsModalOpen, setSelectedBook }) => {
         </div>
         <DropdownProvider>
           <div>
-            {/* <h3>Dropdown Item</h3> */}
             <Dropdown setSelectedItem={setSelectedGenre} items={genreList} />
           </div>
         </DropdownProvider>

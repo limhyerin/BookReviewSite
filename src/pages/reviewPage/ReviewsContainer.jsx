@@ -24,7 +24,7 @@ const FilteredReviews = ({ reviews, selectedGenre }) => {
   }
 };
 
-const ReviewsContainer = ({ loading, openModal, selectedGenre, reviews }) => {
+const ReviewsContainer = ({ openModal, selectedGenre, reviews }) => {
   return (
     <StyledReviewsContainer>
       <div className="pageTitleWrap">
@@ -46,7 +46,6 @@ export default ReviewsContainer;
 const StyledReviewsContainer = styled.div`
   flex: 6;
   display: flex;
-  //justify-content: space-between;
   flex-direction: column;
 
   .pageTitleWrap {
@@ -67,8 +66,6 @@ const StyledReviews = styled.div`
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    /* display: flex;
-    flex-wrap: wrap; */
     justify-content: center;
     margin-top: 30px;
     gap: 2rem;
