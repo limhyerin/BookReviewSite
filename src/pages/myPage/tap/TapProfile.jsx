@@ -4,7 +4,7 @@ import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
-import { doc, updateDoc } from 'firebase/firestore'; // getDoc 함수 추가
+import { doc, updateDoc } from 'firebase/firestore';
 import { updateNickname, updateProfile } from '../../../redux/modules/authReducer';
 
 const TapProfile = () => {
@@ -13,33 +13,28 @@ const TapProfile = () => {
 
   const dispatch = useDispatch();
 
-  console.log(userInfo.uid);
   const handleSaveClick = async (event) => {
     event.preventDefault();
     try {
-      if (!userInfo) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
+      if (!userInfo) return;
       const newNickname = event.target.nickNameInput.value;
       const userDocRef = doc(db, 'users', userInfo.uid);
-      // 닉네임 업데이트
+
       await updateDoc(userDocRef, { nickname: newNickname });
       dispatch(updateNickname(newNickname));
-      console.log('닉네임이 업데이트되었습니다.');
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
     }
-    //닉네임 변경 후 리로딩
   };
 
   const handleAvatarChange = async (profile) => {
     try {
-      if (!userInfo || !userInfo.uid) return; // userInfo가 유효하지 않으면 더 이상 실행하지 않음
+      if (!userInfo || !userInfo.uid) return;
       const userDocRef = doc(db, 'users', userInfo.uid);
-      // 프로필 이미지 업데이트
+
       await updateDoc(userDocRef, { profile });
-      console.log(profile);
       dispatch(updateProfile(profile));
       setLoading(false);
-      console.log('프로필 이미지가 업데이트되었습니다.');
     } catch (error) {
       console.error('프로필 이미지 업데이트 오류:', error);
     }
