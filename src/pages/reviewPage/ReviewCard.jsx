@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import useUserData from '../../hooks/useUserData';
 const ReviewCard = ({ review }) => {
   const { userData } = useUserData(review.authorId);
-
   return (
     <StyledReviewCard key={review.id}>
       <Link key={review.id} to={`/review-detail/${review.id}`}>
