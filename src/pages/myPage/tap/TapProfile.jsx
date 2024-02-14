@@ -2,14 +2,21 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
+import CustomModal from '../../../components/CustomModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { updateNickname, updateProfile } from '../../../redux/modules/authReducer';
 
+const StyledModalWrap = styled.div`
+  padding: 10px 50px;
+  font-size: 20px;
+`;
+
 const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -22,6 +29,7 @@ const TapProfile = () => {
 
       await updateDoc(userDocRef, { nickname: newNickname });
       dispatch(updateNickname(newNickname));
+      setShowModal(true);
     } catch (error) {
       console.error('닉네임 업데이트 오류:', error);
     }
@@ -35,9 +43,14 @@ const TapProfile = () => {
       await updateDoc(userDocRef, { profile });
       dispatch(updateProfile(profile));
       setLoading(false);
+      setShowModal(true);
     } catch (error) {
       console.error('프로필 이미지 업데이트 오류:', error);
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -49,6 +62,11 @@ const TapProfile = () => {
           <CustomButton text={'수정하기'} />
         </form>
       </User>
+      <CustomModal isOpen={showModal} closeModal={closeModal}>
+        <StyledModalWrap>
+          <p>수정이 완료되었습니다!</p>
+        </StyledModalWrap>
+      </CustomModal>
     </UserInfo>
   );
 };
