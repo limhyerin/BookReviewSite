@@ -165,8 +165,8 @@ const ReviewDetailPage = () => {
                       <img src={newReviewDetail.image || book} alt="Book Cover" />
                     </StyledBookCover>
                     <StyledBookTitleAuthor>
-                      <StyledBookTitle>책이름 : {newReviewDetail.bookTitle}</StyledBookTitle>
-                      <StyledBookAuthor>저자 : {newReviewDetail.bookAuthor}</StyledBookAuthor>
+                      <StyledBookTitle> {newReviewDetail.bookTitle}</StyledBookTitle>
+                      <StyledBookAuthor> {newReviewDetail.bookAuthor} 지음</StyledBookAuthor>
                       <StyledBookGenre> 장르 : {newReviewDetail.genre}</StyledBookGenre>
                     </StyledBookTitleAuthor>
                   </StyledBookInfo>
