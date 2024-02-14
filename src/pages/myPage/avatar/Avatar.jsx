@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useSelector } from 'react-redux';
@@ -7,6 +8,15 @@ import CustomLoading from '../../../components/CustomLoading';
 
 const Avatar = ({ loading, setLoading, onChange }) => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (userInfo && userInfo.profile) {
+      setImageUrl(userInfo.profile);
+    } else {
+      setImageUrl(bookieProfile);
+    }
+  }, [userInfo]);
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -14,15 +24,15 @@ const Avatar = ({ loading, setLoading, onChange }) => {
     const fileRef = ref(storageRef, file.name);
     setLoading(true);
     await uploadBytes(fileRef, file);
-    const imageUrl = await getDownloadURL(fileRef);
-    onChange(imageUrl);
+    const newImageUrl = await getDownloadURL(fileRef);
+    setImageUrl(newImageUrl);
+    onChange(newImageUrl);
+    setLoading(false);
   };
 
   return (
     <AvatarContainer>
-      <ImageWrapper>
-        {loading ? <CustomLoading /> : <Image src={userInfo.profile || bookieProfile} alt="avatar" />}
-      </ImageWrapper>
+      <ImageWrapper>{loading ? <CustomLoading /> : <Image src={imageUrl} alt="avatar" />}</ImageWrapper>
       <ImageInput type="file" id="avatarInput" onChange={handleImageChange} accept="image/*" />
       <ImageInputLabel htmlFor="avatarInput">이미지 변경</ImageInputLabel>
     </AvatarContainer>
