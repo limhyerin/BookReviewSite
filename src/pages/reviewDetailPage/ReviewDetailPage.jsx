@@ -183,10 +183,6 @@ const ReviewDetailPage = () => {
               <StyledReviewBox>
                 <StyledTitleAndUbtnAndDbtn>
                   <StyledReviewTitle>{newReviewDetail.title}</StyledReviewTitle>
-                  <StyledBtnWrapper>
-                    <StyledUBtn text="수정" color="main" onClick={editHandler} />
-                    <StyledDBtn text="삭제" color="white" onClick={deleteHandler} />
-                  </StyledBtnWrapper>
                   {reviewAuthorId === currentUserId && (
                     <StyledBtnWrapper>
                       <StyledUBtn text="수정" color="main" onClick={editHandler} />
