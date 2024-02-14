@@ -80,7 +80,8 @@ const SignForm = ({
   const { pathname } = useLocation();
   const [errorMsg, setErrorMsg] = useState({
     userId: '',
-    password: ''
+    password: '',
+    result: ''
   });
 
   const onChangeUserInfo = (event) => {
@@ -93,9 +94,13 @@ const SignForm = ({
       setValidation((prev) => ({ ...prev, [name]: false }));
       setErrorMsg((prev) => {
         if (name === 'userId') {
-          return { ...prev, [name]: 'id는 email 형식입니다.' };
-        } else {
+          return { ...prev, [name]: '아이디는 email 형식입니다.' };
+        }
+        if (name === 'password') {
           return { ...prev, [name]: '최소 8 자, 하나 이상의 특수문자 포함한 문자와 숫자를 입력해주세요' };
+        }
+        if (name === 'nickname') {
+          return { ...prev, [name]: '닉네임은 2 ~ 15 글자로 입력해주세요.' };
         }
       });
     }
