@@ -22,7 +22,7 @@ const useUserData = (userId) => {
     };
 
     fetchData();
-  }, [userInfo, userId, userData]); // userId를 의존성 배열에 추가
+  }, [userInfo, userId]); // userId를 의존성 배열에 추가
 
   return { userData };
 };
