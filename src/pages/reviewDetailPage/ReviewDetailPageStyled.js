@@ -125,17 +125,14 @@ export const StyledBookTitleAuthor = styled.div`
 `;
 
 export const StyledBookTitle = styled.div`
-  width: 700px;
   margin-bottom: 20px;
   font-weight: bolder;
 `;
 
 export const StyledBookAuthor = styled.div`
-  width: 700px;
   margin-bottom: 20px;
 `;
 export const StyledBookGenre = styled.div`
-  width: 700px;
   font-size: 12px;
 `;
 
