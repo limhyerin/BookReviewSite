@@ -8,10 +8,11 @@ function BookSearch({ setSelectedBook, books, setBooks }) {
 
   const searchBooks = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_NAVER_API_URL}/v1/search/book.json`, {
+      const response = await axios.get('/v1/search/book.json', {
         headers: {
           'X-Naver-Client-Id': process.env.REACT_APP_NAVER_CLIENT_ID,
-          'X-Naver-Client-Secret': process.env.REACT_APP_NAVER_CLIENT_SECRET
+          'X-Naver-Client-Secret': process.env.REACT_APP_NAVER_CLIENT_SECRET,
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
         params: {
           query: query,
@@ -90,7 +91,6 @@ const StyledBookSearchContainer = styled.div`
     cursor: pointer;
   }
   > form {
-    // margin-bottom: 20px;
     display: flex;
     justify-content: center;
   }

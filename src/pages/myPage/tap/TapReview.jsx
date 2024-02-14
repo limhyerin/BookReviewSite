@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import bookieProfileImage from '../../../assets/bookieNotFound.png';
 import { useSelector } from 'react-redux';
 import ReviewCard from '../../reviewPage/ReviewCard';
 import useFirestore from '../../../hooks/useFirestore';
@@ -44,15 +43,6 @@ const Container = styled.div`
   gap: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-`;
-
-const Styleimg = styled.div`
-  width: 370px;
-  height: 250px;
-  margin-right: 4rem;
-  background-image: url(${bookieProfileImage});
-  background-size: cover;
-  background-position: center;
 `;
 
 export default TapReview;

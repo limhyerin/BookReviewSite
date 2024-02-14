@@ -33,6 +33,7 @@ import { db } from '../../firebase/firebase.js';
 import useFirestore from '../../hooks/useFirestore.js';
 import CustomLoading from '../../components/CustomLoading.jsx';
 import { getAuth } from 'firebase/auth';
+import useUserData from '../../hooks/useUserData.js';
 
 const ReviewDetailPage = () => {
   const { loading } = useFirestore('book-reviews');
@@ -50,8 +51,10 @@ const ReviewDetailPage = () => {
   const [content, setContent] = useState(newReviewDetail.content || '');
 
   //작성자 아이디와 현재 아이디 비교하기위한 코드
-  const reviewAuthorId = newReviewDetail.author;
+  const reviewAuthorId = newReviewDetail.authorId;
   const [currentUserId, setCurrentUserId] = useState('');
+
+  const { userData } = useUserData(newReviewDetail.authorId);
 
   useEffect(() => {
     const auth = getAuth();
@@ -63,12 +66,32 @@ const ReviewDetailPage = () => {
   }, []);
 
   //newReviewDetail.createdAt을 호출하기위한 코드
-  let reviewDate = '';
-  if (newReviewDetail.createdAt && newReviewDetail.createdAt.toDate) {
-    // createdAt이 정의되어 있고 toDate 메서드를 가지고 있는 경우에만 toDate 호출
-    const date = newReviewDetail.createdAt.toDate();
-    reviewDate = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${date.getHours()}시`;
-  }
+
+  const getReviewDate = () => {
+    // timestamp를 Date 객체로 변환
+    if (!newReviewDetail.createdAt) return;
+    const seconds = newReviewDetail.createdAt.seconds;
+    const nanoseconds = newReviewDetail.createdAt.nanoseconds;
+
+    // 주어진 초와 나노초를 밀리초로 변환
+    const milliseconds = seconds * 1000 + Math.floor(nanoseconds / 1000000);
+
+    const date = new Date(milliseconds);
+
+    // 날짜 부분 가져오기
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1을 해준 후 두 자리로 만들어줍니다.
+    const day = String(date.getDate()).padStart(2, '0'); // 일도 두 자리로 만들어줍니다.
+
+    // 시간 부분 가져오기
+    const hours = String(date.getHours()).padStart(2, '0'); // 시간을 두 자리로 만들어줍니다.
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // 분도 두 자리로 만들어줍니다.
+
+    // 원하는 형식으로 조합
+    const formattedDate = `${year}.${month}.${day}. ${hours}:${minutes}`;
+
+    return formattedDate;
+  };
 
   //수정상태로 전환,롤백
   const editHandler = () => setUpdate(true);
@@ -90,15 +113,6 @@ const ReviewDetailPage = () => {
       navigate('/review');
     }
   };
-  console.log(newReviewDetail.createdAt);
-  //로딩실행 , redux persist도 있다 찾아보기
-  useEffect(() => {
-    if (loading) {
-      console.log('loading...');
-    } else {
-      console.log('done');
-    }
-  }, [loading]);
 
   return (
     //삼항연산자 이용, update의 초기값을 false로 놓고 false면 리뷰구현 true면 수정부분구현
@@ -123,10 +137,13 @@ const ReviewDetailPage = () => {
                   </StyledTitleAndUbtnAndDbtn>
                   <StyledUserInfo>
                     <StyledLogo>
-                      <img src={newReviewDetail.authorProfile} alt="Profile" />
+                      <img
+                        src={userData ? userData.profile : process.env.PUBLIC_URL + '/images/bookieProfile.png'}
+                        alt="Profile"
+                      />
                     </StyledLogo>
-                    <StyledTitle>{newReviewDetail.authorName}</StyledTitle>
-                    <StyledInfo>{reviewDate}</StyledInfo>
+                    <StyledTitle>{userData ? userData.nickname : ''}</StyledTitle>
+                    <StyledInfo>{getReviewDate()}</StyledInfo>
                   </StyledUserInfo>
                   <StyledContentTextarea
                     maxLength={200}
@@ -138,9 +155,9 @@ const ReviewDetailPage = () => {
                       <img src={newReviewDetail.image || book} alt="Book Cover" />
                     </StyledBookCover>
                     <StyledBookTitleAuthor>
-                      <StyledBookTitle>{newReviewDetail.bookTitle}</StyledBookTitle>
-                      <StyledBookAuthor>{newReviewDetail.bookAuthor} 지음</StyledBookAuthor>
-                      <StyledBookGenre> 장 르 : {newReviewDetail.genre}</StyledBookGenre>
+                      <StyledBookTitle>책이름 : {newReviewDetail.bookTitle}</StyledBookTitle>
+                      <StyledBookAuthor>저자 : {newReviewDetail.bookAuthor}</StyledBookAuthor>
+                      <StyledBookGenre> 장르 : {newReviewDetail.genre}</StyledBookGenre>
                     </StyledBookTitleAuthor>
                   </StyledBookInfo>
                 </StyledReviewBox>
@@ -169,10 +186,13 @@ const ReviewDetailPage = () => {
                 </StyledTitleAndUbtnAndDbtn>
                 <StyledUserInfo>
                   <StyledLogo>
-                    <img src={newReviewDetail.authorProfile} alt="Profile" />
+                    <img
+                      src={userData ? userData.profile : process.env.PUBLIC_URL + '/images/bookieProfile.png'}
+                      alt="Profile"
+                    />
                   </StyledLogo>
-                  <StyledTitle>{newReviewDetail.authorName}</StyledTitle>
-                  <StyledInfo>{reviewDate}</StyledInfo>
+                  <StyledTitle>{userData ? userData.nickname : ''}</StyledTitle>
+                  <StyledInfo>{getReviewDate()}</StyledInfo>
                 </StyledUserInfo>
                 <StyledReviewContent>{newReviewDetail.content}</StyledReviewContent>
                 <StyledBookInfo>
@@ -182,7 +202,7 @@ const ReviewDetailPage = () => {
                   <StyledBookTitleAuthor>
                     <StyledBookTitle>{newReviewDetail.bookTitle}</StyledBookTitle>
                     <StyledBookAuthor>{newReviewDetail.bookAuthor} 지음</StyledBookAuthor>
-                    <StyledBookGenre> 장 르 : {newReviewDetail.genre}</StyledBookGenre>
+                    <StyledBookGenre> 장르 : {newReviewDetail.genre}</StyledBookGenre>
                   </StyledBookTitleAuthor>
                 </StyledBookInfo>
               </StyledReviewBox>

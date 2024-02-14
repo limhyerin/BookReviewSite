@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import SignForm from '../../components/SignForm';
 import CustomLoading from '../../components/CustomLoading';
-import CustomModal from '../../components/CustomModal';
 
 const SignUpWrapper = styled.div`
   display: flex;
@@ -36,11 +35,11 @@ const SignUpPage = () => {
     profile: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [submitCheck, setSubmitCheck] = useState('');
   const [validation, setValidation] = useState({
     userId: false,
-    password: false
+    password: false,
+    nickname: false
   });
 
   const navigate = useNavigate();
@@ -49,7 +48,6 @@ const SignUpPage = () => {
     try {
       setIsLoading(true);
       const result = await getRedirectResult(auth);
-      console.log(result);
       if (result) {
         const signUpData = {
           userId: result.user.providerData[0].email,
@@ -72,16 +70,22 @@ const SignUpPage = () => {
 
   const onSignUp = async (event) => {
     event.preventDefault();
-    if (!validation.userId || !validation.password) {
-      setMessage('아이디, 비밀번호를 조건에 맞춰주세요');
-      setIsOpen(true);
+    const { userId, password, nickname } = userInfo;
+    if (!validation.userId || !validation.password || !validation.nickname) {
+      if (userId === '' && password === '' && nickname === '') {
+        setSubmitCheck('회원가입 정보를 입력해주세요.');
+      } else if (userId === '') {
+        setSubmitCheck('아이디를 입력해주세요');
+      } else if (password === '') {
+        setSubmitCheck('비밀번호를 입력해주세요');
+      } else if (nickname === '') {
+        setSubmitCheck('닉네임을 입력해주세요.');
+      }
       return;
     }
 
-    const { userId, password } = userInfo;
     try {
       const { user } = await createUserWithEmailAndPassword(auth, userId, password);
-      console.log(user.uid);
       const signUpData = doc(db, 'users', user.uid);
       await setDoc(signUpData, { ...userInfo, uid: user.uid });
 
@@ -120,23 +124,20 @@ const SignUpPage = () => {
       <CustomLoading />
     </SignUpWrapper>
   ) : (
-    <>
-      <CustomModal isOpen={isOpen} closeModal={() => setIsOpen(false)}>
-        {message}
-      </CustomModal>
-      <SignUpWrapper>
-        <h1>회원가입</h1>
-        <SignForm
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-          setValidation={setValidation}
-          onSubmit={onSignUp}
-          onClickGoogle={onClickGoogleSignUp}
-          onClickGithub={onClickGithubSignUp}
-          onClickKakaoSignUp={onClickKakaoSignUp}
-        />
-      </SignUpWrapper>
-    </>
+    <SignUpWrapper>
+      <h1>회원가입</h1>
+      <SignForm
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
+        setValidation={setValidation}
+        onSubmit={onSignUp}
+        submitCheck={submitCheck}
+        setSubmitCheck={setSubmitCheck}
+        onClickGoogle={onClickGoogleSignUp}
+        onClickGithub={onClickGithubSignUp}
+        onClickKakaoSignUp={onClickKakaoSignUp}
+      />
+    </SignUpWrapper>
   );
 };
 

@@ -15,18 +15,15 @@ const Avatar = ({ loading, setLoading, onChange }) => {
     setLoading(true);
     await uploadBytes(fileRef, file);
     const imageUrl = await getDownloadURL(fileRef);
-    onChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
+    onChange(imageUrl);
   };
 
   return (
     <AvatarContainer>
       <ImageWrapper>
-        {/* 이미지를 표시합니다. */}
         {loading ? <CustomLoading /> : <Image src={userInfo.profile || bookieProfile} alt="avatar" />}
       </ImageWrapper>
-      {/* 파일 업로드 인풋을 추가합니다. */}
       <ImageInput type="file" id="avatarInput" onChange={handleImageChange} accept="image/*" />
-      {/* 파일 업로드 버튼을 추가합니다. */}
       <ImageInputLabel htmlFor="avatarInput">이미지 변경</ImageInputLabel>
     </AvatarContainer>
   );
@@ -49,7 +46,7 @@ const ImageWrapper = styled.div`
 const Image = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 `;
 
 const ImageInput = styled.input`

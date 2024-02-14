@@ -36,10 +36,20 @@ const InputBox = styled.div`
   }
 `;
 const StyledButtonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   button {
     width: 100%;
     padding: 1rem;
     margin-bottom: 2rem;
+  }
+  span {
+    align-self: center;
+    padding-top: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: ${(props) => props.theme.fontSize.base};
+    color: red;
   }
 `;
 const SocialSignInBox = styled.div`
@@ -71,6 +81,8 @@ const SignForm = ({
   userInfo,
   setUserInfo,
   setValidation,
+  submitCheck,
+  setSubmitCheck,
   onSubmit,
   onClickGoogle,
   onClickGithub,
@@ -80,11 +92,13 @@ const SignForm = ({
   const { pathname } = useLocation();
   const [errorMsg, setErrorMsg] = useState({
     userId: '',
-    password: ''
+    password: '',
+    result: ''
   });
 
   const onChangeUserInfo = (event) => {
     const { name, value } = event.target;
+    setSubmitCheck('');
     setUserInfo((prev) => ({ ...prev, [name]: value }));
     if (validateValue(name, value)) {
       setValidation((prev) => ({ ...prev, [name]: true }));
@@ -93,9 +107,13 @@ const SignForm = ({
       setValidation((prev) => ({ ...prev, [name]: false }));
       setErrorMsg((prev) => {
         if (name === 'userId') {
-          return { ...prev, [name]: 'id는 email 형식입니다.' };
-        } else {
+          return { ...prev, [name]: '아이디는 email 형식입니다.' };
+        }
+        if (name === 'password') {
           return { ...prev, [name]: '최소 8 자, 하나 이상의 특수문자 포함한 문자와 숫자를 입력해주세요' };
+        }
+        if (name === 'nickname') {
+          return { ...prev, [name]: '닉네임은 2 ~ 15 글자로 입력해주세요.' };
         }
       });
     }
@@ -134,8 +152,10 @@ const SignForm = ({
               value={userInfo.nickname}
               onChange={onChangeUserInfo}
             />
+            <span>{errorMsg.nickname}</span>
           </InputBox>
           <StyledButtonBox>
+            <span>{submitCheck}</span>
             <CustomButton text={'가입하기'} />
           </StyledButtonBox>
           <SocialSignInBox>
@@ -147,6 +167,7 @@ const SignForm = ({
       ) : (
         <>
           <StyledButtonBox>
+            <span>{submitCheck}</span>
             <CustomButton text={'로그인'} />
           </StyledButtonBox>
           <SocialSignInBox>

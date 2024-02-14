@@ -14,7 +14,6 @@ const useUserData = (userId) => {
         const userDocRef = doc(db, 'users', userId);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
-          console.log(userDocSnap.data());
           setUserData(userDocSnap.data());
         }
       } catch (err) {

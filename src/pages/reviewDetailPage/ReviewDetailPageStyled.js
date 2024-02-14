@@ -15,6 +15,7 @@ export const StyledReviewBox = styled.div`
   align-items: center;
   flex-direction: column;
   margin-top: 20px;
+  padding: 20px;
 `;
 
 export const StyledTitleAndUbtnAndDbtn = styled.div`
@@ -26,8 +27,8 @@ export const StyledTitleAndUbtnAndDbtn = styled.div`
   align-items: center;
 `;
 export const StyledUserInfo = styled.div`
-  padding: 20px;
-  width: 800px;
+  padding: 30px 15px;
+  width: 100%;
   height: 50px;
   display: flex;
   justify-content: left;
@@ -37,19 +38,20 @@ export const StyledUserInfo = styled.div`
 export const StyledReviewContent = styled.div`
   margin: 20px;
   width: 760px;
-  height: 180px;
+  height: 200px;
 `;
 export const StyledBookInfo = styled.div`
-  width: 750px;
+  width: 800px;
   height: 120px;
   padding: 5px;
   display: flex;
   justify-content: left;
   align-items: center;
   margin-bottom: 10px;
-  background-color: #eeee;
+  background-color: #eee;
   border: 0px solid;
   border-radius: 15px;
+  padding: 10px;
 `;
 export const StyledHomeBtn = styled(CustomButton)`
   width: 100px;
@@ -74,16 +76,13 @@ export const StyledBtnWrapper = styled.div`
   width: 130px; //이렇게하면 버튼 오른쪽으로 이동 후 사이 간격 설정가능
 `;
 export const StyledLogo = styled.div`
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: left;
-  align-items: center;
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  overflow: hidden;
   img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
   }
 `;
 export const StyledBookCover = styled.div`
@@ -117,7 +116,7 @@ export const StyledCustomLoading = styled.div`
 `;
 export const StyledBookTitleAuthor = styled.div`
   margin-left: 20px;
-  width: 300px;
+  /* width: 300px; */
   height: 80px;
   display: flex;
   flex-direction: column;
@@ -140,7 +139,9 @@ export const StyledBookGenre = styled.div`
 export const StyledInfo = styled.div`
   width: 200px;
   display: flex;
-  margin-left: 380px;
+  //margin-left: 380px;
+  margin-left: 10px;
+  color: #666;
 `;
 
 export const StyledPage = styled.div`
@@ -149,7 +150,7 @@ export const StyledPage = styled.div`
 `;
 
 export const StyledTitle = styled.div`
-  font-size: 20px;
-  margin-left: 20px;
-  width: 200px;
+  font-size: 1.2rem;
+  /* margin-left: 20px; */
+  /* width: 200px; */
 `;
