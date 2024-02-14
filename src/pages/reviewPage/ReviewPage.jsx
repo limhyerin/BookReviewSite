@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BookSearch from './BookSearch';
 import useFirestore from '../../hooks/useFirestore';
 import CustomModal from '../../components/CustomModal';
@@ -9,8 +9,16 @@ import CustomSidebar from './CustomSidebar';
 import CustomLoading from '../../components/CustomLoading';
 import styled from 'styled-components';
 import ReviewsContainer from './ReviewsContainer';
+import { useNavigate } from 'react-router-dom';
 
 const ReviewPage = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+      navigate('/signin');
+    }
+  }, [navigate]);
   const reviews = useSelector((state) => state.reviewsReducer).reviews;
   const { loading } = useFirestore('book-reviews');
   const [isModalOpen, setIsModalOpen] = useState(false);
