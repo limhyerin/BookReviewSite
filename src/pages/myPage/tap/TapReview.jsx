@@ -9,7 +9,7 @@ const TapReview = () => {
   const { loading } = useFirestore('book-reviews');
   const reviews = useSelector((state) => state.reviewsReducer).reviews;
   const { userInfo } = useSelector((state) => state.authReducer);
-  const userReviews = reviews.filter((review) => review.author === userInfo.uid);
+  const userReviews = reviews.filter((review) => review.authorId === userInfo.uid);
 
   return (
     <>
