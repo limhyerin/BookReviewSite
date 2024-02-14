@@ -47,7 +47,7 @@ export const StyledBookInfo = styled.div`
   justify-content: left;
   align-items: center;
   margin-bottom: 10px;
-  background-color: #ccc;
+  background-color: #eeee;
   border: 0px solid;
   border-radius: 15px;
 `;
