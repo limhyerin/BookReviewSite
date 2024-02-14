@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BookSearch from './BookSearch';
 import useFirestore from '../../hooks/useFirestore';
 import CustomModal from '../../components/CustomModal';
@@ -27,14 +27,6 @@ const ReviewPage = () => {
     setIsModalOpen(false);
     setSelectedBook(null);
   };
-
-  useEffect(() => {
-    if (loading) {
-      console.log('loading...');
-    } else {
-      console.log('done');
-    }
-  }, [loading]);
 
   return (
     <div>
