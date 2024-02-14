@@ -1,64 +1,97 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Avatar from '../avatar/Avatar';
 import CustomButton from '../../../components/CustomButton';
 import CustomModal from '../../../components/CustomModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { db } from '../../../firebase/firebase';
+import { db, storage } from '../../../firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { updateNickname, updateProfile } from '../../../redux/modules/authReducer';
-
-const StyledModalWrap = styled.div`
-  padding: 10px 50px;
-  font-size: 20px;
-`;
+import bookieProfile from '../../../assets/bookieProfile.png';
+import CustomLoading from '../../../components/CustomLoading';
 
 const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [tempProfile, setTempProfile] = useState(userInfo.profile);
-
+  const [imageUrl, setImageUrl] = useState('');
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userInfo && userInfo.profile) {
+      setImageUrl(userInfo.profile);
+    } else {
+      setImageUrl(bookieProfile);
+    }
+  }, [userInfo]);
 
   const handleSaveClick = async (event) => {
     event.preventDefault();
     try {
       if (!userInfo) return;
+      setIsLoading(true);
+      const file = event.target.avatarInput.files[0];
       const newNickname = event.target.nickNameInput.value;
       const userDocRef = doc(db, 'users', userInfo.uid);
+      const storageRef = ref(storage);
+      const fileRef = ref(storageRef, file.name);
+      await uploadBytes(fileRef, file);
+      const newImageUrl = await getDownloadURL(fileRef);
+      await updateDoc(userDocRef, { nickname: newNickname, profile: newImageUrl });
 
-      await updateDoc(userDocRef, { nickname: newNickname, profile: tempProfile });
       dispatch(updateNickname(newNickname));
-      dispatch(updateProfile(tempProfile));
+      dispatch(updateProfile(newImageUrl));
+      setIsLoading(false);
       setShowModal(true);
     } catch (error) {
       console.error('프로필 업데이트 오류:', error);
     }
   };
 
-  const handleAvatarChange = (profile) => {
-    setTempProfile(profile);
-  };
-
   const closeModal = () => {
     setShowModal(false);
+  };
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = (data) => {
+      setImageUrl(data.target.result);
+    };
   };
 
   return (
     <UserInfo>
-      <User>
-        <Avatar onChange={handleAvatarChange} loading={loading} setLoading={setLoading} />
-        <form onSubmit={handleSaveClick}>
-          <NicknameInput type="text" name={'nickNameInput'} defaultValue={userInfo.nickname} />
-          <CustomButton text={'수정하기'} />
-        </form>
-      </User>
-      <CustomModal isOpen={showModal} closeModal={closeModal}>
-        <StyledModalWrap>
-          <p>수정이 완료되었습니다!</p>
-        </StyledModalWrap>
-      </CustomModal>
+      {isLoading ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <User>
+            <ProfileWrapper>
+              <Avatar imageUrl={imageUrl} isLoading={isLoading} />
+              <ImageInputLabel htmlFor="avatarInput">이미지 변경</ImageInputLabel>
+            </ProfileWrapper>
+            <form onSubmit={handleSaveClick}>
+              <ImageInput
+                type="file"
+                id="avatarInput"
+                name="avatarInput"
+                onChange={handleImageChange}
+                accept="image/*"
+              />
+              <NicknameInput type="text" name={'nickNameInput'} defaultValue={userInfo.nickname} />
+              <CustomButton text={'수정하기'} />
+            </form>
+          </User>
+          <CustomModal isOpen={showModal} closeModal={closeModal}>
+            <StyledModalWrap>
+              <p>수정이 완료되었습니다!</p>
+            </StyledModalWrap>
+          </CustomModal>
+        </>
+      )}
     </UserInfo>
   );
 };
@@ -83,7 +116,7 @@ const User = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5rem;
+  gap: 2rem;
   form {
     display: flex;
     flex-direction: column;
@@ -101,6 +134,37 @@ const NicknameInput = styled.input`
   border-radius: 4px;
   font-size: 16px;
   outline: none;
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ImageInput = styled.input`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+`;
+
+const ImageInputLabel = styled.label`
+  background-color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledModalWrap = styled.div`
+  align-self: center;
+  padding: 10px 50px;
+  font-size: 20px;
 `;
 
 export default TapProfile;
