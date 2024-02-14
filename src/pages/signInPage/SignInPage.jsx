@@ -50,13 +50,13 @@ const SignInPage = () => {
     userId: false,
     password: false
   });
+  const [submitCheck, setSubmitCheck] = useState('');
   const navigate = useNavigate();
 
   const checkLoginRedirect = async () => {
     try {
       setIsLoading(true);
       const result = await getRedirectResult(auth);
-      console.log(result);
       if (result) {
         navigate('/');
       } else {
@@ -72,17 +72,24 @@ const SignInPage = () => {
 
   const onSignIn = async (event) => {
     event.preventDefault();
+    const { userId, password } = userInfo;
     if (!validation.userId || !validation.password) {
-      setIsOpen(true);
+      if (userId === '' && password === '') {
+        setSubmitCheck('로그인 정보를 입력해주세요.');
+      } else if (userId === '') {
+        setSubmitCheck('아이디를 입력해주세요');
+      } else if (password === '') {
+        setSubmitCheck('비밀번호를 입력해주세요');
+      }
       return;
     }
-    const { userId, password } = userInfo;
     try {
+      setSubmitCheck('');
       await signInWithEmailAndPassword(auth, userId, password);
       navigate('/');
     } catch (error) {
       console.error(error);
-      setIsOpen(true);
+      setSubmitCheck('아이디, 비밀번호를 다시 확인해주세요.');
     }
   };
   const onClickGoogleSignIn = async (event) => {
@@ -126,6 +133,8 @@ const SignInPage = () => {
           onSubmit={onSignIn}
           setUserInfo={setUserInfo}
           setValidation={setValidation}
+          submitCheck={submitCheck}
+          setSubmitCheck={setSubmitCheck}
           onClickGoogle={onClickGoogleSignIn}
           onClickGithub={onClickGithubSignIn}
           onClickKakaoSignIn={onClickKakaoSignIn}
