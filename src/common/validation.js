@@ -6,6 +6,12 @@ export const validateValue = (name, value) => {
     case 'password':
       const passwordReg = /^(?=.*[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E])[^\s]{8,}$/;
       return passwordReg.test(value);
+    case 'nickname':
+      if (value.length >= 2 && value.length <= 15) {
+        return true;
+      } else {
+        return false;
+      }
     default:
       return false;
   }
