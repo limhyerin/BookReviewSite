@@ -17,7 +17,6 @@ const useFirestore = (collectionName) => {
         }));
         dispatch(setReview(fetchedData));
         setLoading(false);
-        console.log('fetchedData', fetchedData);
       } catch (error) {
         console.error('Error fetching Firestore data:', error);
       }
