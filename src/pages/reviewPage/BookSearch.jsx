@@ -91,7 +91,6 @@ const StyledBookSearchContainer = styled.div`
     cursor: pointer;
   }
   > form {
-    // margin-bottom: 20px;
     display: flex;
     justify-content: center;
   }
