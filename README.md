@@ -1,5 +1,5 @@
 # 도서 리뷰 공유 서비스 BOOKIE
-<img width="1363" alt="Screen Shot 2024-02-14 at 2 47 18 PM" src="https://github.com/limhyerin/BookReviewSite/assets/154405976/6ba801ab-d065-4744-bb33-890eb34c8eb3">
+<img width="1468" alt="Screen Shot 2024-02-14 at 3 19 44 PM" src="https://github.com/limhyerin/BookReviewSite/assets/154405976/69ffc332-182c-4bc9-b48c-fcb825c344f3">
 
 * 배포 URL https://book-review-site-gamma.vercel.app/
 * Test ID : test@test.com
