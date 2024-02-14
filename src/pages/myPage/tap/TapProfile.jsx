@@ -17,6 +17,7 @@ const TapProfile = () => {
   const { userInfo } = useSelector(({ authReducer }) => authReducer);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [tempProfile, setTempProfile] = useState(userInfo.profile);
 
   const dispatch = useDispatch();
 
@@ -27,26 +28,17 @@ const TapProfile = () => {
       const newNickname = event.target.nickNameInput.value;
       const userDocRef = doc(db, 'users', userInfo.uid);
 
-      await updateDoc(userDocRef, { nickname: newNickname });
+      await updateDoc(userDocRef, { nickname: newNickname, profile: tempProfile });
       dispatch(updateNickname(newNickname));
+      dispatch(updateProfile(tempProfile));
       setShowModal(true);
     } catch (error) {
-      console.error('닉네임 업데이트 오류:', error);
+      console.error('프로필 업데이트 오류:', error);
     }
   };
 
-  const handleAvatarChange = async (profile) => {
-    try {
-      if (!userInfo || !userInfo.uid) return;
-      const userDocRef = doc(db, 'users', userInfo.uid);
-
-      await updateDoc(userDocRef, { profile });
-      dispatch(updateProfile(profile));
-      setLoading(false);
-      setShowModal(true);
-    } catch (error) {
-      console.error('프로필 이미지 업데이트 오류:', error);
-    }
+  const handleAvatarChange = (profile) => {
+    setTempProfile(profile);
   };
 
   const closeModal = () => {
