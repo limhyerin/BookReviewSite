@@ -32,7 +32,6 @@ const KaKaoSignUpPage = () => {
       try {
         if (code) {
           const { access_token } = await getToken(code);
-          console.log(access_token);
           const {
             data: {
               kakao_account: {
@@ -51,7 +50,6 @@ const KaKaoSignUpPage = () => {
             }
           );
           const { user } = await createUserWithEmailAndPassword(auth, email, 'password');
-          console.log('회원가입', user);
           const signUpData = doc(db, 'users', user.uid);
           await setDoc(signUpData, { userId: email, password: 'password', nickname, uid: user.uid });
           navigate('/');
