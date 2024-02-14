@@ -105,7 +105,8 @@ export const StyledTitleInput = styled.input`
 export const StyledContentTextarea = styled.textarea`
   margin: 20px;
   width: 760px;
-  height: 180px;
+  height: 200px;
+  font-size: 16px;
 `;
 
 export const StyledCustomLoading = styled.div`
