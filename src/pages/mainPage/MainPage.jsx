@@ -133,11 +133,16 @@ const MainPage = () => {
 
   useEffect(() => {
     const fetchNickname = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setLoading(false);
+      if (isLoggedIn) {
+        if (userInfo.nickname) {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
     };
     fetchNickname();
-  }, []);
+  }, [userInfo.nickname, isLoggedIn]);
 
   const greet = isLoggedIn ? (
     <h1>
